@@ -1,0 +1,58 @@
+name: Refresh Definitions
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Every Monday at 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    name: Refresh Core Scan Snapshot
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: npm
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Run core scanner
+        run: npx ts-node scripts/scan-core.ts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check for snapshot changes
+        id: diff
+        run: |
+          if git diff --quiet src/schema/core-scan-snapshot.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create pull request
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/refresh-definitions-${{ github.run_id }}
+          commit-message: "chore: refresh core-scan definitions"
+          title: "chore: refresh core-scan definitions"
+          body: |
+            Automated refresh of `src/schema/core-scan-snapshot.json`.
+
+            This PR was created by the **Refresh Definitions** workflow.
+            Please review the changes to experimental and undocumented properties before merging.
+          labels: |
+            automated
+            definitions

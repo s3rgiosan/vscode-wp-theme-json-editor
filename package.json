@@ -1,0 +1,131 @@
+{
+  "name": "vscode-wp-theme-json-editor",
+  "displayName": "WP Theme JSON Editor",
+  "description": "A form-driven visual editor for WordPress theme.json files",
+  "version": "1.0.0",
+  "publisher": "s3rgiosan",
+  "license": "GPL-3.0-only",
+  "icon": "icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/s3rgiosan/vscode-wp-theme-json-editor"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Visualization",
+    "Formatters"
+  ],
+  "keywords": [
+    "wordpress",
+    "theme.json",
+    "theme",
+    "json",
+    "editor",
+    "visual",
+    "block theme"
+  ],
+  "activationEvents": [
+    "onLanguage:json",
+    "onLanguage:jsonc"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "wpThemeJsonEditor.open",
+        "title": "Open in WP Theme JSON Editor",
+        "category": "WP Theme JSON"
+      },
+      {
+        "command": "wpThemeJsonEditor.openSidePanel",
+        "title": "Open in WP Theme JSON Editor (Side Panel)",
+        "category": "WP Theme JSON"
+      },
+      {
+        "command": "wpThemeJsonEditor.openTab",
+        "title": "Open in WP Theme JSON Editor (Tab)",
+        "category": "WP Theme JSON"
+      },
+      {
+        "command": "wpThemeJsonEditor.save",
+        "title": "Save",
+        "category": "WP Theme JSON"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "when": "resourceFilename == 'theme.json'",
+          "command": "wpThemeJsonEditor.open",
+          "group": "navigation@100"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "WP Theme JSON Editor",
+      "properties": {
+        "wpThemeJsonEditor.defaultLayout": {
+          "type": "string",
+          "enum": [
+            "sidePanel",
+            "tab"
+          ],
+          "default": "tab",
+          "description": "Default layout when opening theme.json files."
+        },
+        "wpThemeJsonEditor.showExperimentalByDefault": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show experimental and undocumented properties by default."
+        },
+        "wpThemeJsonEditor.schemaVersion": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "6.6",
+            "6.7",
+            "trunk"
+          ],
+          "default": "auto",
+          "description": "Schema version to use. 'auto' detects from the $schema field in theme.json."
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "wpThemeJsonEditor.open",
+        "key": "ctrl+shift+t",
+        "mac": "cmd+shift+t",
+        "when": "resourceFilename == 'theme.json'"
+      },
+      {
+        "command": "wpThemeJsonEditor.save",
+        "key": "ctrl+s",
+        "mac": "cmd+s",
+        "when": "activeWebviewPanelId == 'wpThemeJsonEditor'"
+      }
+    ]
+  },
+  "scripts": {
+    "dev:ext": "tsc -watch -p ./",
+    "dev:webview": "cd webview && npm run dev",
+    "dev": "concurrently \"npm:dev:ext\" \"npm:dev:webview\"",
+    "build:ext": "tsc -p ./",
+    "build:webview": "cd webview && npm run build",
+    "build": "npm run build:ext && npm run build:webview",
+    "lint": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "postinstall": "cd webview && npm install",
+    "package": "npx @vscode/vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "concurrently": "^8.2.2",
+    "typescript": "^5.3.3",
+    "vitest": "^4.1.0"
+  }
+}
