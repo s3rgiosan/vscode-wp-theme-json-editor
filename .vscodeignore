@@ -15,6 +15,9 @@ webview/vitest.config.ts
 node_modules/**
 scripts/**
 .gitignore
+assets/demo.mp4
+assets/demo.webp
+assets/icon.svg
 .claude/**
 .DS_Store
 *.map

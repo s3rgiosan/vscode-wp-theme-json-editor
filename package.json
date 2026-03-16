@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "publisher": "s3rgiosan",
   "license": "GPL-3.0-only",
-  "icon": "icon.png",
+  "icon": "assets/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/s3rgiosan/vscode-wp-theme-json-editor"

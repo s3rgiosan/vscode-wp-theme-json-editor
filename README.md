@@ -2,6 +2,8 @@
 
 A Visual Studio Code extension that provides a form-driven visual editor for WordPress `theme.json` files. Edit colors, typography, spacing, and more without touching raw JSON.
 
+![WP Theme JSON Editor](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/raw/main/assets/demo.webp)
+
 ## Features
 
 - **Schema-driven UI** — Fields are generated from the official WordPress JSON Schema, so the editor stays current with every WP release.
