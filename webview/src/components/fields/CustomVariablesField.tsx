@@ -57,6 +57,7 @@ interface NestedEditorProps {
  */
 function NestedEditor({ data, path, setField, depth }: NestedEditorProps) {
   const [newKey, setNewKey] = useState("");
+  const [newValue, setNewValue] = useState("");
   const [newType, setNewType] = useState<"string" | "group">("string");
 
   const entries = Object.entries(data);
@@ -66,9 +67,17 @@ function NestedEditor({ data, path, setField, depth }: NestedEditorProps) {
     if (!key || key in data) {
       return;
     }
-    setField([...path, key], newType === "group" ? {} : "");
+    if (newType === "group") {
+      setField([...path, key], {});
+    } else {
+      const val = newValue.trim();
+      const num = Number(val);
+      const parsed = !isNaN(num) && val !== "" ? num : val;
+      setField([...path, key], parsed);
+    }
     setNewKey("");
-  }, [newKey, newType, data, path, setField]);
+    setNewValue("");
+  }, [newKey, newValue, newType, data, path, setField]);
 
   const handleRemoveEntry = useCallback(
     (key: string) => {
@@ -140,30 +149,43 @@ function NestedEditor({ data, path, setField, depth }: NestedEditorProps) {
 
       {/* Add new entry */}
       <div className="flex items-center gap-1.5 mt-3">
+        <select
+          value={newType}
+          onChange={(e) => setNewType(e.target.value as "string" | "group")}
+          className="px-1.5 py-1 text-xs rounded border border-vscode-input-border bg-vscode-input-bg text-vscode-input-fg shrink-0"
+        >
+          <option value="string">Value</option>
+          <option value="group">Group</option>
+        </select>
         <input
           type="text"
           value={newKey}
           onChange={(e) => setNewKey(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Variable name (camelCase)"
+          placeholder="Name"
           className={`flex-1 ${INPUT_CLASS}`}
         />
-        <select
-          value={newType}
-          onChange={(e) => setNewType(e.target.value as "string" | "group")}
-          className="px-1.5 py-1 text-xs rounded border border-vscode-input-border bg-vscode-input-bg text-vscode-input-fg"
-        >
-          <option value="string">Value</option>
-          <option value="group">Group</option>
-        </select>
+        {newType === "string" && (
+          <input
+            type="text"
+            value={newValue}
+            onChange={(e) => setNewValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Value"
+            className={`flex-1 ${INPUT_CLASS}`}
+          />
+        )}
         <button
           onClick={handleAddEntry}
           disabled={!newKey.trim()}
-          className="px-2 py-1 text-[11px] rounded bg-vscode-button-bg text-vscode-button-fg hover:bg-vscode-button-hover disabled:text-vscode-disabled-fg disabled:opacity-60"
+          className="px-2 py-1 text-[11px] rounded bg-vscode-button-bg text-vscode-button-fg hover:bg-vscode-button-hover disabled:text-vscode-disabled-fg disabled:opacity-60 shrink-0"
         >
           Add
         </button>
       </div>
+      <p className="text-[10px] text-vscode-description-fg mt-1">
+        Use camelCase for the name (e.g. lineHeight, baseFont).
+      </p>
     </div>
   );
 }
