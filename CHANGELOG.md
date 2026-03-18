@@ -11,15 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Support for boolean+object schema fields (e.g. `settings.typography.fluid` and `fontSizes[].fluid`). These fields render as a tri-state toggle that expands to show object properties when set to True (props @kdo).
-- Empty object pruning at save time — block entries and other empty objects are automatically cleaned up when saved (props @colinswinney).
+- Support for boolean+object schema fields (e.g. `settings.typography.fluid` and `fontSizes[].fluid`). These fields render as a tri-state toggle that expands to show object properties when set to True (props [@kdo](https://github.com/kdo)).
+- Empty object pruning at save time — block entries and other empty objects are automatically cleaned up when saved (props [@colinswinney](https://github.com/colinswinney)).
 - "Disable defaults" checkbox for `settings.color.duotone`, `gradients`, and `palette` to explicitly set an empty array and disable WordPress defaults.
-- Custom variables (`settings.custom`) now support adding name and value in a single step, with a type selector (Value/Group) on the left (props @kdo).
+- Custom variables (`settings.custom`) now support adding name and value in a single step, with a type selector (Value/Group) on the left (props [@kdo](https://github.com/kdo)).
 - Automated publishing to Open VSX Registry in the release workflow.
 
 ### Changed
 
-- Boolean fields now use a tri-state radio toggle (True / False / Unset) instead of a checkbox. This allows explicitly setting `false` or leaving a value unset at the block level, so block overrides inherit from global settings by default (props @colinswinney).
+- Boolean fields now use a tri-state radio toggle (True / False / Unset) instead of a checkbox. This allows explicitly setting `false` or leaving a value unset at the block level, so block overrides inherit from global settings by default (props [@colinswinney](https://github.com/colinswinney)).
 
 ### Fixed
 
