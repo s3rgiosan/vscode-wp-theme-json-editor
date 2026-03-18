@@ -1,6 +1,7 @@
 import { useId } from "react";
 import { formatLabel } from "../../utils/formatLabel";
 import { TextInputWithAutocomplete } from "../Autocomplete";
+import { getBooleanObjectSchema } from "../fieldRenderer";
 import {
   SUB_LABEL_CLASS,
   ERROR_CLASS,
@@ -49,7 +50,13 @@ export function ItemPropertyField({
   const requiredMark = required ? <span className="text-vscode-error-fg ml-0.5">*</span> : null;
 
   const updateField = (newValue: unknown) => {
-    const newItem = { ...itemObj, [propKey]: newValue };
+    let newItem: Record<string, unknown>;
+    if (newValue === undefined) {
+      newItem = { ...itemObj };
+      delete newItem[propKey];
+    } else {
+      newItem = { ...itemObj, [propKey]: newValue };
+    }
     const newArr = [...value];
     newArr[index] = newItem;
     setField(path, newArr);
@@ -110,7 +117,7 @@ export function ItemPropertyField({
   }
 
   // Boolean + object oneOf (e.g. fontSizes[].fluid)
-  const boolObjSchema = getBooleanObjectBranch(propSchema);
+  const boolObjSchema = getBooleanObjectSchema(propSchema as Record<string, unknown>);
   if (boolObjSchema) {
     return (
       <ItemBooleanObjectField
@@ -251,29 +258,6 @@ export function ItemPropertyField({
       )}
     </div>
   );
-}
-
-/** Extract the object branch from a oneOf/anyOf that combines boolean + object. */
-function getBooleanObjectBranch(
-  schema: ItemPropertySchema,
-): ItemPropertySchema | undefined {
-  for (const combiner of ["oneOf", "anyOf"] as const) {
-    const options = schema[combiner];
-    if (!Array.isArray(options)) continue;
-
-    let hasBoolean = false;
-    let objectBranch: ItemPropertySchema | undefined;
-
-    for (const opt of options) {
-      if (typeof opt !== "object" || opt === null) continue;
-      const s = opt as ItemPropertySchema;
-      if (s.type === "boolean") hasBoolean = true;
-      if (s.type === "object" && s.properties) objectBranch = s;
-    }
-
-    if (hasBoolean && objectBranch) return objectBranch;
-  }
-  return undefined;
 }
 
 const RADIO_CLASS =
