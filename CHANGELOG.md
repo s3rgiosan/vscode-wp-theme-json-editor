@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-03-18
+
+### Added
+
+- Support for boolean+object schema fields (e.g. `settings.typography.fluid` and `fontSizes[].fluid`). These fields render as a tri-state toggle that expands to show object properties when set to True (props @kdo).
+- Empty object pruning at save time — block entries and other empty objects are automatically cleaned up when saved (props @colinswinney).
+- "Disable defaults" checkbox for `settings.color.duotone`, `gradients`, and `palette` to explicitly set an empty array and disable WordPress defaults.
+- Custom variables (`settings.custom`) now support adding name and value in a single step, with a type selector (Value/Group) on the left (props @kdo).
+- Automated publishing to Open VSX Registry in the release workflow.
+
+### Changed
+
+- Boolean fields now use a tri-state radio toggle (True / False / Unset) instead of a checkbox. This allows explicitly setting `false` or leaving a value unset at the block level, so block overrides inherit from global settings by default (props @colinswinney).
+
+### Fixed
+
+- Removing the last item from an array field no longer leaves a stale empty array in the saved file, unless the empty array was intentionally present in the original data.
+
 ## [1.0.0] - 2026-03-16
 
 ### Added
@@ -25,5 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extension settings: `defaultLayout`, `showExperimentalByDefault`, `schemaVersion`.
 - CI/CD: GitHub Actions for CI, release, and weekly core-scan refresh.
 
-[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/releases/tag/v1.0.0

@@ -1,6 +1,6 @@
 # WP Theme JSON Editor
 
-[![Install in VS Code](https://img.shields.io/visual-studio-marketplace/v/s3rgiosan.vscode-wp-theme-json-editor?label=VS%20Code&logo=visualstudiocode&color=007ACC)](https://marketplace.visualstudio.com/items?itemName=s3rgiosan.vscode-wp-theme-json-editor) [![Install in Cursor](https://img.shields.io/open-vsx/v/s3rgiosan/vscode-wp-theme-json-editor?label=Cursor&logo=cursor&color=000000)](https://open-vsx.org/extension/s3rgiosan/vscode-wp-theme-json-editor) [![Install on Open VSX](https://img.shields.io/open-vsx/v/s3rgiosan/vscode-wp-theme-json-editor?label=Open%20VSX&logo=eclipseide&color=purple)](https://open-vsx.org/extension/s3rgiosan/vscode-wp-theme-json-editor)
+[![Install in VS Code](https://img.shields.io/visual-studio-marketplace/v/s3rgiosan.vscode-wp-theme-json-editor?label=VS%20Code&logo=visualstudiocode&color=007ACC)](https://marketplace.visualstudio.com/items?itemName=s3rgiosan.vscode-wp-theme-json-editor) [![Install on Open VSX](https://img.shields.io/open-vsx/v/s3rgiosan/vscode-wp-theme-json-editor?label=Open%20VSX&logo=eclipseide&color=purple)](https://open-vsx.org/extension/s3rgiosan/vscode-wp-theme-json-editor)
 
 A Visual Studio Code extension that provides a form-driven visual editor for WordPress `theme.json` files. Edit colors, typography, spacing, and more without touching raw JSON.
 
