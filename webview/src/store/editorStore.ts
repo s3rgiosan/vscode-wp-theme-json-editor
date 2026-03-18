@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { minifyCss, prettifyCss } from "../utils/css";
-import { getNestedValue, setNestedValue, removeNestedValue } from "../utils/nested";
+import { getNestedValue, setNestedValue, removeNestedValue, pruneEmptyObjects } from "../utils/nested";
 import { validateThemeJson, type ValidationError } from "../utils/validate";
 
 /**
@@ -157,12 +157,13 @@ export const useEditorStore = create<EditorStore>((set) => ({
 }));
 
 /**
- * Returns the current themeJson with all CSS fields minified for saving.
+ * Returns the current themeJson with all CSS fields minified and
+ * empty objects pruned for saving.
  * Standalone function to avoid circular type references in the store.
  */
 export function getDataForSave(): Record<string, unknown> {
   const { themeJson } = useEditorStore.getState();
-  return minifyCssFields(themeJson);
+  return pruneEmptyObjects(minifyCssFields(themeJson)) ?? {};
 }
 
 /**

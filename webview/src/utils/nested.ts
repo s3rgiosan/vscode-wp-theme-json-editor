@@ -76,6 +76,36 @@ export function removeNestedValue(
 }
 
 /**
+ * Recursively remove empty plain objects from a tree.
+ * Arrays and non-object values are left untouched.
+ * If pruning a child makes its parent empty, the parent is pruned too.
+ *
+ * @param obj - The source object (not mutated).
+ * @returns A new object with all empty-object branches removed,
+ *          or `undefined` if the entire object is empty after pruning.
+ */
+export function pruneEmptyObjects(
+  obj: Record<string, unknown>,
+): Record<string, unknown> | undefined {
+  const result: Record<string, unknown> = {};
+
+  for (const [key, value] of Object.entries(obj)) {
+    if (Array.isArray(value)) {
+      result[key] = value;
+    } else if (typeof value === "object" && value !== null) {
+      const pruned = pruneEmptyObjects(value as Record<string, unknown>);
+      if (pruned !== undefined) {
+        result[key] = pruned;
+      }
+    } else {
+      result[key] = value;
+    }
+  }
+
+  return Object.keys(result).length > 0 ? result : undefined;
+}
+
+/**
  * Get a value at a nested path in an object.
  *
  * @param obj - The source object.

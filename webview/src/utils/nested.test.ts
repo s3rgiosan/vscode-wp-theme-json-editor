@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getNestedValue, setNestedValue, removeNestedValue } from "./nested";
+import { getNestedValue, setNestedValue, removeNestedValue, pruneEmptyObjects } from "./nested";
 
 describe("getNestedValue", () => {
   it("gets a top-level value", () => {
@@ -88,5 +88,57 @@ describe("removeNestedValue", () => {
   it("returns the same object when path does not exist", () => {
     const obj = { a: 1 };
     expect(removeNestedValue(obj, ["b", "c"])).toEqual({ a: 1 });
+  });
+});
+
+describe("pruneEmptyObjects", () => {
+  it("removes top-level empty objects", () => {
+    expect(pruneEmptyObjects({ a: 1, b: {} })).toEqual({ a: 1 });
+  });
+
+  it("recursively removes nested empty objects", () => {
+    expect(pruneEmptyObjects({ a: { b: {} }, c: 2 })).toEqual({ c: 2 });
+  });
+
+  it("returns undefined for a fully empty tree", () => {
+    expect(pruneEmptyObjects({ a: { b: {} } })).toBeUndefined();
+  });
+
+  it("preserves arrays", () => {
+    expect(pruneEmptyObjects({ a: [], b: [1, 2] })).toEqual({
+      a: [],
+      b: [1, 2],
+    });
+  });
+
+  it("preserves non-object values", () => {
+    const obj = { a: 1, b: "str", c: true, d: null };
+    expect(pruneEmptyObjects(obj)).toEqual(obj);
+  });
+
+  it("does not mutate the original object", () => {
+    const obj = { a: { b: {} }, c: 1 };
+    pruneEmptyObjects(obj);
+    expect(obj).toEqual({ a: { b: {} }, c: 1 });
+  });
+
+  it("handles a realistic block override scenario", () => {
+    const obj = {
+      settings: {
+        color: { text: true },
+        blocks: {
+          "core/heading": {},
+          "core/paragraph": { color: { text: false } },
+        },
+      },
+    };
+    expect(pruneEmptyObjects(obj)).toEqual({
+      settings: {
+        color: { text: true },
+        blocks: {
+          "core/paragraph": { color: { text: false } },
+        },
+      },
+    });
   });
 });
