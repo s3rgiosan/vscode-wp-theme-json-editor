@@ -285,6 +285,7 @@ export const ConnectedArrayField = memo(function ConnectedArrayField({
       path={fieldPath}
       schema={schema}
       value={Array.isArray(value) ? value : []}
+      isUnset={value === undefined}
     />
   );
 }, (prev, next) =>

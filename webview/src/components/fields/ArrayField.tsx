@@ -35,6 +35,8 @@ interface ArrayFieldProps {
   readonly path: string[];
   readonly schema: Record<string, unknown>;
   readonly value: unknown[];
+  /** True when the property doesn't exist in the data (vs explicitly set to []). */
+  readonly isUnset?: boolean;
 }
 
 export function ArrayField({
@@ -43,8 +45,10 @@ export function ArrayField({
   path,
   schema,
   value,
+  isUnset = false,
 }: ArrayFieldProps) {
   const setField = useEditorStore((s) => s.setField);
+  const removeField = useEditorStore((s) => s.removeField);
   const removeItem = useEditorStore((s) => s.removeItem);
   const [expandedIndices, setExpandedIndices] = useState<Set<number>>(
     new Set(),
@@ -120,6 +124,8 @@ export function ArrayField({
   );
 
   const showUnitsSelector = isSimpleArray && isUnitsArray(path);
+  const showDisableDefaults = canDisableDefaults(path);
+  const defaultsDisabled = showDisableDefaults && !isUnset && value.length === 0;
 
   return (
     <div>
@@ -135,9 +141,30 @@ export function ArrayField({
         )}
       </div>
       {description && <Description text={description} className="mb-2" />}
+      {!showUnitsSelector && value.length === 0 && showDisableDefaults && (
+        <label className="flex items-center gap-1.5 text-[11px] cursor-pointer select-none mb-1">
+          <input
+            type="checkbox"
+            checked={!isUnset}
+            onChange={(e) => {
+              if (e.target.checked) {
+                setField(path, []);
+              } else {
+                removeField(path);
+              }
+            }}
+            className="accent-vscode-checkbox-bg"
+          />
+          Disable defaults
+        </label>
+      )}
       {!showUnitsSelector && value.length === 0 && (
         <p className="text-[11px] text-vscode-description-fg italic">
-          No items. Click &quot;+ Add&quot; to create one.
+          {defaultsDisabled
+            ? "Defaults are disabled. Click \"+ Add\" to create one."
+            : showDisableDefaults
+              ? "Disable defaults or click \"+ Add\" to create one."
+              : "No items. Click \"+ Add\" to create one."}
         </p>
       )}
 
@@ -444,6 +471,16 @@ function SortableArrayItem({
       )}
     </div>
   );
+}
+
+// --- Disable defaults support ---
+
+const DISABLE_DEFAULTS_FIELDS = new Set(["duotone", "gradients", "palette"]);
+
+/** Only show "Disable defaults" for settings.color.{duotone,gradients,palette}. */
+function canDisableDefaults(path: string[]): boolean {
+  const key = path[path.length - 1];
+  return typeof key === "string" && DISABLE_DEFAULTS_FIELDS.has(key);
 }
 
 // --- CSS variable preview ---
