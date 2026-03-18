@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { minifyCss, prettifyCss } from "../utils/css";
-import { getNestedValue, setNestedValue } from "../utils/nested";
+import { getNestedValue, setNestedValue, removeNestedValue } from "../utils/nested";
 import { validateThemeJson, type ValidationError } from "../utils/validate";
 
 /**
@@ -38,6 +38,7 @@ export interface EditorActions {
   setInitialData: (data: Record<string, unknown>, filePath: string) => void;
   setSchema: (schema: Record<string, unknown>, version: string) => void;
   setField: (path: string[], value: unknown) => void;
+  removeField: (path: string[]) => void;
   addItem: (path: string[]) => void;
   removeItem: (path: string[], index: number) => void;
   resetToSaved: () => void;
@@ -85,6 +86,13 @@ export const useEditorStore = create<EditorStore>((set) => ({
   setField: (path, value) =>
     set((state) => {
       const themeJson = setNestedValue(state.themeJson, path, value);
+      scheduleValidation(themeJson, state.schema);
+      return { themeJson, isDirty: true };
+    }),
+
+  removeField: (path) =>
+    set((state) => {
+      const themeJson = removeNestedValue(state.themeJson, path);
       scheduleValidation(themeJson, state.schema);
       return { themeJson, isDirty: true };
     }),

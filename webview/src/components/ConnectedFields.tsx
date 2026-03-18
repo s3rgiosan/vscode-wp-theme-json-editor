@@ -54,12 +54,19 @@ export const ConnectedToggleField = memo(function ConnectedToggleField({
 }: ConnectedFieldProps) {
   const value = useFieldValue(fieldPath);
   const setField = useEditorStore((s) => s.setField);
+  const removeField = useEditorStore((s) => s.removeField);
   return (
     <ToggleField
       label={label}
       description={description}
-      checked={typeof value === "boolean" ? value : false}
-      onChange={(v) => setField(fieldPath, v)}
+      value={typeof value === "boolean" ? value : undefined}
+      onChange={(v) => {
+        if (v === undefined) {
+          removeField(fieldPath);
+        } else {
+          setField(fieldPath, v);
+        }
+      }}
     />
   );
 }, connectedFieldPropsEqual);

@@ -36,6 +36,46 @@ export function setNestedValue(
 }
 
 /**
+ * Immutably remove a value at a nested path in an object.
+ * Only the target key is removed; parent objects are preserved even if empty
+ * (empty objects are meaningful in theme.json, e.g. block overrides).
+ *
+ * @param obj - The source object (not mutated).
+ * @param path - Array of keys representing the nested path.
+ * @returns A new object with the value removed at the given path.
+ */
+export function removeNestedValue(
+  obj: Record<string, unknown>,
+  path: string[],
+): Record<string, unknown> {
+  if (path.length === 0) {
+    return obj;
+  }
+
+  const [head, ...rest] = path;
+  if (!head) {
+    return obj;
+  }
+
+  const result = { ...obj };
+
+  if (rest.length === 0) {
+    delete result[head];
+  } else {
+    const child = result[head];
+    if (typeof child !== "object" || child === null) {
+      return obj;
+    }
+    result[head] = removeNestedValue(
+      child as Record<string, unknown>,
+      rest,
+    );
+  }
+
+  return result;
+}
+
+/**
  * Get a value at a nested path in an object.
  *
  * @param obj - The source object.

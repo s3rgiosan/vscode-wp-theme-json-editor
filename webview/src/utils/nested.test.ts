@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getNestedValue, setNestedValue } from "./nested";
+import { getNestedValue, setNestedValue, removeNestedValue } from "./nested";
 
 describe("getNestedValue", () => {
   it("gets a top-level value", () => {
@@ -51,5 +51,42 @@ describe("setNestedValue", () => {
   it("returns the same object for empty path", () => {
     const obj = { a: 1 };
     expect(setNestedValue(obj, [], "ignored")).toEqual({ a: 1 });
+  });
+});
+
+describe("removeNestedValue", () => {
+  it("removes a top-level key", () => {
+    expect(removeNestedValue({ a: 1, b: 2 }, ["a"])).toEqual({ b: 2 });
+  });
+
+  it("removes a deeply nested key", () => {
+    const obj = { a: { b: { c: 1, d: 2 } } };
+    expect(removeNestedValue(obj, ["a", "b", "c"])).toEqual({
+      a: { b: { d: 2 } },
+    });
+  });
+
+  it("preserves empty parent objects", () => {
+    const obj = { a: { b: { c: 1 } }, x: 1 };
+    expect(removeNestedValue(obj, ["a", "b", "c"])).toEqual({
+      a: { b: {} },
+      x: 1,
+    });
+  });
+
+  it("does not mutate the original object", () => {
+    const obj = { a: { b: 1 } };
+    removeNestedValue(obj, ["a", "b"]);
+    expect(obj).toEqual({ a: { b: 1 } });
+  });
+
+  it("returns the same object for empty path", () => {
+    const obj = { a: 1 };
+    expect(removeNestedValue(obj, [])).toEqual({ a: 1 });
+  });
+
+  it("returns the same object when path does not exist", () => {
+    const obj = { a: 1 };
+    expect(removeNestedValue(obj, ["b", "c"])).toEqual({ a: 1 });
   });
 });
