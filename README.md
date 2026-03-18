@@ -103,7 +103,7 @@ npx ts-node scripts/scan-core.ts
 ## CI/CD
 
 - **CI** — Runs on every push and pull request. Type-checks both projects, runs all tests, and builds.
-- **Release** — Triggered by pushing a `v*` tag. Runs CI checks, packages the extension, publishes to the VS Code Marketplace, and creates a GitHub Release with the `.vsix` attached.
+- **Release** — Triggered by pushing a version tag. Runs CI checks, packages the extension, publishes to the VS Code Marketplace and Open VSX Registry, and creates a GitHub Release with the `.vsix` attached.
 - **Definitions refresh** — Runs weekly (Monday 06:00 UTC) and on manual dispatch. Re-scans WP core source via the GitHub API and opens a PR if the snapshot changes.
 
 ### Releasing
@@ -113,11 +113,15 @@ npx ts-node scripts/scan-core.ts
 # 2. Commit
 git commit -am "chore: bump version to X.Y.Z"
 # 3. Tag
-git tag vX.Y.Z
+git tag X.Y.Z
 # 4. Push
 git push && git push --tags
 # The release workflow handles packaging and publishing.
 ```
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for a list of changes in each release.
 
 ## License
 
