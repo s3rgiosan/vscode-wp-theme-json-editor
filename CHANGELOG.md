@@ -43,6 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extension settings: `defaultLayout`, `showExperimentalByDefault`, `schemaVersion`.
 - CI/CD: GitHub Actions for CI, release, and weekly core-scan refresh.
 
-[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/v1.1.0...HEAD
-[1.1.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/releases/tag/v1.0.0
+[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.0.0...1.1.0
+[1.0.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/releases/tag/1.0.0
