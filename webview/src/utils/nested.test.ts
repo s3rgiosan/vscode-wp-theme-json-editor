@@ -104,7 +104,7 @@ describe("pruneEmptyObjects", () => {
     expect(pruneEmptyObjects({ a: { b: {} } })).toBeUndefined();
   });
 
-  it("preserves arrays", () => {
+  it("preserves empty arrays", () => {
     expect(pruneEmptyObjects({ a: [], b: [1, 2] })).toEqual({
       a: [],
       b: [1, 2],

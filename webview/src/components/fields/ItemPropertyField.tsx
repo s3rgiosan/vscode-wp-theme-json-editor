@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { formatLabel } from "../../utils/formatLabel";
 import { TextInputWithAutocomplete } from "../Autocomplete";
 import {
@@ -13,6 +14,9 @@ export interface ItemPropertySchema {
   readonly enum?: readonly string[];
   readonly default?: unknown;
   readonly items?: Record<string, unknown>;
+  readonly oneOf?: readonly Record<string, unknown>[];
+  readonly anyOf?: readonly Record<string, unknown>[];
+  readonly properties?: Record<string, ItemPropertySchema>;
 }
 
 interface ItemPropertyFieldProps {
@@ -102,6 +106,21 @@ export function ItemPropertyField({
           <p className={ERROR_CLASS}>{error}</p>
         )}
       </div>
+    );
+  }
+
+  // Boolean + object oneOf (e.g. fontSizes[].fluid)
+  const boolObjSchema = getBooleanObjectBranch(propSchema);
+  if (boolObjSchema) {
+    return (
+      <ItemBooleanObjectField
+        propKey={propKey}
+        propValue={propValue}
+        objectSchema={boolObjSchema}
+        updateField={updateField}
+        required={required}
+        error={error}
+      />
     );
   }
 
@@ -230,6 +249,134 @@ export function ItemPropertyField({
       {error && (
         <p className={ERROR_CLASS}>{error}</p>
       )}
+    </div>
+  );
+}
+
+/** Extract the object branch from a oneOf/anyOf that combines boolean + object. */
+function getBooleanObjectBranch(
+  schema: ItemPropertySchema,
+): ItemPropertySchema | undefined {
+  for (const combiner of ["oneOf", "anyOf"] as const) {
+    const options = schema[combiner];
+    if (!Array.isArray(options)) continue;
+
+    let hasBoolean = false;
+    let objectBranch: ItemPropertySchema | undefined;
+
+    for (const opt of options) {
+      if (typeof opt !== "object" || opt === null) continue;
+      const s = opt as ItemPropertySchema;
+      if (s.type === "boolean") hasBoolean = true;
+      if (s.type === "object" && s.properties) objectBranch = s;
+    }
+
+    if (hasBoolean && objectBranch) return objectBranch;
+  }
+  return undefined;
+}
+
+const RADIO_CLASS =
+  "appearance-none w-3.5 h-3.5 rounded-full border-[1.5px] border-vscode-fg/50 checked:bg-vscode-checkbox-bg checked:border-[4px] checked:border-vscode-checkbox-fg cursor-pointer";
+
+/** Inline boolean+object field for array items (e.g. fontSizes[].fluid). */
+function ItemBooleanObjectField({
+  propKey,
+  propValue,
+  objectSchema,
+  updateField,
+  required,
+  error,
+}: {
+  propKey: string;
+  propValue: unknown;
+  objectSchema: ItemPropertySchema;
+  updateField: (value: unknown) => void;
+  required?: boolean;
+  error?: string;
+}) {
+  const id = useId();
+  const propLabel = formatLabel(propKey);
+  const requiredMark = required ? <span className="text-vscode-error-fg ml-0.5">*</span> : null;
+
+  const mode =
+    propValue === undefined ? "unset" :
+    propValue === true ? "true" :
+    propValue === false ? "false" :
+    typeof propValue === "object" && propValue !== null ? "object" :
+    "unset";
+
+  const objValue =
+    typeof propValue === "object" && propValue !== null
+      ? (propValue as Record<string, unknown>)
+      : {};
+
+  const objectProperties = objectSchema.properties ?? {};
+
+  return (
+    <div>
+      <label className={SUB_LABEL_CLASS}>
+        {propLabel}{requiredMark}
+      </label>
+      <div className="flex items-center gap-3 mt-0.5" role="radiogroup">
+        <label className="flex items-center gap-1.5 text-[11px] cursor-pointer select-none">
+          <input
+            type="radio"
+            name={id}
+            checked={mode === "true" || mode === "object"}
+            onChange={() => updateField({})}
+            className={RADIO_CLASS}
+          />
+          True
+        </label>
+        <label className="flex items-center gap-1.5 text-[11px] cursor-pointer select-none">
+          <input
+            type="radio"
+            name={id}
+            checked={mode === "false"}
+            onChange={() => updateField(false)}
+            className={RADIO_CLASS}
+          />
+          False
+        </label>
+        <label className="flex items-center gap-1.5 text-[11px] cursor-pointer select-none">
+          <input
+            type="radio"
+            name={id}
+            checked={mode === "unset"}
+            onChange={() => updateField(undefined)}
+            className={RADIO_CLASS}
+          />
+          Unset
+        </label>
+      </div>
+      {(mode === "true" || mode === "object") && (
+        <div className="mt-2 pl-3 border-l border-vscode-panel-border space-y-2">
+          {Object.entries(objectProperties).map(([key, propSch]) => {
+            const subValue = objValue[key];
+            return (
+              <div key={key}>
+                <label className={SUB_LABEL_CLASS}>{formatLabel(key)}</label>
+                <TextInputWithAutocomplete
+                  value={typeof subValue === "string" ? subValue : ""}
+                  onChange={(val) => {
+                    const updated = { ...objValue, [key]: val };
+                    // Remove empty string properties to keep the object clean
+                    const cleaned: Record<string, unknown> = {};
+                    for (const [k, v] of Object.entries(updated)) {
+                      if (v !== "") cleaned[k] = v;
+                    }
+                    updateField(Object.keys(cleaned).length > 0 ? cleaned : {});
+                  }}
+                  placeholder={typeof propSch.description === "string" ? propSch.description : ""}
+                  className={`w-full ${inputClass(false)}`}
+                />
+              </div>
+            );
+          })}
+        </div>
+      )}
+      {error && <p className={ERROR_CLASS}>{error}</p>}
     </div>
   );
 }

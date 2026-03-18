@@ -77,7 +77,8 @@ export function removeNestedValue(
 
 /**
  * Recursively remove empty plain objects from a tree.
- * Arrays and non-object values are left untouched.
+ * Arrays are always preserved (even empty ones are meaningful in
+ * theme.json, e.g. `palette: []` explicitly disables default palettes).
  * If pruning a child makes its parent empty, the parent is pruned too.
  *
  * @param obj - The source object (not mutated).

@@ -5,6 +5,7 @@ import { ExperimentalBadge } from "./ExperimentalBadge";
 import { BlockMapField } from "./fields/BlockMapField";
 import {
   ConnectedToggleField,
+  ConnectedToggleObjectField,
   ConnectedSelectField,
   ConnectedColorField,
   ConnectedCssField,
@@ -59,6 +60,30 @@ export function inferType(node: SchemaNode): string | undefined {
   }
   if (node["additionalProperties"] && !node.properties) {
     return "object";
+  }
+  return undefined;
+}
+
+/**
+ * If the node is a oneOf/anyOf combining boolean + object, return the object
+ * schema branch. Otherwise return undefined.
+ */
+export function getBooleanObjectSchema(node: SchemaNode): SchemaNode | undefined {
+  for (const combiner of ["oneOf", "anyOf"] as const) {
+    const options = node[combiner];
+    if (!Array.isArray(options)) continue;
+
+    let hasBoolean = false;
+    let objectBranch: SchemaNode | undefined;
+
+    for (const opt of options) {
+      if (typeof opt !== "object" || opt === null) continue;
+      const s = opt as SchemaNode;
+      if (s.type === "boolean") hasBoolean = true;
+      if (s.type === "object" && s.properties) objectBranch = s;
+    }
+
+    if (hasBoolean && objectBranch) return objectBranch;
   }
   return undefined;
 }
@@ -191,7 +216,20 @@ export function renderField({
     );
   }
 
-  // Priority 3: boolean
+  // Priority 3a: boolean + object oneOf (e.g. typography.fluid)
+  const boolObjectSchema = getBooleanObjectSchema(node);
+  if (boolObjectSchema) {
+    return (
+      <ConnectedToggleObjectField
+        fieldPath={fieldPath}
+        label={label}
+        description={description}
+        objectSchema={boolObjectSchema}
+      />
+    );
+  }
+
+  // Priority 3b: boolean
   if (effectiveType === "boolean") {
     return (
       <ConnectedToggleField

@@ -114,10 +114,16 @@ export const useEditorStore = create<EditorStore>((set) => ({
         return state;
       }
       const arr = current.filter((_, i) => i !== index);
-      return {
-        themeJson: setNestedValue(state.themeJson, path, arr),
-        isDirty: true,
-      };
+      // If the array is now empty and didn't exist in the saved data,
+      // remove the key entirely. If it existed in the saved data as an
+      // array (even empty), keep it — empty arrays are intentional in
+      // theme.json (e.g. palette: [] disables default palettes).
+      const savedValue = getNestedValue(state.savedThemeJson, path);
+      const themeJson =
+        arr.length === 0 && !Array.isArray(savedValue)
+          ? removeNestedValue(state.themeJson, path)
+          : setNestedValue(state.themeJson, path, arr);
+      return { themeJson, isDirty: true };
     }),
 
   resetToSaved: () =>
@@ -127,10 +133,14 @@ export const useEditorStore = create<EditorStore>((set) => ({
     })),
 
   markSaved: () =>
-    set((state) => ({
-      savedThemeJson: structuredClone(state.themeJson),
-      isDirty: false,
-    })),
+    set((state) => {
+      const pruned = pruneEmptyObjects(state.themeJson) ?? {};
+      return {
+        themeJson: pruned,
+        savedThemeJson: structuredClone(pruned),
+        isDirty: false,
+      };
+    }),
 
   setShowExperimental: (show) => set({ showExperimental: show }),
 

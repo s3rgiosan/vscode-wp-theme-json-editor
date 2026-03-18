@@ -14,11 +14,13 @@ import { useFieldValue } from "../hooks/useFieldValue";
 import { TextField } from "./fields/TextField";
 import { NumberField } from "./fields/NumberField";
 import { ToggleField } from "./fields/ToggleField";
+import { ToggleObjectField } from "./fields/ToggleObjectField";
 import { SelectField } from "./fields/SelectField";
 import { ColorField } from "./fields/ColorField";
 import { CssField } from "./fields/CssField";
 import { ArrayField } from "./fields/ArrayField";
 import { CustomVariablesField } from "./fields/CustomVariablesField";
+import type { SchemaNode } from "./fieldRenderer";
 
 /** Compare two string arrays by value. */
 function pathsEqual(a: string[], b: string[]): boolean {
@@ -70,6 +72,71 @@ export const ConnectedToggleField = memo(function ConnectedToggleField({
     />
   );
 }, connectedFieldPropsEqual);
+
+interface ConnectedToggleObjectFieldProps extends ConnectedFieldProps {
+  readonly objectSchema: SchemaNode;
+}
+
+export const ConnectedToggleObjectField = memo(function ConnectedToggleObjectField({
+  fieldPath,
+  label,
+  description,
+  objectSchema,
+}: ConnectedToggleObjectFieldProps) {
+  const value = useFieldValue(fieldPath);
+  const setField = useEditorStore((s) => s.setField);
+  const removeField = useEditorStore((s) => s.removeField);
+
+  const mode =
+    value === undefined ? "unset" as const :
+    value === true ? "true" as const :
+    value === false ? "false" as const :
+    typeof value === "object" && value !== null ? "object" as const :
+    "unset" as const;
+
+  const objectProperties = objectSchema.properties ?? {};
+
+  return (
+    <ToggleObjectField
+      label={label}
+      description={description}
+      mode={mode}
+      onModeChange={(newMode) => {
+        if (newMode === "unset") {
+          removeField(fieldPath);
+        } else if (newMode === "false") {
+          setField(fieldPath, false);
+        } else if (newMode === "true") {
+          // Set to empty object so users can fill in properties
+          setField(fieldPath, {});
+        }
+      }}
+    >
+      {Object.entries(objectProperties).map(([key, propSchema]) => {
+        const prop = propSchema as SchemaNode;
+        const propPath = [...fieldPath, key];
+        const propDescription = typeof prop.description === "string" ? prop.description : undefined;
+        return (
+          <ConnectedTextField
+            key={key}
+            fieldPath={propPath}
+            label={<span className="text-xs font-medium">{formatPropertyLabel(key)}</span>}
+            description={propDescription}
+          />
+        );
+      })}
+    </ToggleObjectField>
+  );
+}, (prev, next) =>
+  connectedFieldPropsEqual(prev, next) && prev.objectSchema === next.objectSchema,
+);
+
+/** Convert camelCase property name to a readable label. */
+function formatPropertyLabel(key: string): string {
+  return key
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/^./, (c) => c.toUpperCase());
+}
 
 interface ConnectedSelectFieldProps extends ConnectedFieldProps {
   readonly options: readonly string[];
