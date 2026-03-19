@@ -27,11 +27,17 @@ jobs:
       - name: Install webview dependencies
         run: cd webview && npm ci
 
-      - name: Type-check root
-        run: npm run lint
+      - name: Lint extension
+        run: npx eslint src/
+
+      - name: Lint webview
+        run: cd webview && npx eslint src/
+
+      - name: Type-check extension
+        run: npx tsc --noEmit
 
       - name: Type-check webview
-        run: cd webview && npm run lint
+        run: cd webview && npx tsc
 
       - name: Test root
         run: npm test
