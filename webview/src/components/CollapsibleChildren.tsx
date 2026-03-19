@@ -25,6 +25,17 @@ export const CollapsibleChildren = memo(function CollapsibleChildren({
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   const properties = schemaNode.properties;
+
+  const visibleEntries = useMemo(() => {
+    if (!properties) return [];
+    return Object.entries(properties).filter(([, propSchema]) => {
+      const node = propSchema as SchemaNode;
+      const isExp = node["x-wpthemejsoneditor-experimental"] === true;
+      const isUndoc = node["x-wpthemejsoneditor-undocumented"] === true;
+      return !((isExp || isUndoc) && !showExperimental);
+    });
+  }, [properties, showExperimental]);
+
   if (!properties) {
     return null;
   }
@@ -40,15 +51,6 @@ export const CollapsibleChildren = memo(function CollapsibleChildren({
       return next;
     });
   };
-
-  const visibleEntries = useMemo(() => {
-    return Object.entries(properties).filter(([, propSchema]) => {
-      const node = propSchema as SchemaNode;
-      const isExp = node["x-wpthemejsoneditor-experimental"] === true;
-      const isUndoc = node["x-wpthemejsoneditor-undocumented"] === true;
-      return !((isExp || isUndoc) && !showExperimental);
-    });
-  }, [properties, showExperimental]);
 
   return (
     <div className="space-y-1.5 mt-2">

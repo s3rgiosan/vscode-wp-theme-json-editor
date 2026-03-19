@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect } from "react";
 import { useEditorStore } from "../store/editorStore";
 import { getNestedValue } from "../utils/nested";
 
@@ -11,7 +11,9 @@ import { getNestedValue } from "../utils/nested";
  */
 export function useFieldValue(path: string[]): unknown {
   const pathRef = useRef(path);
-  pathRef.current = path;
+  useEffect(() => {
+    pathRef.current = path;
+  });
 
   const selector = useCallback(
     (state: { themeJson: Record<string, unknown> }) =>
@@ -29,7 +31,9 @@ export function useFieldValue(path: string[]): unknown {
  */
 export function useFieldExists(path: string[]): boolean {
   const pathRef = useRef(path);
-  pathRef.current = path;
+  useEffect(() => {
+    pathRef.current = path;
+  });
 
   const selector = useCallback(
     (state: { themeJson: Record<string, unknown> }) => {
@@ -48,7 +52,9 @@ export function useFieldExists(path: string[]): boolean {
  */
 export function useHasNestedData(path: string[]): boolean {
   const pathRef = useRef(path);
-  pathRef.current = path;
+  useEffect(() => {
+    pathRef.current = path;
+  });
 
   const selector = useCallback(
     (state: { themeJson: Record<string, unknown> }) =>

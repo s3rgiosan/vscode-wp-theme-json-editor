@@ -115,17 +115,21 @@
     "build:ext": "tsc -p ./",
     "build:webview": "cd webview && npm run build",
     "build": "npm run build:ext && npm run build:webview",
-    "lint": "tsc --noEmit",
+    "lint": "eslint src/ && tsc --noEmit",
+    "lint:fix": "eslint src/ --fix",
     "test": "vitest run",
     "test:watch": "vitest",
     "postinstall": "cd webview && npm install",
     "package": "npx @vscode/vsce package"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.4",
     "@types/node": "^20.11.0",
     "@types/vscode": "^1.85.0",
     "concurrently": "^8.2.2",
+    "eslint": "^9.39.4",
     "typescript": "^5.3.3",
+    "typescript-eslint": "^8.57.1",
     "vitest": "^4.1.0"
   }
 }

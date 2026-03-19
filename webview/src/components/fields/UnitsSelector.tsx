@@ -66,6 +66,7 @@ export function UnitsSelector({ value, path, setField }: UnitsSelectorProps) {
 }
 
 /** Check if the array path represents a units property. */
+// eslint-disable-next-line react-refresh/only-export-components
 export function isUnitsArray(path: string[]): boolean {
   return path[path.length - 1] === "units";
 }

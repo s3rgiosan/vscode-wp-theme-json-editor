@@ -23,6 +23,7 @@ export function CssVariablesProvider({ children }: { readonly children: ReactNod
  * Returns the list of CSS variables from the nearest CssVariablesProvider.
  * Must be used within a CssVariablesProvider.
  */
+// eslint-disable-next-line react-refresh/only-export-components
 export function useCssVariables(): CssVariable[] {
   return useContext(CssVariablesContext);
 }

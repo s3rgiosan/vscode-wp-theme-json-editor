@@ -76,15 +76,17 @@ export function Autocomplete({
   onDismiss,
 }: AutocompleteProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [prevFilteredLength, setPrevFilteredLength] = useState(0);
   const listRef = useRef<HTMLUListElement>(null);
 
   const trigger = getTrigger(inputValue, cursorPos);
   const filtered = trigger ? filterVariables(variables, trigger.fragment) : [];
 
-  // Reset selection when filtered list changes
-  useEffect(() => {
+  // Reset selection when filtered list changes (adjust state during render)
+  if (prevFilteredLength !== filtered.length) {
+    setPrevFilteredLength(filtered.length);
     setSelectedIndex(0);
-  }, [filtered.length]);
+  }
 
   // Scroll selected item into view
   useEffect(() => {
@@ -152,6 +154,7 @@ export function Autocomplete({
  * Keyboard handler for the autocomplete dropdown.
  * Returns true if the key was handled (should preventDefault).
  */
+// eslint-disable-next-line react-refresh/only-export-components
 export function handleAutocompleteKeyDown(
   e: React.KeyboardEvent<HTMLInputElement>,
   variables: CssVariable[],

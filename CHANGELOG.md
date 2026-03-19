@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- ESLint with flat config for both extension and webview (includes `typescript-eslint`, `eslint-plugin-react-hooks`, and `eslint-plugin-react-refresh`).
+- `lint:fix` script for auto-fixing ESLint issues in both packages.
 ## [1.1.0] - 2026-03-18
 
 ### Added
