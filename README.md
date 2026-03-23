@@ -97,14 +97,14 @@ npm run build               # Compiles host (tsc) then webview (vite build)
 npm run package             # or: npx vsce package
 
 # Regenerate core-scan snapshot (maintainers only)
-npx ts-node scripts/scan-core.ts
+npx tsx scripts/scan-core.ts
 ```
 
 ## CI/CD
 
 - **CI** — Runs on every push and pull request. Type-checks both projects, runs all tests, and builds.
 - **Release** — Triggered by pushing a version tag. Runs CI checks, packages the extension, publishes to the VS Code Marketplace and Open VSX Registry, and creates a GitHub Release with the `.vsix` attached.
-- **Definitions refresh** — Runs weekly (Monday 06:00 UTC) and on manual dispatch. Re-scans WP core source via the GitHub API and opens a PR if the snapshot changes.
+- **Definitions refresh** — Runs weekly (Monday 06:00 UTC) and on manual dispatch. Scans both WordPress core and the [Gutenberg plugin](https://github.com/WordPress/gutenberg) via the GitHub API for experimental and undocumented theme.json properties, and opens a PR if the snapshot changes.
 
 ### Releasing
 

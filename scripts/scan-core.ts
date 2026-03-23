@@ -5,19 +5,47 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { scanCore } from "../src/scanner/CoreScanner.js";
+import { extractSchemaPropertyPaths } from "../src/scanner/schemaProperties.js";
+import { SchemaResolver } from "../src/schema/SchemaResolver.js";
 
 const WP_VERSION = "6.7";
+const SCHEMA_URL = `https://schemas.wp.org/wp/${WP_VERSION}/theme.json`;
+const FALLBACK_PATH = path.resolve(
+  __dirname,
+  "../src/schema/theme.json.fallback",
+);
 const OUTPUT_PATH = path.resolve(
   __dirname,
   "../src/schema/core-scan-snapshot.json",
 );
 
-async function main(): Promise<void> {
-  console.log(`Scanning WP core (version ${WP_VERSION}) for theme.json properties...`);
+async function loadSchema(): Promise<Record<string, unknown>> {
+  try {
+    console.log(`Fetching schema from ${SCHEMA_URL}...`);
+    const response = await fetch(SCHEMA_URL);
+    if (response.ok) {
+      return (await response.json()) as Record<string, unknown>;
+    }
+    console.warn(`Schema fetch returned ${response.status}, using fallback`);
+  } catch (err) {
+    console.warn("Schema fetch failed, using fallback:", err);
+  }
 
-  // In a full implementation, we'd load the official schema and extract
-  // all known property paths. For now, use an empty set.
-  const knownProperties = new Set<string>();
+  const raw = fs.readFileSync(FALLBACK_PATH, "utf-8");
+  return JSON.parse(raw) as Record<string, unknown>;
+}
+
+async function main(): Promise<void> {
+  console.log(
+    `Scanning WP core and Gutenberg (version ${WP_VERSION}) for theme.json properties...`,
+  );
+
+  // Load and resolve the official schema to get known property paths
+  const rawSchema = await loadSchema();
+  const resolver = new SchemaResolver(rawSchema);
+  const resolvedSchema = resolver.resolve(rawSchema);
+  const knownProperties = extractSchemaPropertyPaths(resolvedSchema);
+  console.log(`Loaded ${knownProperties.size} known properties from schema`);
 
   const result = await scanCore(knownProperties, WP_VERSION);
 
