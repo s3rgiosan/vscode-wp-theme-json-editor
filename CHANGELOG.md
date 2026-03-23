@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `lint:fix` script for auto-fixing ESLint issues in both packages.
 - Separate lint and type-check steps in the CI pipeline for clearer failure reporting.
 
+### Fixed
+
+- Core scanner script failing in CI due to `ts-node` not resolving `.js` imports under `Node16` module resolution (replaced with `tsx`).
+
 ## [1.1.0] - 2026-03-18
 
 ### Added

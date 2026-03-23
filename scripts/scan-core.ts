@@ -1,6 +1,6 @@
 /**
  * CLI script to regenerate the core-scan snapshot.
- * Run with: npx ts-node scripts/scan-core.ts
+ * Run with: npx tsx scripts/scan-core.ts
  */
 import * as fs from "node:fs";
 import * as path from "node:path";

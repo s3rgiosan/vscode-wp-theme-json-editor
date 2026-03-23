@@ -28,7 +28,7 @@ jobs:
         run: npm ci
 
       - name: Run core scanner
-        run: npx ts-node scripts/scan-core.ts
+        run: npx tsx scripts/scan-core.ts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
