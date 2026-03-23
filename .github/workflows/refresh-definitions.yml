@@ -53,6 +53,7 @@ jobs:
 
             This PR was created by the **Refresh Definitions** workflow.
             Please review the changes to experimental and undocumented properties before merging.
+          assignees: s3rgiosan
           labels: |
             automated
             definitions
