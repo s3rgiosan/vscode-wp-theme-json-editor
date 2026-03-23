@@ -1,6 +1,16 @@
 {
-  "generatedAt": "2025-01-01T00:00:00.000Z",
+  "generatedAt": "2026-03-23T09:05:10.007Z",
   "wpVersion": "6.7",
   "experimental": [],
-  "undocumented": []
+  "undocumented": [
+    "styles.variations",
+    "settings",
+    "settings.blocks",
+    "styles",
+    "styles.elements",
+    "styles.blocks",
+    "block",
+    "flex",
+    "grid"
+  ]
 }
