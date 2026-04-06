@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-30T07:52:44.542Z",
+  "generatedAt": "2026-04-06T07:54:14.865Z",
   "wpVersion": "6.7",
   "experimental": [
     "__experimentalBorder",
@@ -13,6 +13,7 @@
     "settings.allowEditing",
     "settings.aspectRatio",
     "settings.aspectRatios",
+    "settings.background.gradient",
     "settings.backgroundImage",
     "settings.backgroundSize",
     "settings.blockGap",
@@ -44,6 +45,7 @@
     "settings.fontSizes",
     "settings.fontStyle",
     "settings.fontWeight",
+    "settings.gradient",
     "settings.gradients",
     "settings.heading",
     "settings.height",
@@ -74,6 +76,7 @@
     "settings.width",
     "settings.writingMode",
     "styles.aspectRatio",
+    "styles.background.gradient",
     "styles.backgroundAttachment",
     "styles.backgroundImage",
     "styles.backgroundPosition",
