@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-04-13
+
 ### Added
 
 - ESLint with flat config for both extension and webview (includes `typescript-eslint`, `eslint-plugin-react-hooks`, and `eslint-plugin-react-refresh`).
@@ -18,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Core scanner now parses `VALID_SETTINGS` and `VALID_STYLES` class constants from PHP source instead of fragile regex matching on variable access patterns.
 - Core scanner now scans both WordPress core and Gutenberg plugin repositories for comprehensive coverage.
 - Core scanner loads the official theme.json schema to properly distinguish documented vs undocumented properties.
+- Refreshed core-scan snapshot: adds `settings.gradient`, `settings.background.gradient`, `styles.background.gradient` to known paths.
 
 ### Fixed
 
