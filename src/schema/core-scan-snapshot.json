@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-13T08:13:28.747Z",
+  "generatedAt": "2026-04-20T08:20:17.268Z",
   "wpVersion": "6.7",
   "experimental": [
     "__experimentalBorder",
@@ -35,6 +35,7 @@
     "settings.dimensionSizes",
     "settings.dimensions.dimensionSizes",
     "settings.dimensions.height",
+    "settings.dimensions.minWidth",
     "settings.dimensions.width",
     "settings.dropCap",
     "settings.duotone",
@@ -54,6 +55,7 @@
     "settings.link",
     "settings.margin",
     "settings.minHeight",
+    "settings.minWidth",
     "settings.padding",
     "settings.palette",
     "settings.position.fixed",
@@ -85,6 +87,7 @@
     "styles.blockGap",
     "styles.bottom",
     "styles.dimensions.height",
+    "styles.dimensions.minWidth",
     "styles.dimensions.width",
     "styles.duotone",
     "styles.fontFamily",
@@ -98,6 +101,7 @@
     "styles.lineHeight",
     "styles.margin",
     "styles.minHeight",
+    "styles.minWidth",
     "styles.offset",
     "styles.padding",
     "styles.radius",
