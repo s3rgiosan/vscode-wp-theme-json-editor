@@ -32,18 +32,18 @@ export function Breadcrumbs({ path }: BreadcrumbsProps) {
         return (
           <span key={targetPath} className="flex items-center gap-1">
             {index > 0 && (
-              <span className="text-vscode-breadcrumb-fg" aria-hidden="true">
+              <span className="text-tje-breadcrumb-fg" aria-hidden="true">
                 {"\u203A"}
               </span>
             )}
             {isLast ? (
-              <span className="font-semibold text-vscode-breadcrumb-active-fg">
+              <span className="font-semibold text-tje-breadcrumb-active-fg">
                 {formatLabel(part)}
               </span>
             ) : (
               <button
                 onClick={() => setActiveSection(targetPath)}
-                className="text-vscode-breadcrumb-fg hover:text-vscode-link-fg hover:underline"
+                className="text-tje-breadcrumb-fg hover:text-tje-link-fg hover:underline"
               >
                 {formatLabel(part)}
               </button>

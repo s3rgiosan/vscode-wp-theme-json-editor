@@ -63,7 +63,7 @@ export const CollapsibleChildren = memo(function CollapsibleChildren({
         const isExpanded = expanded.has(key);
 
         return (
-          <div key={key} className="border border-vscode-panel-border rounded">
+          <div key={key} className="border border-tje-panel-border rounded">
             <div className={ACCORDION_HEADER_CLASS}>
               <button
                 onClick={() => toggle(key)}
@@ -73,7 +73,7 @@ export const CollapsibleChildren = memo(function CollapsibleChildren({
                 {isExperimental && <ExperimentalBadge />}
                 {isUndocumented && <ExperimentalBadge isUndocumented />}
                 {hasData && (
-                  <span className="text-tertiary text-vscode-description-fg font-normal">configured</span>
+                  <span className="text-tertiary text-tje-description-fg font-normal">configured</span>
                 )}
               </button>
               <button

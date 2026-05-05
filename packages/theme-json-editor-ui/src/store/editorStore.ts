@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { minifyCss, prettifyCss } from "../utils/css";
 import { getNestedValue, setNestedValue, removeNestedValue, pruneEmptyObjects } from "../utils/nested";
 import { validateThemeJson, type ValidationError } from "../utils/validate";
+import type { HostAdapter } from "../host/HostAdapter";
 
 /**
  * State shape for the theme.json editor.
@@ -177,17 +178,14 @@ export function getDataForSave(): Record<string, unknown> {
 }
 
 /**
- * Performs the save action: gathers data and posts SAVE_REQUEST to the host.
- * Shared by SaveBar (button click) and useMessageListener (Cmd+S keybinding).
- * No-ops if there are no unsaved changes.
+ * Performs the save action: gathers data and asks the host to persist it.
+ * Shared by SaveBar (button click) and the host-bootstrap hook (Cmd+S
+ * keybinding, etc.). No-ops if there are no unsaved changes.
  */
-export function performSave(
-  postMessage: (msg: { type: "SAVE_REQUEST"; data: Record<string, unknown> }) => void,
-): void {
+export function performSave(host: HostAdapter): void {
   const { isDirty } = useEditorStore.getState();
   if (!isDirty) return;
-  const data = getDataForSave();
-  postMessage({ type: "SAVE_REQUEST", data });
+  host.save(getDataForSave());
 }
 
 /**

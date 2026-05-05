@@ -47,7 +47,7 @@ export function ItemPropertyField({
   const propValue = itemObj[propKey];
   const propType = propSchema.type ?? "string";
   const propLabel = formatLabel(propKey);
-  const requiredMark = required ? <span className="text-vscode-error-fg ml-0.5">*</span> : null;
+  const requiredMark = required ? <span className="text-tje-error-fg ml-0.5">*</span> : null;
 
   const updateField = (newValue: unknown) => {
     let newItem: Record<string, unknown>;
@@ -100,7 +100,7 @@ export function ItemPropertyField({
         <select
           value={typeof propValue === "string" ? propValue : ""}
           onChange={(e) => updateField(e.target.value)}
-          className="w-full px-2 py-1 rounded border border-vscode-input-border bg-vscode-input-bg text-vscode-input-fg focus:outline-none focus:border-vscode-focus-border"
+          className="w-full px-2 py-1 rounded border border-tje-input-border bg-tje-input-bg text-tje-input-fg focus:outline-none focus:border-tje-focus-border"
         >
           <option value="">-- Select --</option>
           {propSchema.enum.map((opt) => (
@@ -139,9 +139,9 @@ export function ItemPropertyField({
           type="checkbox"
           checked={typeof propValue === "boolean" ? propValue : false}
           onChange={(e) => updateField(e.target.checked)}
-          className="accent-vscode-checkbox-bg"
+          className="accent-tje-checkbox-bg"
         />
-        <label className="text-secondary text-vscode-description-fg">
+        <label className="text-secondary text-tje-description-fg">
           {propLabel}{requiredMark}
         </label>
       </div>
@@ -158,12 +158,12 @@ export function ItemPropertyField({
       return (
         <div>
           <div className="flex items-center justify-between mb-0.5">
-            <label className="text-secondary text-vscode-description-fg">
+            <label className="text-secondary text-tje-description-fg">
               {propLabel}{requiredMark}
             </label>
             <button
               onClick={() => updateField([...arrValue, isColorArray ? "#000000" : ""])}
-              className="px-1.5 py-0.5 text-tertiary rounded bg-vscode-button-secondary-bg text-vscode-button-secondary-fg hover:opacity-80"
+              className="px-1.5 py-0.5 text-tertiary rounded bg-tje-button-secondary-bg text-tje-button-secondary-fg hover:opacity-80"
             >
               + Add
             </button>
@@ -191,14 +191,14 @@ export function ItemPropertyField({
                     newArr[subIndex] = e.target.value;
                     updateField(newArr);
                   }}
-                  className="flex-1 px-2 py-0.5 rounded border border-vscode-input-border bg-vscode-input-bg text-vscode-input-fg focus:outline-none focus:border-vscode-focus-border"
+                  className="flex-1 px-2 py-0.5 rounded border border-tje-input-border bg-tje-input-bg text-tje-input-fg focus:outline-none focus:border-tje-focus-border"
                 />
                 <button
                   onClick={() => {
                     const newArr = arrValue.filter((_, i) => i !== subIndex);
                     updateField(newArr);
                   }}
-                  className="text-tertiary text-vscode-error-fg hover:opacity-80 px-0.5"
+                  className="text-tertiary text-tje-error-fg hover:opacity-80 px-0.5"
                 >
                   {"\u2715"}
                 </button>
@@ -261,7 +261,7 @@ export function ItemPropertyField({
 }
 
 const RADIO_CLASS =
-  "appearance-none w-3.5 h-3.5 rounded-full border-[1.5px] border-vscode-fg/50 checked:bg-vscode-checkbox-bg checked:border-[4px] checked:border-vscode-checkbox-fg cursor-pointer";
+  "appearance-none w-3.5 h-3.5 rounded-full border-[1.5px] border-tje-fg/50 checked:bg-tje-checkbox-bg checked:border-[4px] checked:border-tje-checkbox-fg cursor-pointer";
 
 /** Inline boolean+object field for array items (e.g. fontSizes[].fluid). */
 function ItemBooleanObjectField({
@@ -281,7 +281,7 @@ function ItemBooleanObjectField({
 }) {
   const id = useId();
   const propLabel = formatLabel(propKey);
-  const requiredMark = required ? <span className="text-vscode-error-fg ml-0.5">*</span> : null;
+  const requiredMark = required ? <span className="text-tje-error-fg ml-0.5">*</span> : null;
 
   const mode =
     propValue === undefined ? "unset" :
@@ -335,7 +335,7 @@ function ItemBooleanObjectField({
         </label>
       </div>
       {(mode === "true" || mode === "object") && (
-        <div className="mt-2 pl-3 border-l border-vscode-panel-border space-y-2">
+        <div className="mt-2 pl-3 border-l border-tje-panel-border space-y-2">
           {Object.entries(objectProperties).map(([key, propSch]) => {
             const subValue = objValue[key];
             return (

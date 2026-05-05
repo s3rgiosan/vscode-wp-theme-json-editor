@@ -51,8 +51,8 @@ export function UnitsSelector({ value, path, setField }: UnitsSelectorProps) {
             onClick={() => toggleUnit(unit)}
             className={`px-2 py-1 text-secondary rounded border transition-colors ${
               isSelected
-                ? "bg-vscode-button-bg text-vscode-button-fg border-vscode-button-bg"
-                : "border-vscode-panel-border text-vscode-description-fg hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg"
+                ? "bg-tje-button-bg text-tje-button-fg border-tje-button-bg"
+                : "border-tje-panel-border text-tje-description-fg hover:bg-tje-list-hover hover:text-tje-list-hover-fg"
             }`}
             title={isSelected ? `Remove ${label}` : `Add ${label}`}
             aria-pressed={isSelected}

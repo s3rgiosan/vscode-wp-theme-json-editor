@@ -1,5 +1,5 @@
 import { useEditorStore } from "./store/editorStore";
-import { useMessageListener } from "./hooks/useMessageListener";
+import { useHostBootstrap } from "./hooks/useHostBootstrap";
 import { CssVariablesProvider } from "./hooks/useCssVariables";
 import { Sidebar } from "./components/Sidebar";
 import { SectionPanel } from "./components/SectionPanel";
@@ -13,7 +13,7 @@ import { ConflictBanner } from "./components/ConflictBanner";
  * and conditionally shows the save bar and conflict banner.
  */
 export function App() {
-  useMessageListener();
+  useHostBootstrap();
 
   const schema = useEditorStore((s) => s.schema);
   const activeSection = useEditorStore((s) => s.activeSection);
@@ -23,7 +23,7 @@ export function App() {
 
   return (
     <CssVariablesProvider>
-      <div className="flex flex-col h-screen font-vscode text-vscode-sm text-vscode-fg bg-vscode-bg">
+      <div className="flex flex-col h-screen font-tje text-tje-base text-tje-fg bg-tje-bg">
         <Toolbar />
         {conflictData && <ConflictBanner conflictData={conflictData} />}
         <div className="flex flex-1 overflow-hidden">
@@ -32,7 +32,7 @@ export function App() {
             {hasSchema ? (
               <SectionPanel section={activeSection} />
             ) : (
-              <div className="flex items-center justify-center h-full text-vscode-description-fg">
+              <div className="flex items-center justify-center h-full text-tje-description-fg">
                 Loading schema...
               </div>
             )}

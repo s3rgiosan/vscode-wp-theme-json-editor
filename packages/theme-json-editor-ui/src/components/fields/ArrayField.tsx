@@ -153,13 +153,13 @@ export function ArrayField({
                 removeField(path);
               }
             }}
-            className="accent-vscode-checkbox-bg"
+            className="accent-tje-checkbox-bg"
           />
           Disable defaults
         </label>
       )}
       {!showUnitsSelector && value.length === 0 && (
-        <p className="text-secondary text-vscode-description-fg italic">
+        <p className="text-secondary text-tje-description-fg italic">
           {defaultsDisabled
             ? "Defaults are disabled. Click \"+ Add\" to create one."
             : showDisableDefaults
@@ -404,14 +404,14 @@ function SortableArrayItem({
     <div
       ref={setNodeRef}
       style={style}
-      className={`border rounded ${hasErrors ? "border-vscode-error-fg" : "border-vscode-panel-border"}`}
+      className={`border rounded ${hasErrors ? "border-tje-error-fg" : "border-tje-panel-border"}`}
     >
       <div className={ACCORDION_HEADER_CLASS}>
         {/* Drag handle */}
         <span
           {...attributes}
           {...listeners}
-          className="cursor-grab text-vscode-description-fg hover:text-vscode-fg shrink-0 inline-flex items-center justify-center w-4 h-4 text-tertiary -translate-y-px"
+          className="cursor-grab text-tje-description-fg hover:text-tje-fg shrink-0 inline-flex items-center justify-center w-4 h-4 text-tertiary -translate-y-px"
           title="Drag to reorder"
         >
           {"\u2630"}
@@ -423,7 +423,7 @@ function SortableArrayItem({
         >
           {itemLabel}
           {hasErrors && (
-            <span className="text-vscode-error-fg" title="Has validation errors">
+            <span className="text-tje-error-fg" title="Has validation errors">
               {"\u26A0"}
             </span>
           )}

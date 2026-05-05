@@ -29,7 +29,7 @@ export function Description({
   // Simple case: no list items
   if (listLines.length === 0) {
     return (
-      <p className={`text-secondary text-vscode-description-fg ${className}`}>
+      <p className={`text-secondary text-tje-description-fg ${className}`}>
         {formatInlineCode(text)}
       </p>
     );
@@ -37,7 +37,7 @@ export function Description({
 
   // Mixed prose + list
   return (
-    <div className={`text-secondary text-vscode-description-fg ${className}`}>
+    <div className={`text-secondary text-tje-description-fg ${className}`}>
       {proseLines.length > 0 && (
         <p className="mb-1">{formatInlineCode(proseLines.join(" "))}</p>
       )}
@@ -64,7 +64,7 @@ function formatInlineCode(text: string): React.ReactNode {
       return (
         <code
           key={i}
-          className="px-1 py-0.5 rounded bg-vscode-input-bg text-tertiary font-mono"
+          className="px-1 py-0.5 rounded bg-tje-input-bg text-tertiary font-mono"
         >
           {part.slice(1, -1)}
         </code>

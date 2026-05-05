@@ -88,11 +88,11 @@ export function Sidebar() {
 
   return (
     <nav
-      className="w-52 shrink-0 border-r border-vscode-panel-border bg-vscode-sidebar-bg overflow-y-auto flex flex-col"
+      className="w-52 shrink-0 border-r border-tje-panel-border bg-tje-sidebar-bg overflow-y-auto flex flex-col"
       aria-label="Theme JSON sections"
     >
       {/* Global search */}
-      <div className="p-2 border-b border-vscode-panel-border">
+      <div className="p-2 border-b border-tje-panel-border">
         <div className="relative">
           <input
             type="text"
@@ -100,12 +100,12 @@ export function Sidebar() {
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search all properties..."
             aria-label="Search all properties"
-            className="w-full px-2 py-1.5 pr-7 rounded border border-vscode-input-border bg-vscode-input-bg text-vscode-input-fg focus:outline-none focus:border-vscode-focus-border"
+            className="w-full px-2 py-1.5 pr-7 rounded border border-tje-input-border bg-tje-input-bg text-tje-input-fg focus:outline-none focus:border-tje-focus-border"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-vscode-description-fg hover:text-vscode-fg"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-tje-description-fg hover:text-tje-fg"
               aria-label="Clear search"
             >
               {"\u2715"}
@@ -148,7 +148,7 @@ function SearchResults({
 }) {
   if (results.length === 0) {
     return (
-      <div className="px-3 py-4 text-secondary text-vscode-description-fg text-center">
+      <div className="px-3 py-4 text-secondary text-tje-description-fg text-center">
         No properties match &quot;{query}&quot;
       </div>
     );
@@ -160,10 +160,10 @@ function SearchResults({
         <li key={result.path} role="option">
           <button
             onClick={() => onResultClick(result)}
-            className="w-full text-left px-3 py-1.5 hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg transition-colors"
+            className="w-full text-left px-3 py-1.5 hover:bg-tje-list-hover hover:text-tje-list-hover-fg transition-colors"
           >
             <div className="font-medium">{formatLabel(result.key)}</div>
-            <div className="text-tertiary text-vscode-description-fg mt-0.5">
+            <div className="text-tertiary text-tje-description-fg mt-0.5">
               {result.breadcrumbs.join(" \u203A ")}
             </div>
           </button>
@@ -213,8 +213,8 @@ function SectionTree({
               aria-current={isTopActive ? "true" : undefined}
               className={`w-full text-left px-4 py-1.5 font-medium transition-colors ${
                 isTopActive
-                  ? "text-vscode-list-active-fg bg-vscode-list-active"
-                  : "hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg"
+                  ? "text-tje-list-active-fg bg-tje-list-active"
+                  : "hover:bg-tje-list-hover hover:text-tje-list-hover-fg"
               }`}
             >
               {isExperimental && (
@@ -235,8 +235,8 @@ function SectionTree({
                         onClick={() => setActiveSection(subKey)}
                         className={`w-full text-left pl-8 pr-4 py-1 text-secondary transition-colors ${
                           isSubActive
-                            ? "text-vscode-list-active-fg bg-vscode-list-active"
-                            : "hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg text-vscode-description-fg"
+                            ? "text-tje-list-active-fg bg-tje-list-active"
+                            : "hover:bg-tje-list-hover hover:text-tje-list-hover-fg text-tje-description-fg"
                         }`}
                       >
                         {sub.isExperimental && (

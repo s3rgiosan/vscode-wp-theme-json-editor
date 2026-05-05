@@ -47,7 +47,7 @@ export const ToggleObjectField = memo(function ToggleObjectField({
                 opt.value === mode
               }
               onChange={() => onModeChange(opt.value)}
-              className="appearance-none w-3.5 h-3.5 rounded-full border-[1.5px] border-vscode-fg/50 checked:bg-vscode-checkbox-bg checked:border-[4px] checked:border-vscode-checkbox-fg cursor-pointer"
+              className="appearance-none w-3.5 h-3.5 rounded-full border-[1.5px] border-tje-fg/50 checked:bg-tje-checkbox-bg checked:border-[4px] checked:border-tje-checkbox-fg cursor-pointer"
             />
             {opt.label}
           </label>
@@ -55,7 +55,7 @@ export const ToggleObjectField = memo(function ToggleObjectField({
       </div>
       {description && <Description text={description} className="mt-0.5" />}
       {(mode === "true" || isObject) && (
-        <div className="mt-2 pl-3 border-l border-vscode-panel-border space-y-2">
+        <div className="mt-2 pl-3 border-l border-tje-panel-border space-y-2">
           {children}
         </div>
       )}

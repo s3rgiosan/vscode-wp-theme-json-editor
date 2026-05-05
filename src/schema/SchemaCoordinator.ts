@@ -38,8 +38,9 @@ export class SchemaCoordinator {
     try {
       const snapshotUri = vscode.Uri.joinPath(
         this.extensionUri,
-        "src",
-        "schema",
+        "packages",
+        "theme-json-editor-ui",
+        "assets",
         "core-scan-snapshot.json",
       );
       const raw = await vscode.workspace.fs.readFile(snapshotUri);

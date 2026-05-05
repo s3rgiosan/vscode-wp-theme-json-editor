@@ -35,7 +35,7 @@ export const SectionOverview = memo(function SectionOverview({
       {typeof schema.description === "string" ? (
         <Description text={schema.description} className="mb-4" />
       ) : (
-        <p className="text-secondary text-vscode-description-fg mb-4">
+        <p className="text-secondary text-tje-description-fg mb-4">
           Select a sub-section to edit.
         </p>
       )}
@@ -61,7 +61,7 @@ export const SectionOverview = memo(function SectionOverview({
             <button
               key={key}
               onClick={() => setActiveSection(subKey)}
-              className="text-left px-4 py-3 rounded border border-vscode-panel-border hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg transition-colors"
+              className="text-left px-4 py-3 rounded border border-tje-panel-border hover:bg-tje-list-hover hover:text-tje-list-hover-fg transition-colors"
             >
               <div className="flex items-center gap-2">
                 <span className="font-medium">
@@ -71,7 +71,7 @@ export const SectionOverview = memo(function SectionOverview({
                 {isUndocumented && <ExperimentalBadge isUndocumented />}
               </div>
               {shortDesc && (
-                <p className="text-secondary text-vscode-description-fg mt-1">
+                <p className="text-secondary text-tje-description-fg mt-1">
                   {shortDesc}
                 </p>
               )}

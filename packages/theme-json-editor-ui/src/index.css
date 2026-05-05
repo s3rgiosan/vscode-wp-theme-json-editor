@@ -2,13 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Host-neutral design tokens.
+ */
+:root {
+  --tje-bg: var(--vscode-editor-background, #ffffff);
+  --tje-fg: var(--vscode-foreground, #1d2327);
+  --tje-disabled-fg: var(--vscode-disabledForeground, #a7aaad);
+  --tje-sidebar-bg: var(--vscode-sideBar-background, #f0f0f1);
+  --tje-panel-border: var(--vscode-panel-border, #dcdcde);
+
+  --tje-input-bg: var(--vscode-input-background, #ffffff);
+  --tje-input-fg: var(--vscode-input-foreground, #1d2327);
+  --tje-input-border: var(--vscode-input-border, #8c8f94);
+  --tje-input-placeholder: var(--vscode-input-placeholderForeground, #757575);
+
+  --tje-input-error-bg: var(--vscode-inputValidation-errorBackground, #fbeaea);
+  --tje-input-error-border: var(--vscode-inputValidation-errorBorder, #d63638);
+  --tje-input-error-fg: var(--vscode-inputValidation-errorForeground, #d63638);
+  --tje-input-warning-bg: var(--vscode-inputValidation-warningBackground, #fcf9e8);
+  --tje-input-warning-border: var(--vscode-inputValidation-warningBorder, #dba617);
+  --tje-input-warning-fg: var(--vscode-inputValidation-warningForeground, #996800);
+
+  --tje-button-bg: var(--vscode-button-background, #2271b1);
+  --tje-button-fg: var(--vscode-button-foreground, #ffffff);
+  --tje-button-hover: var(--vscode-button-hoverBackground, #135e96);
+  --tje-button-secondary-bg: var(--vscode-button-secondaryBackground, #f6f7f7);
+  --tje-button-secondary-fg: var(--vscode-button-secondaryForeground, #1d2327);
+
+  --tje-dropdown-bg: var(--vscode-dropdown-background, #ffffff);
+  --tje-dropdown-fg: var(--vscode-dropdown-foreground, #1d2327);
+  --tje-dropdown-border: var(--vscode-dropdown-border, #8c8f94);
+
+  --tje-checkbox-bg: var(--vscode-checkbox-background, #ffffff);
+  --tje-checkbox-fg: var(--vscode-checkbox-foreground, #1d2327);
+  --tje-checkbox-border: var(--vscode-checkbox-border, #8c8f94);
+
+  --tje-list-hover: var(--vscode-list-hoverBackground, #f0f0f1);
+  --tje-list-hover-fg: var(--vscode-list-hoverForeground, #1d2327);
+  --tje-list-active-bg: var(--vscode-list-activeSelectionBackground, #2271b1);
+  --tje-list-active-fg: var(--vscode-list-activeSelectionForeground, #ffffff);
+
+  --tje-badge-bg: var(--vscode-badge-background, #2271b1);
+  --tje-badge-fg: var(--vscode-badge-foreground, #ffffff);
+
+  --tje-error-fg: var(--vscode-errorForeground, #d63638);
+  --tje-warning-fg: var(--vscode-editorWarning-foreground, #dba617);
+
+  --tje-description-fg: var(--vscode-descriptionForeground, #50575e);
+  --tje-link-fg: var(--vscode-textLink-foreground, #2271b1);
+  --tje-link-active-fg: var(--vscode-textLink-activeForeground, #135e96);
+
+  --tje-focus-border: var(--vscode-focusBorder, #2271b1);
+  --tje-contrast-border: var(--vscode-contrastBorder, #1d2327);
+
+  --tje-breadcrumb-fg: var(--vscode-breadcrumb-foreground, #50575e);
+  --tje-breadcrumb-active-fg: var(--vscode-breadcrumb-activeSelectionForeground, #1d2327);
+
+  --tje-scrollbar-bg: var(--vscode-scrollbarSlider-background, #c3c4c7);
+  --tje-scrollbar-hover-bg: var(--vscode-scrollbarSlider-hoverBackground, #8c8f94);
+
+  --tje-font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  --tje-font-size: var(--vscode-font-size, 13px);
+  --tje-mono-font-size: var(--vscode-editor-font-size, 13px);
+  --tje-mono-font-family: var(--vscode-editor-font-family, ui-monospace, SFMono-Regular, Menlo, monospace);
+}
+
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--vscode-editor-background);
-  color: var(--vscode-foreground);
-  font-family: var(--vscode-font-family, sans-serif);
-  font-size: var(--vscode-font-size, 13px);
+  background-color: var(--tje-bg);
+  color: var(--tje-fg);
+  font-family: var(--tje-font-family);
+  font-size: var(--tje-font-size);
 }
 
 /* High contrast theme: ensure all interactive elements have visible borders */
@@ -16,14 +82,14 @@ body {
 .vscode-high-contrast select,
 .vscode-high-contrast button,
 .vscode-high-contrast textarea {
-  border-color: var(--vscode-contrastBorder) !important;
+  border-color: var(--tje-contrast-border) !important;
 }
 
 .vscode-high-contrast input:focus,
 .vscode-high-contrast select:focus,
 .vscode-high-contrast button:focus,
 .vscode-high-contrast textarea:focus {
-  outline: 1px solid var(--vscode-focusBorder);
+  outline: 1px solid var(--tje-focus-border);
   outline-offset: -1px;
 }
 
@@ -35,7 +101,7 @@ body {
   }
 }
 
-/* Scrollbar styling to match VSCode */
+/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -46,10 +112,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--vscode-scrollbarSlider-background);
+  background: var(--tje-scrollbar-bg);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--vscode-scrollbarSlider-hoverBackground);
+  background: var(--tje-scrollbar-hover-bg);
 }

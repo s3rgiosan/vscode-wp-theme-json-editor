@@ -38,7 +38,7 @@ export const ToggleField = memo(function ToggleField({
               name={id}
               checked={value === opt.triValue}
               onChange={() => onChange(opt.triValue)}
-              className="appearance-none w-3.5 h-3.5 rounded-full border-[1.5px] border-vscode-fg/50 checked:bg-vscode-checkbox-bg checked:border-[4px] checked:border-vscode-checkbox-fg cursor-pointer"
+              className="appearance-none w-3.5 h-3.5 rounded-full border-[1.5px] border-tje-fg/50 checked:bg-tje-checkbox-bg checked:border-[4px] checked:border-tje-checkbox-fg cursor-pointer"
             />
             {opt.label}
           </label>

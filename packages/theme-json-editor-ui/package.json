@@ -3,6 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./style.css": "./dist/main.css",
+    "./tailwind.config.js": "./tailwind.config.js",
+    "./assets/core-scan-snapshot.json": "./assets/core-scan-snapshot.json",
+    "./assets/theme.json.fallback": "./assets/theme.json.fallback"
+  },
+  "files": [
+    "src",
+    "assets",
+    "tailwind.config.js"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

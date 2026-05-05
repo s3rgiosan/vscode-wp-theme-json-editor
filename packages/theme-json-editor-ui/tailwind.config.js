@@ -4,87 +4,86 @@ export default {
   theme: {
     extend: {
       colors: {
-        vscode: {
+        tje: {
           // Core backgrounds & foregrounds
-          bg: "var(--vscode-editor-background)",
-          fg: "var(--vscode-foreground)",
-          "disabled-fg": "var(--vscode-disabledForeground)",
-          "sidebar-bg": "var(--vscode-sideBar-background)",
-          "panel-border": "var(--vscode-panel-border)",
+          bg: "var(--tje-bg)",
+          fg: "var(--tje-fg)",
+          "disabled-fg": "var(--tje-disabled-fg)",
+          "sidebar-bg": "var(--tje-sidebar-bg)",
+          "panel-border": "var(--tje-panel-border)",
 
           // Inputs
-          "input-bg": "var(--vscode-input-background)",
-          "input-fg": "var(--vscode-input-foreground)",
-          "input-border": "var(--vscode-input-border)",
-          "input-placeholder": "var(--vscode-input-placeholderForeground)",
+          "input-bg": "var(--tje-input-bg)",
+          "input-fg": "var(--tje-input-fg)",
+          "input-border": "var(--tje-input-border)",
+          "input-placeholder": "var(--tje-input-placeholder)",
 
           // Input validation
-          "input-error-bg": "var(--vscode-inputValidation-errorBackground)",
-          "input-error-border": "var(--vscode-inputValidation-errorBorder)",
-          "input-error-fg": "var(--vscode-inputValidation-errorForeground)",
-          "input-warning-bg": "var(--vscode-inputValidation-warningBackground)",
-          "input-warning-border": "var(--vscode-inputValidation-warningBorder)",
-          "input-warning-fg": "var(--vscode-inputValidation-warningForeground)",
+          "input-error-bg": "var(--tje-input-error-bg)",
+          "input-error-border": "var(--tje-input-error-border)",
+          "input-error-fg": "var(--tje-input-error-fg)",
+          "input-warning-bg": "var(--tje-input-warning-bg)",
+          "input-warning-border": "var(--tje-input-warning-border)",
+          "input-warning-fg": "var(--tje-input-warning-fg)",
 
           // Buttons
-          "button-bg": "var(--vscode-button-background)",
-          "button-fg": "var(--vscode-button-foreground)",
-          "button-hover": "var(--vscode-button-hoverBackground)",
-          "button-secondary-bg": "var(--vscode-button-secondaryBackground)",
-          "button-secondary-fg": "var(--vscode-button-secondaryForeground)",
+          "button-bg": "var(--tje-button-bg)",
+          "button-fg": "var(--tje-button-fg)",
+          "button-hover": "var(--tje-button-hover)",
+          "button-secondary-bg": "var(--tje-button-secondary-bg)",
+          "button-secondary-fg": "var(--tje-button-secondary-fg)",
 
           // Dropdowns
-          "dropdown-bg": "var(--vscode-dropdown-background)",
-          "dropdown-fg": "var(--vscode-dropdown-foreground)",
-          "dropdown-border": "var(--vscode-dropdown-border)",
+          "dropdown-bg": "var(--tje-dropdown-bg)",
+          "dropdown-fg": "var(--tje-dropdown-fg)",
+          "dropdown-border": "var(--tje-dropdown-border)",
 
           // Checkboxes
-          "checkbox-bg": "var(--vscode-checkbox-background)",
-          "checkbox-fg": "var(--vscode-checkbox-foreground)",
-          "checkbox-border": "var(--vscode-checkbox-border)",
+          "checkbox-bg": "var(--tje-checkbox-bg)",
+          "checkbox-fg": "var(--tje-checkbox-fg)",
+          "checkbox-border": "var(--tje-checkbox-border)",
 
           // Lists & trees
-          "list-hover": "var(--vscode-list-hoverBackground)",
-          "list-hover-fg": "var(--vscode-list-hoverForeground)",
-          "list-active-bg": "var(--vscode-list-activeSelectionBackground)",
-          "list-active-fg": "var(--vscode-list-activeSelectionForeground)",
-          // Keep old alias for backward compat in Sidebar
-          "list-active": "var(--vscode-list-activeSelectionBackground)",
+          "list-hover": "var(--tje-list-hover)",
+          "list-hover-fg": "var(--tje-list-hover-fg)",
+          "list-active-bg": "var(--tje-list-active-bg)",
+          "list-active-fg": "var(--tje-list-active-fg)",
+          "list-active": "var(--tje-list-active-bg)",
 
           // Badges
-          "badge-bg": "var(--vscode-badge-background)",
-          "badge-fg": "var(--vscode-badge-foreground)",
+          "badge-bg": "var(--tje-badge-bg)",
+          "badge-fg": "var(--tje-badge-fg)",
 
           // Status colors
-          "error-fg": "var(--vscode-errorForeground)",
-          "warning-fg": "var(--vscode-editorWarning-foreground)",
+          "error-fg": "var(--tje-error-fg)",
+          "warning-fg": "var(--tje-warning-fg)",
 
           // Text
-          "description-fg": "var(--vscode-descriptionForeground)",
-          "link-fg": "var(--vscode-textLink-foreground)",
-          "link-active-fg": "var(--vscode-textLink-activeForeground)",
+          "description-fg": "var(--tje-description-fg)",
+          "link-fg": "var(--tje-link-fg)",
+          "link-active-fg": "var(--tje-link-active-fg)",
 
           // Focus & borders
-          "focus-border": "var(--vscode-focusBorder)",
-          "contrast-border": "var(--vscode-contrastBorder)",
+          "focus-border": "var(--tje-focus-border)",
+          "contrast-border": "var(--tje-contrast-border)",
 
           // Breadcrumbs
-          "breadcrumb-fg": "var(--vscode-breadcrumb-foreground)",
-          "breadcrumb-active-fg": "var(--vscode-breadcrumb-activeSelectionForeground)",
+          "breadcrumb-fg": "var(--tje-breadcrumb-fg)",
+          "breadcrumb-active-fg": "var(--tje-breadcrumb-active-fg)",
 
           // Scrollbar
-          "scrollbar-bg": "var(--vscode-scrollbarSlider-background)",
-          "scrollbar-hover-bg": "var(--vscode-scrollbarSlider-hoverBackground)",
+          "scrollbar-bg": "var(--tje-scrollbar-bg)",
+          "scrollbar-hover-bg": "var(--tje-scrollbar-hover-bg)",
         },
       },
       fontSize: {
-        "vscode-sm": "var(--vscode-font-size, 13px)",
+        "tje-base": "var(--tje-font-size)",
         secondary: "1em",
         tertiary: "0.92em",
         quaternary: "0.85em",
       },
       fontFamily: {
-        vscode: "var(--vscode-font-family, sans-serif)",
+        tje: "var(--tje-font-family)",
       },
     },
   },

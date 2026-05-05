@@ -12,7 +12,7 @@ export function ExperimentalBadge({ isUndocumented }: ExperimentalBadgeProps) {
 
   return (
     <span
-      className="inline-block px-1.5 py-0.5 text-tertiary rounded bg-vscode-badge-bg text-vscode-badge-fg ml-2"
+      className="inline-block px-1.5 py-0.5 text-tertiary rounded bg-tje-badge-bg text-tje-badge-fg ml-2"
       title={`This property is ${label.toLowerCase()} and may change without notice.`}
     >
       {label}

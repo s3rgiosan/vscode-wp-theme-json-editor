@@ -128,7 +128,7 @@ export function BlockMapField({
         </div>
 
         {showSelector && (
-          <div className="border border-vscode-panel-border rounded p-2 mb-2">
+          <div className="border border-tje-panel-border rounded p-2 mb-2">
             <input
               type="text"
               value={filter}
@@ -142,10 +142,10 @@ export function BlockMapField({
                   <button
                     key={name}
                     onClick={() => handleAddBlock(name)}
-                    className="w-full text-left px-3 py-1 hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg transition-colors"
+                    className="w-full text-left px-3 py-1 hover:bg-tje-list-hover hover:text-tje-list-hover-fg transition-colors"
                   >
                     {formatBlockName(name)}
-                    <span className="ml-1 text-vscode-description-fg">{name}</span>
+                    <span className="ml-1 text-tje-description-fg">{name}</span>
                   </button>
                 ))}
               </div>
@@ -153,7 +153,7 @@ export function BlockMapField({
             {filter.trim() && (freeForm || !coreBlockSet.has(filter.trim())) && (
               <button
                 onClick={handleAddCustomBlock}
-                className="w-full text-left px-3 py-1.5 mt-1 border-t border-vscode-panel-border hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg"
+                className="w-full text-left px-3 py-1.5 mt-1 border-t border-tje-panel-border hover:bg-tje-list-hover hover:text-tje-list-hover-fg"
               >
                 Add{freeForm ? " variation" : " custom block"}: <strong>{filter.trim()}</strong>
               </button>
@@ -164,7 +164,7 @@ export function BlockMapField({
 
       {/* Configured blocks accordion */}
       {configuredBlocks.length === 0 && (
-        <p className="text-secondary text-vscode-description-fg italic">
+        <p className="text-secondary text-tje-description-fg italic">
           {freeForm
           ? "No style variations configured. Click \"+ Add variation\" to start."
           : "No block overrides configured. Click \"+ Add block\" to start."}
@@ -179,7 +179,7 @@ export function BlockMapField({
           return (
             <div
               key={blockName}
-              className="border border-vscode-panel-border rounded"
+              className="border border-tje-panel-border rounded"
             >
               <div className={ACCORDION_HEADER_CLASS}>
                 {/* Title (clickable to toggle) */}
@@ -188,11 +188,11 @@ export function BlockMapField({
                   className="flex-1 text-left font-medium flex items-center gap-1 hover:opacity-80 truncate"
                 >
                   {formatBlockName(blockName)}
-                  <span className="text-tertiary text-vscode-description-fg font-normal">
+                  <span className="text-tertiary text-tje-description-fg font-normal">
                     {blockName}
                   </span>
                   {!isCoreBlock && (
-                    <span className="text-tertiary px-1 py-0.5 rounded bg-vscode-badge-bg text-vscode-badge-fg">
+                    <span className="text-tertiary px-1 py-0.5 rounded bg-tje-badge-bg text-tje-badge-fg">
                       custom
                     </span>
                   )}
@@ -279,7 +279,7 @@ function CustomBlockPanel({ path }: { path: string[] }) {
 
   return (
     <div>
-      <p className="text-secondary text-vscode-description-fg mb-2">
+      <p className="text-secondary text-tje-description-fg mb-2">
         Custom block — edit the JSON directly.
       </p>
       <CssField

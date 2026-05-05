@@ -109,7 +109,7 @@ export function CssField({
           }),
           EditorView.theme({
             "&": {
-              fontSize: "var(--vscode-editor-font-size, 13px)",
+              fontSize: "var(--tje-mono-font-size, 13px)",
               minHeight: "200px",
               maxHeight: "500px",
             },
@@ -118,7 +118,7 @@ export function CssField({
               minHeight: "200px",
             },
             ".cm-content": {
-              fontFamily: "var(--vscode-editor-font-family, monospace)",
+              fontFamily: "var(--tje-mono-font-family, monospace)",
               minHeight: "200px",
             },
             ".cm-gutters": {
@@ -185,13 +185,13 @@ export function CssField({
       {description && <Description text={description} className="mb-1" />}
       <div
         ref={containerRef}
-        className="rounded border border-vscode-input-border overflow-hidden"
+        className="rounded border border-tje-input-border overflow-hidden"
         role="textbox"
         aria-label={typeof label === "string" ? label : "Code editor"}
         aria-multiline="true"
       />
       {errorMessage && (
-        <p className="mt-1 text-tertiary text-vscode-error-fg" role="alert">
+        <p className="mt-1 text-tertiary text-tje-error-fg" role="alert">
           {errorMessage}
         </p>
       )}

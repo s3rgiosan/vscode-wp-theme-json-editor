@@ -121,7 +121,7 @@ export function Autocomplete({
     <ul
       ref={listRef}
       role="listbox"
-      className="absolute left-0 right-0 top-full z-50 mt-0.5 max-h-48 overflow-y-auto rounded border border-vscode-input-border bg-vscode-dropdown-bg shadow-lg"
+      className="absolute left-0 right-0 top-full z-50 mt-0.5 max-h-48 overflow-y-auto rounded border border-tje-input-border bg-tje-dropdown-bg shadow-lg"
       onMouseDown={(e) => e.preventDefault()} // prevent input blur
     >
       {filtered.map((v, i) => (
@@ -131,8 +131,8 @@ export function Autocomplete({
           aria-selected={i === selectedIndex}
           className={`flex items-center justify-between px-2 py-1 cursor-pointer ${
             i === selectedIndex
-              ? "bg-vscode-list-active-bg text-vscode-list-active-fg"
-              : "text-vscode-dropdown-fg hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg"
+              ? "bg-tje-list-active-bg text-tje-list-active-fg"
+              : "text-tje-dropdown-fg hover:bg-tje-list-hover hover:text-tje-list-hover-fg"
           }`}
           onMouseEnter={() => setSelectedIndex(i)}
           onClick={() => {
@@ -141,7 +141,7 @@ export function Autocomplete({
           }}
         >
           <span className="font-mono truncate">{v.name}</span>
-          <span className="ml-2 shrink-0 text-tertiary text-vscode-description-fg">
+          <span className="ml-2 shrink-0 text-tertiary text-tje-description-fg">
             {v.value ? `${v.category}: ${v.value}` : v.category}
           </span>
         </li>

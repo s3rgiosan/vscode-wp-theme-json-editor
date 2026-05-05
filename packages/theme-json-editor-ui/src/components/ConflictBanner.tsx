@@ -15,18 +15,18 @@ export function ConflictBanner({ conflictData }: ConflictBannerProps) {
   };
 
   return (
-    <div className="flex items-center justify-between px-4 py-2 border-b border-vscode-warning-fg bg-vscode-sidebar-bg">
-      <span className="text-vscode-warning-fg">
+    <div className="flex items-center justify-between px-4 py-2 border-b border-tje-warning-fg bg-tje-sidebar-bg">
+      <span className="text-tje-warning-fg">
         File changed on disk while you have unsaved changes.
       </span>
       <div className="flex items-center gap-2">
         <button
           onClick={handleReload}
-          className="px-2 py-1 rounded bg-vscode-button-bg text-vscode-button-fg hover:bg-vscode-button-hover"
+          className="px-2 py-1 rounded bg-tje-button-bg text-tje-button-fg hover:bg-tje-button-hover"
         >
           Reload from disk
         </button>
-        <span className="text-secondary text-vscode-description-fg">
+        <span className="text-secondary text-tje-description-fg">
           or keep editing to preserve your changes
         </span>
       </div>

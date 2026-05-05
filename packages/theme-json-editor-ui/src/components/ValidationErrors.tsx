@@ -25,7 +25,7 @@ export function ValidationErrors({ path }: { readonly path: string[] }) {
 
   return (
     <div
-      className="mt-1 px-2 py-1 rounded border border-vscode-input-error-border bg-vscode-input-error-bg text-vscode-input-error-fg"
+      className="mt-1 px-2 py-1 rounded border border-tje-input-error-border bg-tje-input-error-bg text-tje-input-error-fg"
       role="alert"
     >
       {errors.map((err, i) => (
