@@ -1,5 +1,6 @@
 {
-  "name": "wp-theme-json-editor-webview",
+  "name": "@s3rgiosan/theme-json-editor-ui",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {

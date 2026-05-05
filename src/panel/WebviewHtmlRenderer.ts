@@ -15,7 +15,8 @@ export class WebviewHtmlRenderer {
   render(webview: vscode.Webview): string {
     const distUri = vscode.Uri.joinPath(
       this.extensionUri,
-      "webview",
+      "packages",
+      "theme-json-editor-ui",
       "dist",
     );
 

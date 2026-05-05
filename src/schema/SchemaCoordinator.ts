@@ -1,7 +1,5 @@
 import * as vscode from "vscode";
 import { SchemaLoader } from "./SchemaLoader.js";
-import { SchemaMerger } from "./SchemaMerger.js";
-import { SchemaResolver } from "./SchemaResolver.js";
 
 interface CoreScanSnapshot {
   readonly generatedAt: string;
@@ -10,34 +8,28 @@ interface CoreScanSnapshot {
   readonly undocumented: string[];
 }
 
+export interface RawSchemaBundle {
+  readonly schema: Record<string, unknown>;
+  readonly snapshot: CoreScanSnapshot;
+}
+
 /**
- * Coordinates the multi-step schema pipeline:
- * 1. Load raw schema (network → cache → fallback)
- * 2. Resolve $ref and allOf
- * 3. Load core-scan snapshot
- * 4. Merge experimental/undocumented flags
+ * Loads the raw schema and core-scan snapshot. Resolution and merging happen
+ * client-side in the webview (see @s3rgiosan/theme-json-editor-ui/src/schema).
  */
 export class SchemaCoordinator {
   private readonly loader: SchemaLoader;
-  private readonly merger: SchemaMerger;
   private readonly extensionUri: vscode.Uri;
 
   constructor(globalState: vscode.Memento, extensionUri: vscode.Uri) {
     this.loader = new SchemaLoader(globalState, extensionUri);
-    this.merger = new SchemaMerger();
     this.extensionUri = extensionUri;
   }
 
-  /**
-   * Load, resolve, and merge the schema for the given WP version.
-   * Returns the final schema ready for the webview.
-   */
-  async getSchema(version: string): Promise<Record<string, unknown>> {
-    const rawSchema = await this.loader.load(version);
-    const resolver = new SchemaResolver(rawSchema);
-    const resolved = resolver.resolve(rawSchema);
+  async getSchema(version: string): Promise<RawSchemaBundle> {
+    const schema = await this.loader.load(version);
     const snapshot = await this.loadCoreScanSnapshot();
-    return this.merger.merge(resolved, snapshot);
+    return { schema, snapshot };
   }
 
   private async loadCoreScanSnapshot(): Promise<CoreScanSnapshot> {

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { SchemaMerger } from "../SchemaMerger.js";
+import { SchemaMerger } from "../SchemaMerger";
 
 describe("SchemaMerger", () => {
   const merger = new SchemaMerger();

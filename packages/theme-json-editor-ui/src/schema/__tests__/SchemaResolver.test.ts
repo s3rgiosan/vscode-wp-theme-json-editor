@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { SchemaResolver } from "../SchemaResolver.js";
+import { SchemaResolver } from "../SchemaResolver";
 
 describe("SchemaResolver", () => {
   it("resolves a simple $ref", () => {

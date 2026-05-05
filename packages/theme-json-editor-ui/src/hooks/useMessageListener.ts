@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import type { HostToWebviewMessage } from "@shared/messages";
 import { useEditorStore, performSave } from "../store/editorStore";
 import { vscodeApi } from "../vscode";
+import { SchemaResolver } from "../schema/SchemaResolver";
+import { SchemaMerger } from "../schema/SchemaMerger";
 
 /**
  * Listens for messages from the extension host and dispatches them
@@ -31,9 +33,14 @@ export function useMessageListener(): void {
         case "FILE_SAVED":
           store.markSaved();
           break;
-        case "SCHEMA_READY":
-          store.setSchema(msg.schema, msg.schemaVersion);
+        case "SCHEMA_READY": {
+          const resolver = new SchemaResolver(msg.schema);
+          const resolved = resolver.resolve(msg.schema);
+          const merger = new SchemaMerger();
+          const merged = merger.merge(resolved, msg.snapshot);
+          store.setSchema(merged, msg.schemaVersion);
           break;
+        }
         case "SETTINGS":
           store.setShowExperimental(msg.showExperimentalByDefault);
           break;

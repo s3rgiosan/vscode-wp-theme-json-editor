@@ -62,7 +62,12 @@ export class PanelManager {
         enableScripts: true,
         retainContextWhenHidden: true,
         localResourceRoots: [
-          vscode.Uri.joinPath(extensionUri, "webview", "dist"),
+          vscode.Uri.joinPath(
+            extensionUri,
+            "packages",
+            "theme-json-editor-ui",
+            "dist",
+          ),
         ],
       },
     );
@@ -152,10 +157,13 @@ export class PanelManager {
       : this.fileManager.extractSchemaVersion(data) ?? "6.7";
 
     try {
-      const merged = await this.schemaCoordinator.getSchema(version);
+      const { schema, snapshot } = await this.schemaCoordinator.getSchema(
+        version,
+      );
       this.postMessage({
         type: "SCHEMA_READY",
-        schema: merged,
+        schema,
+        snapshot,
         schemaVersion: version,
       });
     } catch (err) {

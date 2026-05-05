@@ -31,6 +31,12 @@ export interface FileSavedMessage {
 export interface SchemaReadyMessage {
   readonly type: "SCHEMA_READY";
   readonly schema: Record<string, unknown>;
+  readonly snapshot: {
+    readonly generatedAt: string;
+    readonly wpVersion: string;
+    readonly experimental: readonly string[];
+    readonly undocumented: readonly string[];
+  };
   readonly schemaVersion: string;
 }
 
