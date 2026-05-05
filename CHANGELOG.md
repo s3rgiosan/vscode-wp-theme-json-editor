@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-05-05
+
+### Changed
+
+- Repository restructured as an npm workspace monorepo. The webview lives in `packages/theme-json-editor-ui/` as a reusable package.
+- Schema resolution and core-scan merging now run in a Web Worker inside the webview. The extension host ships the raw schema and snapshot; the worker merges off the main thread, keeping the UI responsive on first panel open.
+
+### Fixed
+
+- Webview CSP updated to allow `blob:` workers (`script-src ... blob:`, `worker-src blob:`). Without this the schema-merge worker was blocked and the panel hung on "Loading schema...".
+
 ## [1.1.2] - 2026-05-05
 
 ### Fixed
