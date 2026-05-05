@@ -11,14 +11,14 @@ export function Toolbar() {
         <h1 className="text-sm font-semibold">Theme JSON Editor</h1>
         {schemaVersion && (
           <span
-            className="px-2 py-0.5 text-xs rounded bg-vscode-badge-bg text-vscode-badge-fg"
+            className="px-2 py-0.5 rounded bg-vscode-badge-bg text-vscode-badge-fg"
             title="WordPress JSON Schema version detected from the $schema field in your theme.json"
           >
             Schema {schemaVersion}
           </span>
         )}
       </div>
-      <label className="flex items-center gap-1.5 text-xs cursor-pointer select-none">
+      <label className="flex items-center gap-1.5 cursor-pointer select-none">
         <input
           type="checkbox"
           checked={showExperimental}

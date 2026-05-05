@@ -109,7 +109,7 @@ export function CssField({
           }),
           EditorView.theme({
             "&": {
-              fontSize: "12px",
+              fontSize: "var(--vscode-editor-font-size, 13px)",
               minHeight: "200px",
               maxHeight: "500px",
             },
@@ -191,7 +191,7 @@ export function CssField({
         aria-multiline="true"
       />
       {errorMessage && (
-        <p className="mt-1 text-[10px] text-vscode-error-fg" role="alert">
+        <p className="mt-1 text-tertiary text-vscode-error-fg" role="alert">
           {errorMessage}
         </p>
       )}

@@ -29,7 +29,7 @@ export function ValidationErrors({ path }: { readonly path: string[] }) {
       role="alert"
     >
       {errors.map((err, i) => (
-        <p key={i} className="text-[10px]">
+        <p key={i} className="text-tertiary">
           {err.path !== fieldPath && (
             <span className="font-mono mr-1">
               {err.path.slice(fieldPath.length + 1)}:

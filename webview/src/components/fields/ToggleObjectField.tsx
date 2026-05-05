@@ -32,12 +32,12 @@ export const ToggleObjectField = memo(function ToggleObjectField({
 
   return (
     <div className="flex flex-col gap-1">
-      <span className="text-xs font-medium">{label}</span>
+      <span className="font-medium">{label}</span>
       <div className="flex items-center gap-3" role="radiogroup">
         {options.map((opt) => (
           <label
             key={opt.label}
-            className="flex items-center gap-1.5 text-[11px] cursor-pointer select-none"
+            className="flex items-center gap-1.5 text-secondary cursor-pointer select-none"
           >
             <input
               type="radio"

@@ -142,7 +142,7 @@ export function BlockMapField({
                   <button
                     key={name}
                     onClick={() => handleAddBlock(name)}
-                    className="w-full text-left px-3 py-1 text-xs hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg transition-colors"
+                    className="w-full text-left px-3 py-1 hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg transition-colors"
                   >
                     {formatBlockName(name)}
                     <span className="ml-1 text-vscode-description-fg">{name}</span>
@@ -153,7 +153,7 @@ export function BlockMapField({
             {filter.trim() && (freeForm || !coreBlockSet.has(filter.trim())) && (
               <button
                 onClick={handleAddCustomBlock}
-                className="w-full text-left px-3 py-1.5 text-xs mt-1 border-t border-vscode-panel-border hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg"
+                className="w-full text-left px-3 py-1.5 mt-1 border-t border-vscode-panel-border hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg"
               >
                 Add{freeForm ? " variation" : " custom block"}: <strong>{filter.trim()}</strong>
               </button>
@@ -164,7 +164,7 @@ export function BlockMapField({
 
       {/* Configured blocks accordion */}
       {configuredBlocks.length === 0 && (
-        <p className="text-[11px] text-vscode-description-fg italic">
+        <p className="text-secondary text-vscode-description-fg italic">
           {freeForm
           ? "No style variations configured. Click \"+ Add variation\" to start."
           : "No block overrides configured. Click \"+ Add block\" to start."}
@@ -185,14 +185,14 @@ export function BlockMapField({
                 {/* Title (clickable to toggle) */}
                 <button
                   onClick={() => toggleExpanded(blockName)}
-                  className="flex-1 text-left text-xs font-medium flex items-center gap-1 hover:opacity-80 truncate"
+                  className="flex-1 text-left font-medium flex items-center gap-1 hover:opacity-80 truncate"
                 >
                   {formatBlockName(blockName)}
-                  <span className="text-[10px] text-vscode-description-fg font-normal">
+                  <span className="text-tertiary text-vscode-description-fg font-normal">
                     {blockName}
                   </span>
                   {!isCoreBlock && (
-                    <span className="text-[10px] px-1 py-0.5 rounded bg-vscode-badge-bg text-vscode-badge-fg">
+                    <span className="text-tertiary px-1 py-0.5 rounded bg-vscode-badge-bg text-vscode-badge-fg">
                       custom
                     </span>
                   )}
@@ -208,7 +208,7 @@ export function BlockMapField({
                 {/* Expand/collapse indicator */}
                 <button
                   onClick={() => toggleExpanded(blockName)}
-                  className="text-[10px] hover:opacity-80 shrink-0 ml-1.5"
+                  className="text-tertiary hover:opacity-80 shrink-0 ml-1.5"
                   aria-expanded={isExpanded}
                 >
                   {isExpanded ? "\u25BC" : "\u25B6"}
@@ -279,7 +279,7 @@ function CustomBlockPanel({ path }: { path: string[] }) {
 
   return (
     <div>
-      <p className="text-[11px] text-vscode-description-fg mb-2">
+      <p className="text-secondary text-vscode-description-fg mb-2">
         Custom block — edit the JSON directly.
       </p>
       <CssField

@@ -35,7 +35,7 @@ export const SectionOverview = memo(function SectionOverview({
       {typeof schema.description === "string" ? (
         <Description text={schema.description} className="mb-4" />
       ) : (
-        <p className="text-[11px] text-vscode-description-fg mb-4">
+        <p className="text-secondary text-vscode-description-fg mb-4">
           Select a sub-section to edit.
         </p>
       )}
@@ -64,14 +64,14 @@ export const SectionOverview = memo(function SectionOverview({
               className="text-left px-4 py-3 rounded border border-vscode-panel-border hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg transition-colors"
             >
               <div className="flex items-center gap-2">
-                <span className="text-xs font-medium">
+                <span className="font-medium">
                   {formatLabel(key)}
                 </span>
                 {isExperimental && <ExperimentalBadge />}
                 {isUndocumented && <ExperimentalBadge isUndocumented />}
               </div>
               {shortDesc && (
-                <p className="text-[11px] text-vscode-description-fg mt-1">
+                <p className="text-secondary text-vscode-description-fg mt-1">
                   {shortDesc}
                 </p>
               )}

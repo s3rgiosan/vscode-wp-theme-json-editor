@@ -79,6 +79,9 @@ export default {
       },
       fontSize: {
         "vscode-sm": "var(--vscode-font-size, 13px)",
+        secondary: "1em",
+        tertiary: "0.92em",
+        quaternary: "0.85em",
       },
       fontFamily: {
         vscode: "var(--vscode-font-family, sans-serif)",

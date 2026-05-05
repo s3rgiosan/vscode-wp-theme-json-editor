@@ -54,7 +54,7 @@ export function SectionPanel({
 
   if (!resolvedSchema || typeof resolvedSchema !== "object") {
     return (
-      <div className="text-vscode-description-fg text-xs p-4">
+      <div className="text-vscode-description-fg p-4">
         No schema available for this section.
       </div>
     );
@@ -84,12 +84,12 @@ export function SectionPanel({
         <div>
           <Breadcrumbs path={resolvedPath.join(".")} />
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <p className="text-xs text-vscode-description-fg mb-3">
+            <p className="text-vscode-description-fg mb-3">
               This section is not configured in your theme.json yet.
             </p>
             <button
               onClick={() => setField(resolvedPath, {})}
-              className="px-3 py-1.5 text-xs rounded bg-vscode-button-bg text-vscode-button-fg hover:bg-vscode-button-hover"
+              className="px-3 py-1.5 rounded bg-vscode-button-bg text-vscode-button-fg hover:bg-vscode-button-hover"
             >
               Add {formatLabel(resolvedPath[resolvedPath.length - 1] ?? "")} section
             </button>
@@ -168,7 +168,7 @@ export function SectionPanel({
   const properties = resolvedSchema.properties;
   if (!properties) {
     return (
-      <div className="text-vscode-description-fg text-xs p-4">
+      <div className="text-vscode-description-fg p-4">
         No editable properties in this section.
       </div>
     );

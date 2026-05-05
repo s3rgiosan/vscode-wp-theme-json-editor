@@ -24,7 +24,7 @@ export function Breadcrumbs({ path }: BreadcrumbsProps) {
   }
 
   return (
-    <nav className="flex items-center gap-1 text-xs mb-4" aria-label="Breadcrumb">
+    <nav className="flex items-center gap-1 mb-4" aria-label="Breadcrumb">
       {parts.map((part, index) => {
         const isLast = index === parts.length - 1;
         const targetPath = parts.slice(0, index + 1).join(".");
@@ -37,7 +37,7 @@ export function Breadcrumbs({ path }: BreadcrumbsProps) {
               </span>
             )}
             {isLast ? (
-              <span className="font-semibold text-sm text-vscode-breadcrumb-active-fg">
+              <span className="font-semibold text-vscode-breadcrumb-active-fg">
                 {formatLabel(part)}
               </span>
             ) : (

@@ -100,12 +100,12 @@ export function Sidebar() {
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search all properties..."
             aria-label="Search all properties"
-            className="w-full px-2 py-1.5 pr-7 text-xs rounded border border-vscode-input-border bg-vscode-input-bg text-vscode-input-fg focus:outline-none focus:border-vscode-focus-border"
+            className="w-full px-2 py-1.5 pr-7 rounded border border-vscode-input-border bg-vscode-input-bg text-vscode-input-fg focus:outline-none focus:border-vscode-focus-border"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-vscode-description-fg hover:text-vscode-fg text-xs"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-vscode-description-fg hover:text-vscode-fg"
               aria-label="Clear search"
             >
               {"\u2715"}
@@ -148,7 +148,7 @@ function SearchResults({
 }) {
   if (results.length === 0) {
     return (
-      <div className="px-3 py-4 text-[11px] text-vscode-description-fg text-center">
+      <div className="px-3 py-4 text-secondary text-vscode-description-fg text-center">
         No properties match &quot;{query}&quot;
       </div>
     );
@@ -162,8 +162,8 @@ function SearchResults({
             onClick={() => onResultClick(result)}
             className="w-full text-left px-3 py-1.5 hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg transition-colors"
           >
-            <div className="text-xs font-medium">{formatLabel(result.key)}</div>
-            <div className="text-[10px] text-vscode-description-fg mt-0.5">
+            <div className="font-medium">{formatLabel(result.key)}</div>
+            <div className="text-tertiary text-vscode-description-fg mt-0.5">
               {result.breadcrumbs.join(" \u203A ")}
             </div>
           </button>
@@ -211,7 +211,7 @@ function SectionTree({
             <button
               onClick={() => setActiveSection(key)}
               aria-current={isTopActive ? "true" : undefined}
-              className={`w-full text-left px-4 py-1.5 text-xs font-medium transition-colors ${
+              className={`w-full text-left px-4 py-1.5 font-medium transition-colors ${
                 isTopActive
                   ? "text-vscode-list-active-fg bg-vscode-list-active"
                   : "hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg"
@@ -233,7 +233,7 @@ function SectionTree({
                     <li key={subKey}>
                       <button
                         onClick={() => setActiveSection(subKey)}
-                        className={`w-full text-left pl-8 pr-4 py-1 text-[11px] transition-colors ${
+                        className={`w-full text-left pl-8 pr-4 py-1 text-secondary transition-colors ${
                           isSubActive
                             ? "text-vscode-list-active-fg bg-vscode-list-active"
                             : "hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg text-vscode-description-fg"

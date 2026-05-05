@@ -129,7 +129,7 @@ export function Autocomplete({
           key={v.name}
           role="option"
           aria-selected={i === selectedIndex}
-          className={`flex items-center justify-between px-2 py-1 text-xs cursor-pointer ${
+          className={`flex items-center justify-between px-2 py-1 cursor-pointer ${
             i === selectedIndex
               ? "bg-vscode-list-active-bg text-vscode-list-active-fg"
               : "text-vscode-dropdown-fg hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg"
@@ -141,7 +141,7 @@ export function Autocomplete({
           }}
         >
           <span className="font-mono truncate">{v.name}</span>
-          <span className="ml-2 shrink-0 text-[10px] text-vscode-description-fg">
+          <span className="ml-2 shrink-0 text-tertiary text-vscode-description-fg">
             {v.value ? `${v.category}: ${v.value}` : v.category}
           </span>
         </li>

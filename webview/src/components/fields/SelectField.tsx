@@ -29,7 +29,7 @@ export const SelectField = memo(function SelectField({
         id={id}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full px-2 py-1 text-xs rounded border border-vscode-dropdown-border bg-vscode-dropdown-bg text-vscode-dropdown-fg focus:outline-none focus:border-vscode-focus-border"
+        className="w-full px-2 py-1 rounded border border-vscode-dropdown-border bg-vscode-dropdown-bg text-vscode-dropdown-fg focus:outline-none focus:border-vscode-focus-border"
       >
         <option value="">— Select —</option>
         {options.map((opt) => (

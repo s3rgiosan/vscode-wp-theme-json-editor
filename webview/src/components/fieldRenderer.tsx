@@ -154,7 +154,7 @@ export function renderField({
     const isFreeFormField = node["x-wpthemejsoneditor-free-form"] === true;
     return (
       <fieldset className="mt-2">
-        <legend className="text-xs font-medium mb-1">{label}</legend>
+        <legend className="font-medium mb-1">{label}</legend>
         <BlockMapField
           path={fieldPath}
           blockNames={blockNames}
@@ -179,7 +179,7 @@ export function renderField({
     if (childrenAreComplex) {
       return (
         <fieldset className="mt-2">
-          <legend className="text-xs font-medium mb-1">{label}</legend>
+          <legend className="font-medium mb-1">{label}</legend>
           {description && <Description text={description} className="mb-2" />}
           {renderCollapsible({ schemaNode: node, path: fieldPath })}
         </fieldset>
@@ -188,7 +188,7 @@ export function renderField({
 
     return (
       <fieldset className="mt-2">
-        <legend className="text-xs font-medium mb-1">{label}</legend>
+        <legend className="font-medium mb-1">{label}</legend>
         {description && <Description text={description} className="mb-2" />}
         {renderSection({ schemaNode: node, path: fieldPath, depth: depth + 1 })}
       </fieldset>
@@ -200,7 +200,7 @@ export function renderField({
     if (key === "custom" && node["additionalProperties"]) {
       return (
         <fieldset className="mt-2">
-          <legend className="text-xs font-medium mb-1">{label}</legend>
+          <legend className="font-medium mb-1">{label}</legend>
           <ConnectedCustomVariablesField fieldPath={fieldPath} description={description} />
         </fieldset>
       );
