@@ -120,7 +120,7 @@ export const ConnectedToggleObjectField = memo(function ConnectedToggleObjectFie
           <ConnectedTextField
             key={key}
             fieldPath={propPath}
-            label={<span className="text-xs font-medium">{formatPropertyLabel(key)}</span>}
+            label={<span className="font-medium">{formatPropertyLabel(key)}</span>}
             description={propDescription}
           />
         );

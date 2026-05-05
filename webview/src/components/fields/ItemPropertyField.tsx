@@ -100,7 +100,7 @@ export function ItemPropertyField({
         <select
           value={typeof propValue === "string" ? propValue : ""}
           onChange={(e) => updateField(e.target.value)}
-          className="w-full px-2 py-1 text-xs rounded border border-vscode-input-border bg-vscode-input-bg text-vscode-input-fg focus:outline-none focus:border-vscode-focus-border"
+          className="w-full px-2 py-1 rounded border border-vscode-input-border bg-vscode-input-bg text-vscode-input-fg focus:outline-none focus:border-vscode-focus-border"
         >
           <option value="">-- Select --</option>
           {propSchema.enum.map((opt) => (
@@ -141,7 +141,7 @@ export function ItemPropertyField({
           onChange={(e) => updateField(e.target.checked)}
           className="accent-vscode-checkbox-bg"
         />
-        <label className="text-[11px] text-vscode-description-fg">
+        <label className="text-secondary text-vscode-description-fg">
           {propLabel}{requiredMark}
         </label>
       </div>
@@ -158,12 +158,12 @@ export function ItemPropertyField({
       return (
         <div>
           <div className="flex items-center justify-between mb-0.5">
-            <label className="text-[11px] text-vscode-description-fg">
+            <label className="text-secondary text-vscode-description-fg">
               {propLabel}{requiredMark}
             </label>
             <button
               onClick={() => updateField([...arrValue, isColorArray ? "#000000" : ""])}
-              className="px-1.5 py-0.5 text-[10px] rounded bg-vscode-button-secondary-bg text-vscode-button-secondary-fg hover:opacity-80"
+              className="px-1.5 py-0.5 text-tertiary rounded bg-vscode-button-secondary-bg text-vscode-button-secondary-fg hover:opacity-80"
             >
               + Add
             </button>
@@ -191,14 +191,14 @@ export function ItemPropertyField({
                     newArr[subIndex] = e.target.value;
                     updateField(newArr);
                   }}
-                  className="flex-1 px-2 py-0.5 text-xs rounded border border-vscode-input-border bg-vscode-input-bg text-vscode-input-fg focus:outline-none focus:border-vscode-focus-border"
+                  className="flex-1 px-2 py-0.5 rounded border border-vscode-input-border bg-vscode-input-bg text-vscode-input-fg focus:outline-none focus:border-vscode-focus-border"
                 />
                 <button
                   onClick={() => {
                     const newArr = arrValue.filter((_, i) => i !== subIndex);
                     updateField(newArr);
                   }}
-                  className="text-[10px] text-vscode-error-fg hover:opacity-80 px-0.5"
+                  className="text-tertiary text-vscode-error-fg hover:opacity-80 px-0.5"
                 >
                   {"\u2715"}
                 </button>
@@ -303,7 +303,7 @@ function ItemBooleanObjectField({
         {propLabel}{requiredMark}
       </label>
       <div className="flex items-center gap-3 mt-0.5" role="radiogroup">
-        <label className="flex items-center gap-1.5 text-[11px] cursor-pointer select-none">
+        <label className="flex items-center gap-1.5 text-secondary cursor-pointer select-none">
           <input
             type="radio"
             name={id}
@@ -313,7 +313,7 @@ function ItemBooleanObjectField({
           />
           True
         </label>
-        <label className="flex items-center gap-1.5 text-[11px] cursor-pointer select-none">
+        <label className="flex items-center gap-1.5 text-secondary cursor-pointer select-none">
           <input
             type="radio"
             name={id}
@@ -323,7 +323,7 @@ function ItemBooleanObjectField({
           />
           False
         </label>
-        <label className="flex items-center gap-1.5 text-[11px] cursor-pointer select-none">
+        <label className="flex items-center gap-1.5 text-secondary cursor-pointer select-none">
           <input
             type="radio"
             name={id}

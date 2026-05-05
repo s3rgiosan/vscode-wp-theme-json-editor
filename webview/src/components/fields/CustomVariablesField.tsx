@@ -121,7 +121,7 @@ function NestedEditor({ data, path, setField, depth }: NestedEditorProps) {
   return (
     <div className={depth > 0 ? "ml-3 mt-1 border-l border-vscode-panel-border pl-3" : ""}>
       {entries.length === 0 && depth === 0 && (
-        <p className="text-[11px] text-vscode-description-fg italic mb-2">
+        <p className="text-secondary text-vscode-description-fg italic mb-2">
           No custom variables defined.
         </p>
       )}
@@ -152,7 +152,7 @@ function NestedEditor({ data, path, setField, depth }: NestedEditorProps) {
         <select
           value={newType}
           onChange={(e) => setNewType(e.target.value as "string" | "group")}
-          className="px-1.5 py-1 text-xs rounded border border-vscode-input-border bg-vscode-input-bg text-vscode-input-fg shrink-0"
+          className="px-1.5 py-1 rounded border border-vscode-input-border bg-vscode-input-bg text-vscode-input-fg shrink-0"
         >
           <option value="string">Value</option>
           <option value="group">Group</option>
@@ -178,12 +178,12 @@ function NestedEditor({ data, path, setField, depth }: NestedEditorProps) {
         <button
           onClick={handleAddEntry}
           disabled={!newKey.trim()}
-          className="px-2 py-1 text-[11px] rounded bg-vscode-button-bg text-vscode-button-fg hover:bg-vscode-button-hover disabled:text-vscode-disabled-fg disabled:opacity-60 shrink-0"
+          className="px-2 py-1 text-secondary rounded bg-vscode-button-bg text-vscode-button-fg hover:bg-vscode-button-hover disabled:text-vscode-disabled-fg disabled:opacity-60 shrink-0"
         >
           Add
         </button>
       </div>
-      <p className="text-[10px] text-vscode-description-fg mt-1">
+      <p className="text-tertiary text-vscode-description-fg mt-1">
         Use camelCase for the name (e.g. lineHeight, baseFont).
       </p>
     </div>
@@ -237,12 +237,12 @@ function EntryAccordion({
         {/* Title (clickable to toggle) */}
         <button
           onClick={() => setExpanded(!expanded)}
-          className="flex-1 text-left text-xs font-medium flex items-center gap-1 hover:opacity-80 truncate"
+          className="flex-1 text-left font-medium flex items-center gap-1 hover:opacity-80 truncate"
           title={entryKey}
         >
           {entryKey}
           {isGroup && (
-            <span className="text-[10px] text-vscode-description-fg font-normal ml-1">
+            <span className="text-tertiary text-vscode-description-fg font-normal ml-1">
               ({childCount})
             </span>
           )}
@@ -263,7 +263,7 @@ function EntryAccordion({
         {/* Expand/collapse indicator (with left margin for spacing from delete) */}
         <button
           onClick={() => setExpanded(!expanded)}
-          className="text-[10px] hover:opacity-80 shrink-0 ml-1.5"
+          className="text-tertiary hover:opacity-80 shrink-0 ml-1.5"
           aria-expanded={expanded}
         >
           {expanded ? "\u25BC" : "\u25B6"}
@@ -275,7 +275,7 @@ function EntryAccordion({
         <div className="px-2 py-2 space-y-2">
           {/* Name field (editable key) — extra bottom margin for groups */}
           <div className={isGroup ? "mb-3" : ""}>
-            <label className="block text-[10px] text-vscode-description-fg mb-0.5">
+            <label className="block text-tertiary text-vscode-description-fg mb-0.5">
               Name
             </label>
             <NameField
@@ -300,7 +300,7 @@ function EntryAccordion({
             />
           ) : (
             <div>
-              <label className="block text-[10px] text-vscode-description-fg mb-0.5">
+              <label className="block text-tertiary text-vscode-description-fg mb-0.5">
                 Value
               </label>
               <TextInputWithAutocomplete

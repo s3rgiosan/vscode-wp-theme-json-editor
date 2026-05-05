@@ -130,7 +130,7 @@ export function ArrayField({
   return (
     <div>
       <div className="flex items-center justify-between mb-1">
-        <span className="text-xs font-medium">{label}</span>
+        <span className="font-medium">{label}</span>
         {!showUnitsSelector && (
           <button
             onClick={handleAddItem}
@@ -142,7 +142,7 @@ export function ArrayField({
       </div>
       {description && <Description text={description} className="mb-2" />}
       {!showUnitsSelector && value.length === 0 && showDisableDefaults && (
-        <label className="flex items-center gap-1.5 text-[11px] cursor-pointer select-none mb-1">
+        <label className="flex items-center gap-1.5 text-secondary cursor-pointer select-none mb-1">
           <input
             type="checkbox"
             checked={!isUnset}
@@ -159,7 +159,7 @@ export function ArrayField({
         </label>
       )}
       {!showUnitsSelector && value.length === 0 && (
-        <p className="text-[11px] text-vscode-description-fg italic">
+        <p className="text-secondary text-vscode-description-fg italic">
           {defaultsDisabled
             ? "Defaults are disabled. Click \"+ Add\" to create one."
             : showDisableDefaults
@@ -411,7 +411,7 @@ function SortableArrayItem({
         <span
           {...attributes}
           {...listeners}
-          className="cursor-grab text-vscode-description-fg hover:text-vscode-fg shrink-0 inline-flex items-center justify-center w-4 h-4 text-[10px] -translate-y-px"
+          className="cursor-grab text-vscode-description-fg hover:text-vscode-fg shrink-0 inline-flex items-center justify-center w-4 h-4 text-tertiary -translate-y-px"
           title="Drag to reorder"
         >
           {"\u2630"}
@@ -419,7 +419,7 @@ function SortableArrayItem({
         {/* Title */}
         <button
           onClick={() => toggleExpanded(index)}
-          className="flex-1 text-left text-xs font-medium flex items-center gap-1 hover:opacity-80 truncate"
+          className="flex-1 text-left font-medium flex items-center gap-1 hover:opacity-80 truncate"
         >
           {itemLabel}
           {hasErrors && (
@@ -439,7 +439,7 @@ function SortableArrayItem({
         {/* Expand/collapse indicator */}
         <button
           onClick={() => toggleExpanded(index)}
-          className="text-[10px] hover:opacity-80 shrink-0 ml-1.5"
+          className="text-tertiary hover:opacity-80 shrink-0 ml-1.5"
           aria-expanded={isExpanded}
         >
           {isExpanded ? "\u25BC" : "\u25B6"}

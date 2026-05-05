@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.2] - 2026-05-05
+
+### Fixed
+
+- Webview font sizes no longer hardcoded in pixels. UI text now inherits VS Code's `--vscode-font-size` and scales with `window.zoomLevel`, addressing accessibility concerns around small description text (props [@kazerniel](https://github.com/kazerniel), [#8](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/issues/8)).
+- CodeMirror CSS field now uses `--vscode-editor-font-size` instead of a hardcoded 12px.
+
+### Changed
+
+- Sidebar root navigation and breadcrumbs inherit base body size; hierarchy is conveyed via font weight rather than smaller children.
+- Added em-based Tailwind font-size tokens (`secondary`, `tertiary`, `quaternary`) to replace hardcoded `text-[Npx]` classes across the webview.
+
 ## [1.1.1] - 2026-04-13
 
 ### Added

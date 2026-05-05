@@ -67,18 +67,18 @@ export const CollapsibleChildren = memo(function CollapsibleChildren({
             <div className={ACCORDION_HEADER_CLASS}>
               <button
                 onClick={() => toggle(key)}
-                className="flex-1 text-left text-xs font-medium flex items-center gap-1 hover:opacity-80"
+                className="flex-1 text-left font-medium flex items-center gap-1 hover:opacity-80"
               >
                 {formatLabel(key)}
                 {isExperimental && <ExperimentalBadge />}
                 {isUndocumented && <ExperimentalBadge isUndocumented />}
                 {hasData && (
-                  <span className="text-[10px] text-vscode-description-fg font-normal">configured</span>
+                  <span className="text-tertiary text-vscode-description-fg font-normal">configured</span>
                 )}
               </button>
               <button
                 onClick={() => toggle(key)}
-                className="text-[10px] hover:opacity-80 shrink-0 ml-1.5"
+                className="text-tertiary hover:opacity-80 shrink-0 ml-1.5"
                 aria-expanded={isExpanded}
               >
                 {isExpanded ? "\u25BC" : "\u25B6"}

@@ -49,7 +49,7 @@ export function UnitsSelector({ value, path, setField }: UnitsSelectorProps) {
           <button
             key={unit}
             onClick={() => toggleUnit(unit)}
-            className={`px-2 py-1 text-[11px] rounded border transition-colors ${
+            className={`px-2 py-1 text-secondary rounded border transition-colors ${
               isSelected
                 ? "bg-vscode-button-bg text-vscode-button-fg border-vscode-button-bg"
                 : "border-vscode-panel-border text-vscode-description-fg hover:bg-vscode-list-hover hover:text-vscode-list-hover-fg"

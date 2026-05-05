@@ -19,18 +19,18 @@ export function SaveBar() {
       role="status"
       aria-label="Unsaved changes"
     >
-      <span className="text-xs text-vscode-description-fg mr-auto">
+      <span className="text-vscode-description-fg mr-auto">
         Unsaved changes
       </span>
       <button
         onClick={resetToSaved}
-        className="px-3 py-1 text-xs rounded bg-vscode-button-secondary-bg text-vscode-button-secondary-fg hover:opacity-80"
+        className="px-3 py-1 rounded bg-vscode-button-secondary-bg text-vscode-button-secondary-fg hover:opacity-80"
       >
         Discard
       </button>
       <button
         onClick={handleSave}
-        className="px-3 py-1 text-xs rounded bg-vscode-button-bg text-vscode-button-fg hover:bg-vscode-button-hover"
+        className="px-3 py-1 rounded bg-vscode-button-bg text-vscode-button-fg hover:bg-vscode-button-hover"
       >
         Save
       </button>
