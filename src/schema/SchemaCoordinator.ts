@@ -14,8 +14,10 @@ export interface RawSchemaBundle {
 }
 
 /**
- * Loads the raw schema and core-scan snapshot. Resolution and merging happen
- * client-side in the webview (see @s3rgiosan/theme-json-editor-ui/src/schema).
+ * Loads the raw WP schema and the core-scan snapshot. Resolution and
+ * merging happen in the webview package (off the main thread, via worker)
+ * — single source of truth for both the VS Code extension and the future
+ * WP plugin.
  */
 export class SchemaCoordinator {
   private readonly loader: SchemaLoader;
