@@ -30,9 +30,11 @@ export { Breadcrumbs } from "./components/Breadcrumbs";
 export type {
   HostAdapter,
   HostEvents,
+  HostMode,
   CoreScanSnapshot,
 } from "./host/HostAdapter";
-export { HostProvider, useHost } from "./host/HostContext";
+export { HostProvider } from "./host/HostContext";
+export { useHost } from "./host/useHost";
 export { vscodeHost } from "./host/vscodeHost";
 
 // Store + hooks

@@ -36,12 +36,21 @@ export function CssField({
   const containerRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
   const onChangeRef = useRef(onChange);
-  onChangeRef.current = onChange;
   const skipNextSync = useRef(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const cssVariables = useCssVariables();
   const cssVariablesRef = useRef(cssVariables);
-  cssVariablesRef.current = cssVariables;
+
+  // Keep refs pointed at the latest values so CodeMirror callbacks
+  // (which capture the ref objects, not their `current`) read fresh
+  // data without re-creating the editor on every render.
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
+
+  useEffect(() => {
+    cssVariablesRef.current = cssVariables;
+  }, [cssVariables]);
 
   const createEditor = useCallback(
     (container: HTMLElement, initialDoc: string) => {

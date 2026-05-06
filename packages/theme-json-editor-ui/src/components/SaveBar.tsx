@@ -1,5 +1,5 @@
 import { useEditorStore, performSave } from "../store/editorStore";
-import { useHost } from "../host/HostContext";
+import { useHost } from "../host/useHost";
 
 /**
  * Fixed bottom bar with Save and Discard buttons.

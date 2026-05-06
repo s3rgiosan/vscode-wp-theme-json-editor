@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useEditorStore, performSave } from "../store/editorStore";
-import { useHost } from "../host/HostContext";
+import { useHost } from "../host/useHost";
 import SchemaWorker from "../schema/schema.worker?worker&inline";
 
 /**

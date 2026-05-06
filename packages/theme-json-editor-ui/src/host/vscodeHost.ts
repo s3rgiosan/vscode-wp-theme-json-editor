@@ -1,6 +1,25 @@
-import type { HostToWebviewMessage } from "@shared/messages";
 import { vscodeApi } from "../vscode";
-import type { HostAdapter } from "./HostAdapter";
+import type { CoreScanSnapshot, HostAdapter } from "./HostAdapter";
+
+/**
+ * Subset of the VS Code → webview message protocol the editor cares
+ * about. Defined locally so the package doesn't depend on the
+ * extension's `src/shared/messages.ts` (which would couple consumers
+ * to the extension's path aliases).
+ */
+type HostToWebviewMessage =
+  | { type: "INIT_DATA"; data: Record<string, unknown>; filePath: string }
+  | { type: "FILE_CHANGED"; data: Record<string, unknown> }
+  | { type: "FILE_CHANGED_CONFLICT"; data: Record<string, unknown> }
+  | { type: "FILE_SAVED" }
+  | {
+      type: "SCHEMA_READY";
+      schema: Record<string, unknown>;
+      snapshot: CoreScanSnapshot;
+      schemaVersion: string;
+    }
+  | { type: "SETTINGS"; showExperimentalByDefault: boolean }
+  | { type: "TRIGGER_SAVE" };
 
 /**
  * HostAdapter implementation backed by the VS Code webview API.

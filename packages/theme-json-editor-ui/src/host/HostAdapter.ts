@@ -28,6 +28,18 @@ export interface HostEvents {
   onTriggerSave?: () => void;
 }
 
+/**
+ * Optional mode definition supplied by hosts that expose more than
+ * one editing target. The Toolbar renders a switcher when at least
+ * two modes are available.
+ */
+export interface HostMode {
+  readonly id: string;
+  readonly label: string;
+  readonly disabled?: boolean;
+  readonly disabledReason?: string;
+}
+
 export interface HostAdapter {
   /**
    * Begin emitting events to the listener. Hosts should send the
@@ -41,4 +53,20 @@ export interface HostAdapter {
 
   /** Report dirty-state changes so the host can detect external conflicts. */
   reportDirty(isDirty: boolean): void;
+
+  /**
+   * Optional: declare the editing modes this host exposes. Returning
+   * fewer than two modes (or omitting the method entirely) hides the
+   * Toolbar mode switcher.
+   */
+  modes?(): readonly HostMode[];
+
+  /** Optional: id of the currently active mode. */
+  getMode?(): string;
+
+  /**
+   * Optional: switch the active mode. Hosts should re-emit `onInit`
+   * (and `onSaved`) so the editor reloads the new document.
+   */
+  setMode?(modeId: string): void | Promise<void>;
 }
