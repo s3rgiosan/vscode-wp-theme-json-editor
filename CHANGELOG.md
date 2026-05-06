@@ -7,12 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.2.0] - 2026-05-05
-
 ### Changed
 
-- Repository restructured as an npm workspace monorepo. The webview lives in `packages/theme-json-editor-ui/` as a reusable package.
+- Repository restructured as an npm workspace monorepo. The webview lives in `packages/theme-json-editor-ui/` as a reusable package with a public library entry (`mountEditor`, `App`, layout components, `useEditorStore`, `performSave`, `useHostBootstrap`, schema utilities, host abstraction).
+- Webview is now host-agnostic. New `HostAdapter` interface (`start`, `save`, `reportDirty` + `HostEvents`) sits between the editor and its embedder; the extension supplies a `vscodeHost` adapter via `HostProvider`. Other runtimes (e.g. a WordPress admin plugin) can implement the same interface to mount the editor.
 - Schema resolution and core-scan merging now run in a Web Worker inside the webview. The extension host ships the raw schema and snapshot; the worker merges off the main thread, keeping the UI responsive on first panel open.
+- All design tokens migrated from `--vscode-*` to host-neutral `--tje-*`. Defaults still resolve to `var(--vscode-*, fallback)` so the extension behaves identically inside VS Code; alternative hosts override the `--tje-*` vars to retheme. Tailwind colour namespace renamed `vscode.*` → `tje.*`.
+- Schema assets (`core-scan-snapshot.json`, `theme.json.fallback`) relocated to `packages/theme-json-editor-ui/assets/` as the single source of truth. Extension `SchemaCoordinator` / `SchemaLoader` and the `scripts/scan-core.ts` GitHub Action workflow read from the new path.
+- Secondary button gains a proper border + accent text + dedicated hover states via four new tokens (`--tje-button-secondary-border{,-hover}`, `--tje-button-secondary-{bg,fg}-hover`). `SaveBar` Discard now uses them.
+- Accordion-style wrappers (`CollapsibleChildren`, `ArrayField`, `BlockMapField`, `CustomVariablesField`) clip their inner header backgrounds via `overflow-hidden` so rounded corners render cleanly.
+- Accordion header height bumped from 28px to 30px.
 
 ### Fixed
 
