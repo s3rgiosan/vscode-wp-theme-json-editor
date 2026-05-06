@@ -63,7 +63,7 @@ export const CollapsibleChildren = memo(function CollapsibleChildren({
         const isExpanded = expanded.has(key);
 
         return (
-          <div key={key} className="border border-tje-panel-border rounded">
+          <div key={key} className="border border-tje-panel-border rounded overflow-hidden">
             <div className={ACCORDION_HEADER_CLASS}>
               <button
                 onClick={() => toggle(key)}

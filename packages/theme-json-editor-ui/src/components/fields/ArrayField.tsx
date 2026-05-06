@@ -404,7 +404,7 @@ function SortableArrayItem({
     <div
       ref={setNodeRef}
       style={style}
-      className={`border rounded ${hasErrors ? "border-tje-error-fg" : "border-tje-panel-border"}`}
+      className={`border rounded overflow-hidden ${hasErrors ? "border-tje-error-fg" : "border-tje-panel-border"}`}
     >
       <div className={ACCORDION_HEADER_CLASS}>
         {/* Drag handle */}

@@ -32,6 +32,10 @@ export default {
           "button-hover": "var(--tje-button-hover)",
           "button-secondary-bg": "var(--tje-button-secondary-bg)",
           "button-secondary-fg": "var(--tje-button-secondary-fg)",
+          "button-secondary-border": "var(--tje-button-secondary-border)",
+          "button-secondary-bg-hover": "var(--tje-button-secondary-bg-hover)",
+          "button-secondary-fg-hover": "var(--tje-button-secondary-fg-hover)",
+          "button-secondary-border-hover": "var(--tje-button-secondary-border-hover)",
 
           // Dropdowns
           "dropdown-bg": "var(--tje-dropdown-bg)",

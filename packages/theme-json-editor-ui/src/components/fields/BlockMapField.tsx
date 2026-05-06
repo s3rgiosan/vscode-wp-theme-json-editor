@@ -128,7 +128,7 @@ export function BlockMapField({
         </div>
 
         {showSelector && (
-          <div className="border border-tje-panel-border rounded p-2 mb-2">
+          <div className="border border-tje-panel-border rounded overflow-hidden p-2 mb-2">
             <input
               type="text"
               value={filter}
@@ -179,7 +179,7 @@ export function BlockMapField({
           return (
             <div
               key={blockName}
-              className="border border-tje-panel-border rounded"
+              className="border border-tje-panel-border rounded overflow-hidden"
             >
               <div className={ACCORDION_HEADER_CLASS}>
                 {/* Title (clickable to toggle) */}

@@ -25,13 +25,13 @@ export function SaveBar() {
       </span>
       <button
         onClick={resetToSaved}
-        className="px-3 py-1 rounded bg-tje-button-secondary-bg text-tje-button-secondary-fg hover:opacity-80"
+        className="px-3 py-1 rounded border border-tje-button-secondary-border bg-tje-button-secondary-bg text-tje-button-secondary-fg hover:bg-tje-button-secondary-bg-hover hover:text-tje-button-secondary-fg-hover hover:border-tje-button-secondary-border-hover"
       >
         Discard
       </button>
       <button
         onClick={handleSave}
-        className="px-3 py-1 rounded bg-tje-button-bg text-tje-button-fg hover:bg-tje-button-hover"
+        className="px-3 py-1 rounded border border-transparent bg-tje-button-bg text-tje-button-fg hover:bg-tje-button-hover"
       >
         Save
       </button>

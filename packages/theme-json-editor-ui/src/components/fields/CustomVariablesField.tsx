@@ -232,7 +232,7 @@ function EntryAccordion({
   const liveCssVar = buildCssVarName(livePath.slice(2));
 
   return (
-    <div className="border border-tje-panel-border rounded">
+    <div className="border border-tje-panel-border rounded overflow-hidden">
       <div className={ACCORDION_HEADER_CLASS}>
         {/* Title (clickable to toggle) */}
         <button

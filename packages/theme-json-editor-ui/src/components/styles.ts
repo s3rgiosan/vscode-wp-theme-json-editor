@@ -37,7 +37,7 @@ export const CSS_VAR_PREVIEW_CLASS =
 
 /** Accordion header row. */
 export const ACCORDION_HEADER_CLASS =
-  "flex items-center gap-1 px-2 h-[28px] bg-tje-sidebar-bg";
+  "flex items-center gap-1 px-2 h-[30px] bg-tje-sidebar-bg";
 
 /** Primary action button. */
 export const PRIMARY_BUTTON_CLASS =

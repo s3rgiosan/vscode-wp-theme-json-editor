@@ -29,6 +29,10 @@
   --tje-button-hover: var(--vscode-button-hoverBackground, #135e96);
   --tje-button-secondary-bg: var(--vscode-button-secondaryBackground, #f6f7f7);
   --tje-button-secondary-fg: var(--vscode-button-secondaryForeground, #1d2327);
+  --tje-button-secondary-border: transparent;
+  --tje-button-secondary-bg-hover: var(--vscode-button-secondaryHoverBackground, #e6e6e6);
+  --tje-button-secondary-fg-hover: var(--vscode-button-secondaryForeground, #1d2327);
+  --tje-button-secondary-border-hover: transparent;
 
   --tje-dropdown-bg: var(--vscode-dropdown-background, #ffffff);
   --tje-dropdown-fg: var(--vscode-dropdown-foreground, #1d2327);
