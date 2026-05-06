@@ -16,7 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Schema assets (`core-scan-snapshot.json`, `theme.json.fallback`) relocated to `packages/theme-json-editor-ui/assets/` as the single source of truth. Extension `SchemaCoordinator` / `SchemaLoader` and the `scripts/scan-core.ts` GitHub Action workflow read from the new path.
 - Secondary button gains a proper border + accent text + dedicated hover states via four new tokens (`--tje-button-secondary-border{,-hover}`, `--tje-button-secondary-{bg,fg}-hover`). `SaveBar` Discard now uses them.
 - Accordion-style wrappers (`CollapsibleChildren`, `ArrayField`, `BlockMapField`, `CustomVariablesField`) clip their inner header backgrounds via `overflow-hidden` so rounded corners render cleanly.
-- Accordion header height bumped from 28px to 30px.
+- Accordion header height bumped from 28px to 32px.
+- `HostAdapter` gains optional `modes` / `getMode` / `setMode` so hosts that expose more than one editing target (e.g. a WP admin plugin choosing between theme.json on disk and user global styles) can render a Toolbar mode switcher. No-op for single-mode hosts; VS Code is unchanged.
+- `HostContext` split into `context.ts`, `HostContext.tsx` (provider only), and `useHost.ts` (hook only) to satisfy `react-refresh/only-export-components` and keep fast-refresh boundaries clean.
+- `vscodeHost` no longer imports `@shared/messages` — the package now declares its own subset of the postMessage protocol so consumers don't depend on extension-private path aliases.
+- `CssField` ref synchronisation moved into `useEffect` (drops the previous `react-hooks/refs` eslint disables).
+- CI and Release workflows updated for the npm-workspace layout: a single `npm ci` covers both packages, lint runs via `npm run lint --workspaces --if-present`, and `npm test` exercises the workspace test suites.
 
 ### Fixed
 
