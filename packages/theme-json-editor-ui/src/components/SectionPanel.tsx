@@ -149,7 +149,7 @@ export function SectionPanel({
     return (
       <div>
         <Breadcrumbs path={resolvedPath.join(".")} />
-        <div className="mb-3">
+        <div className="mb-5">
           {renderField({
             key,
             node: resolvedSchema,
@@ -214,7 +214,7 @@ export function SectionPanel({
         const fieldPath = [...resolvedPath, key];
 
         return (
-          <div key={key} className="mb-3">
+          <div key={key} className="mb-5">
             {renderField({
               key,
               node,

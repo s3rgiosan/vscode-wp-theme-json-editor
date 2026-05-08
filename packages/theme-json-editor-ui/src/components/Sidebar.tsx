@@ -207,11 +207,11 @@ function SectionTree({
           : [];
 
         return (
-          <li key={key} role="treeitem" aria-expanded={isTopActive && subSections.length > 0 ? true : undefined}>
+          <li key={key} className="m-0" role="treeitem" aria-expanded={isTopActive && subSections.length > 0 ? true : undefined}>
             <button
               onClick={() => setActiveSection(key)}
               aria-current={isTopActive ? "true" : undefined}
-              className={`w-full text-left px-4 py-1.5 font-medium transition-colors ${
+              className={`w-full text-left px-4 py-2 font-medium transition-colors ${
                 isTopActive
                   ? "text-tje-list-active-fg bg-tje-list-active"
                   : "hover:bg-tje-list-hover hover:text-tje-list-hover-fg"
@@ -230,10 +230,10 @@ function SectionTree({
                   const subKey = `${key}.${sub.key}`;
                   const isSubActive = activeSection === subKey;
                   return (
-                    <li key={subKey}>
+                    <li key={subKey} className="m-0">
                       <button
                         onClick={() => setActiveSection(subKey)}
-                        className={`w-full text-left pl-8 pr-4 py-1 text-secondary transition-colors ${
+                        className={`w-full text-left pl-8 pr-4 py-1.5 text-secondary transition-colors ${
                           isSubActive
                             ? "text-tje-list-active-fg bg-tje-list-active"
                             : "hover:bg-tje-list-hover hover:text-tje-list-hover-fg text-tje-description-fg"
