@@ -12,11 +12,11 @@ const WP_VERSION = "6.7";
 const SCHEMA_URL = `https://schemas.wp.org/wp/${WP_VERSION}/theme.json`;
 const FALLBACK_PATH = path.resolve(
   __dirname,
-  "../src/schema/theme.json.fallback",
+  "../packages/theme-json-editor-ui/assets/theme.json.fallback",
 );
 const OUTPUT_PATH = path.resolve(
   __dirname,
-  "../src/schema/core-scan-snapshot.json",
+  "../packages/theme-json-editor-ui/assets/core-scan-snapshot.json",
 );
 
 async function loadSchema(): Promise<Record<string, unknown>> {

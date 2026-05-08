@@ -30,7 +30,14 @@ export interface FileSavedMessage {
 
 export interface SchemaReadyMessage {
   readonly type: "SCHEMA_READY";
+  /** Raw WP theme.json schema. The webview resolves + merges off-thread. */
   readonly schema: Record<string, unknown>;
+  readonly snapshot: {
+    readonly generatedAt: string;
+    readonly wpVersion: string;
+    readonly experimental: readonly string[];
+    readonly undocumented: readonly string[];
+  };
   readonly schemaVersion: string;
 }
 

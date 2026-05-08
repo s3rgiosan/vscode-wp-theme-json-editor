@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 const SCHEMA_BASE_URL = "https://schemas.wp.org/wp";
 const CACHE_KEY_PREFIX = "wpThemeJsonEditor.schemaCache";
 const ETAG_KEY_PREFIX = "wpThemeJsonEditor.schemaEtag";
-const FALLBACK_PATH = "src/schema/theme.json.fallback";
+const FALLBACK_PATH = "packages/theme-json-editor-ui/assets/theme.json.fallback";
 
 interface CachedSchema {
   readonly schema: Record<string, unknown>;

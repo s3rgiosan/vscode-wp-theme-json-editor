@@ -21,29 +21,17 @@ jobs:
           node-version: "lts/*"
           cache: npm
 
-      - name: Install root dependencies
+      - name: Install dependencies
         run: npm ci
 
-      - name: Install webview dependencies
-        run: cd webview && npm ci
-
       - name: Lint extension
-        run: npx eslint src/
+        run: npm run lint
 
-      - name: Lint webview
-        run: cd webview && npx eslint src/
+      - name: Lint workspaces
+        run: npm run lint --workspaces --if-present
 
-      - name: Type-check extension
-        run: npx tsc --noEmit
-
-      - name: Type-check webview
-        run: cd webview && npx tsc
-
-      - name: Test root
+      - name: Test
         run: npm test
-
-      - name: Test webview
-        run: cd webview && npm test
 
       - name: Build
         run: npm run build

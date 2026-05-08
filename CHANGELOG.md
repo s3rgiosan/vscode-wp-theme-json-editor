@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-05-08
+
+### Changed
+
+- Repository restructured as an npm workspace monorepo. The webview lives in `packages/theme-json-editor-ui/` as a reusable package with a public library entry (`mountEditor`, `App`, layout components, `useEditorStore`, `performSave`, `useHostBootstrap`, schema utilities, host abstraction).
+- Webview is now host-agnostic. New `HostAdapter` interface (`start`, `save`, `reportDirty` + `HostEvents`) sits between the editor and its embedder; the extension supplies a `vscodeHost` adapter via `HostProvider`. Other runtimes (e.g. a WordPress admin plugin) can implement the same interface to mount the editor.
+- Schema resolution and core-scan merging now run in a Web Worker inside the webview. The extension host ships the raw schema and snapshot; the worker merges off the main thread, keeping the UI responsive on first panel open.
+- All design tokens migrated from `--vscode-*` to host-neutral `--tje-*`. Defaults still resolve to `var(--vscode-*, fallback)` so the extension behaves identically inside VS Code; alternative hosts override the `--tje-*` vars to retheme. Tailwind colour namespace renamed `vscode.*` → `tje.*`.
+- Schema assets (`core-scan-snapshot.json`, `theme.json.fallback`) relocated to `packages/theme-json-editor-ui/assets/` as the single source of truth. Extension `SchemaCoordinator` / `SchemaLoader` and the `scripts/scan-core.ts` GitHub Action workflow read from the new path.
+- Secondary button gains a proper border + accent text + dedicated hover states via four new tokens (`--tje-button-secondary-border{,-hover}`, `--tje-button-secondary-{bg,fg}-hover`). `SaveBar` Discard now uses them.
+- Accordion-style wrappers (`CollapsibleChildren`, `ArrayField`, `BlockMapField`, `CustomVariablesField`) clip their inner header backgrounds via `overflow-hidden` so rounded corners render cleanly.
+- Accordion header height bumped from 28px to 32px.
+- `HostAdapter` gains optional `modes` / `getMode` / `setMode` so hosts that expose more than one editing target (e.g. a WP admin plugin choosing between theme.json on disk and user global styles) can render a Toolbar mode switcher. No-op for single-mode hosts; VS Code is unchanged.
+- `HostContext` split into `context.ts`, `HostContext.tsx` (provider only), and `useHost.ts` (hook only) to satisfy `react-refresh/only-export-components` and keep fast-refresh boundaries clean.
+- `vscodeHost` no longer imports `@shared/messages` — the package now declares its own subset of the postMessage protocol so consumers don't depend on extension-private path aliases.
+- `CssField` ref synchronisation moved into `useEffect` (drops the previous `react-hooks/refs` eslint disables).
+- CI and Release workflows updated for the npm-workspace layout: a single `npm ci` covers both packages, lint runs via `npm run lint --workspaces --if-present`, and `npm test` exercises the workspace test suites.
+- Sidebar items have roomier vertical padding (top-level `py-1.5` → `py-2`, sub-section `py-1` → `py-1.5`) and zero `<li>` margin so host-injected list styles don't add gaps.
+- Field containers in `SectionPanel` use `mb-5` (was `mb-3`) for clearer separation between consecutive settings.
+
+### Fixed
+
+- Webview CSP updated to allow `blob:` workers (`script-src ... blob:`, `worker-src blob:`). Without this the schema-merge worker was blocked and the panel hung on "Loading schema...".
+
 ## [1.1.2] - 2026-05-05
 
 ### Fixed
@@ -75,6 +99,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extension settings: `defaultLayout`, `showExperimentalByDefault`, `schemaVersion`.
 - CI/CD: GitHub Actions for CI, release, and weekly core-scan refresh.
 
-[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.1.0...HEAD
+[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.2.0...HEAD
+[1.2.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.1.2...1.2.0
+[1.1.2]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.1.1...1.1.2
+[1.1.1]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/releases/tag/1.0.0

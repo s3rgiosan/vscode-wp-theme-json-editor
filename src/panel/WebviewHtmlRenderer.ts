@@ -15,7 +15,8 @@ export class WebviewHtmlRenderer {
   render(webview: vscode.Webview): string {
     const distUri = vscode.Uri.joinPath(
       this.extensionUri,
-      "webview",
+      "packages",
+      "theme-json-editor-ui",
       "dist",
     );
 
@@ -36,7 +37,8 @@ export class WebviewHtmlRenderer {
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'none';
              style-src ${webview.cspSource} 'unsafe-inline';
-             script-src 'nonce-${nonce}';
+             script-src 'nonce-${nonce}' blob:;
+             worker-src blob:;
              font-src ${webview.cspSource};
              img-src ${webview.cspSource} data:;" />
   <link rel="stylesheet" href="${styleUri}" />
