@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-05-08
+
 ### Changed
 
 - Repository restructured as an npm workspace monorepo. The webview lives in `packages/theme-json-editor-ui/` as a reusable package with a public library entry (`mountEditor`, `App`, layout components, `useEditorStore`, `performSave`, `useHostBootstrap`, schema utilities, host abstraction).
@@ -22,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `vscodeHost` no longer imports `@shared/messages` — the package now declares its own subset of the postMessage protocol so consumers don't depend on extension-private path aliases.
 - `CssField` ref synchronisation moved into `useEffect` (drops the previous `react-hooks/refs` eslint disables).
 - CI and Release workflows updated for the npm-workspace layout: a single `npm ci` covers both packages, lint runs via `npm run lint --workspaces --if-present`, and `npm test` exercises the workspace test suites.
+- Sidebar items have roomier vertical padding (top-level `py-1.5` → `py-2`, sub-section `py-1` → `py-1.5`) and zero `<li>` margin so host-injected list styles don't add gaps.
+- Field containers in `SectionPanel` use `mb-5` (was `mb-3`) for clearer separation between consecutive settings.
 
 ### Fixed
 
@@ -95,6 +99,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extension settings: `defaultLayout`, `showExperimentalByDefault`, `schemaVersion`.
 - CI/CD: GitHub Actions for CI, release, and weekly core-scan refresh.
 
-[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.1.0...HEAD
+[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.2.0...HEAD
+[1.2.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.1.2...1.2.0
+[1.1.2]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.1.1...1.1.2
+[1.1.1]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/releases/tag/1.0.0
