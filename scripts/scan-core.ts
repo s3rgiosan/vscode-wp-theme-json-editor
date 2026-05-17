@@ -6,7 +6,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { scanCore } from "../src/scanner/CoreScanner.js";
 import { extractSchemaPropertyPaths } from "../src/scanner/schemaProperties.js";
-import { SchemaResolver } from "../src/schema/SchemaResolver.js";
+import { SchemaResolver } from "../packages/theme-json-editor-ui/src/schema/SchemaResolver.js";
 
 const WP_VERSION = "6.7";
 const SCHEMA_URL = `https://schemas.wp.org/wp/${WP_VERSION}/theme.json`;
