@@ -38,6 +38,12 @@ export interface HostMode {
   readonly label: string;
   readonly disabled?: boolean;
   readonly disabledReason?: string;
+  /**
+   * Render this mode indented beneath the preceding top-level mode.
+   * Used to express the `theme.json` → `styles/*.json` hierarchy in the
+   * picker without the UI hardcoding any file semantics.
+   */
+  readonly indent?: boolean;
 }
 
 export interface HostAdapter {

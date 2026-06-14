@@ -14,7 +14,7 @@ A Visual Studio Code extension that provides a form-driven visual editor for Wor
 - **Section navigation** — Sidebar with sub-section drill-down for Settings, Styles, Custom Templates, Template Parts, and Patterns.
 - **CSS variable autocomplete** — Text inputs and CSS editors suggest `--wp--preset--*` and `--wp--custom--*` variables derived from the current theme.json data. Triggers on `var(--` or `--wp`.
 - **CSS variable name preview** — Preset items (palette, gradients, font sizes, shadows, etc.) display their generated CSS variable name below each entry.
-- **Keyboard shortcuts** — `Cmd+S` / `Ctrl+S` saves while the editor panel is focused. `Cmd+Shift+T` / `Ctrl+Shift+T` opens the editor on a `theme.json` file.
+- **Keyboard shortcuts** — `Cmd+S` / `Ctrl+S` saves while the editor panel is focused. `Cmd+Shift+T` / `Ctrl+Shift+T` opens the editor on a `theme.json` or `styles/*.json` file.
 - **Color picker** — Native color input for palette entries, duotone colors, and any color-related property.
 - **CSS editor** — CodeMirror 6 with syntax highlighting for CSS and JSON fields, plus CSS variable autocomplete. CSS is minified on save and prettified on load. Inline lint errors for JSON syntax issues.
 - **Array management** — Add, edit, remove, and drag-to-reorder items in palettes, font families, spacing scales, and more. Context-aware labels ("Palette 1", "Font Family 1").
@@ -37,7 +37,7 @@ A Visual Studio Code extension that provides a form-driven visual editor for Wor
 
 Install "WP Theme JSON Editor" from the VS Code Marketplace, then:
 
-1. Open a project containing a `theme.json` file.
+1. Open a project containing a `theme.json` file, or a style variation under the theme's `styles/` folder (e.g. `styles/dark.json`).
 2. Right-click the file in the Explorer → **Open in WP Theme JSON Editor**.
 3. Or press `Cmd+Shift+T` (Mac) / `Ctrl+Shift+T` (Windows/Linux) while the file is active.
 
