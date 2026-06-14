@@ -57,7 +57,7 @@
     "menus": {
       "explorer/context": [
         {
-          "when": "resourceFilename == 'theme.json'",
+          "when": "resourceFilename == 'theme.json' || (resourceExtname == '.json' && resourcePath =~ /[\\\\/]styles[\\\\/]/)",
           "command": "wpThemeJsonEditor.open",
           "group": "navigation@100"
         }
@@ -98,7 +98,7 @@
         "command": "wpThemeJsonEditor.open",
         "key": "ctrl+shift+t",
         "mac": "cmd+shift+t",
-        "when": "resourceFilename == 'theme.json'"
+        "when": "resourceFilename == 'theme.json' || (resourceExtname == '.json' && resourcePath =~ /[\\\\/]styles[\\\\/]/)"
       },
       {
         "command": "wpThemeJsonEditor.save",

@@ -5,6 +5,7 @@
  */
 import * as vscode from "vscode";
 import { PanelManager } from "./panel/PanelManager.js";
+import { isEditableThemeFile } from "./file/isEditableThemeFile.js";
 
 /**
  * Called when the extension is activated.
@@ -17,7 +18,7 @@ export function activate(context: vscode.ExtensionContext): void {
       const fileUri = resolveFileUri(uri);
       if (!fileUri) {
         void vscode.window.showWarningMessage(
-          "No theme.json file selected. Open or right-click a theme.json file first.",
+          "No theme JSON file selected. Open or right-click a theme.json or styles/*.json file first.",
         );
         return;
       }
@@ -39,7 +40,7 @@ export function activate(context: vscode.ExtensionContext): void {
       const fileUri = resolveFileUri(uri);
       if (!fileUri) {
         void vscode.window.showWarningMessage(
-          "No theme.json file selected. Open or right-click a theme.json file first.",
+          "No theme JSON file selected. Open or right-click a theme.json or styles/*.json file first.",
         );
         return;
       }
@@ -58,7 +59,7 @@ export function activate(context: vscode.ExtensionContext): void {
       const fileUri = resolveFileUri(uri);
       if (!fileUri) {
         void vscode.window.showWarningMessage(
-          "No theme.json file selected. Open or right-click a theme.json file first.",
+          "No theme JSON file selected. Open or right-click a theme.json or styles/*.json file first.",
         );
         return;
       }
@@ -97,7 +98,7 @@ function resolveFileUri(uri: vscode.Uri | undefined): vscode.Uri | undefined {
   }
 
   const activeEditor = vscode.window.activeTextEditor;
-  if (activeEditor && activeEditor.document.fileName.endsWith("theme.json")) {
+  if (activeEditor && isEditableThemeFile(activeEditor.document.fileName)) {
     return activeEditor.document.uri;
   }
 
