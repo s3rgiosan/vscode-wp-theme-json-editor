@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-06-14
+
+### Added
+
+- Edit theme style variations: the visual editor now opens on `*.json` files located under a theme's `styles/` directory, not only `theme.json`. Matching is recursive (mirroring core's `WP_Theme_JSON_Resolver::get_style_variations()`), so nested variation files are included. Available from the Explorer context menu, `Cmd/Ctrl+Shift+T`, and the command palette ([#14](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/issues/14)).
+- The name of the file being edited is shown in the editor header, next to the title. Omitted for non-file sources (e.g. a host's database-backed global styles).
+
+### Changed
+
+- The webview's editing-target switcher — rendered only by hosts that expose more than one target (e.g. the [WP Theme JSON Editor plugin](https://github.com/s3rgiosan/wp-theme-json-editor)) — is now a custom dropdown that lists `theme.json` with its `styles/*.json` variations indented beneath it. It implements the ARIA select-only combobox pattern and is fully keyboard-accessible (Arrow/Home/End to move, Enter/Space to select, Escape to dismiss). VS Code is unchanged: it edits one file per panel and does not show the switcher.
+
 ## [1.2.0] - 2026-05-08
 
 ### Changed
