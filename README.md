@@ -71,7 +71,24 @@ npm run build
 |---|---|---|
 | `wpThemeJsonEditor.defaultLayout` | `tab` | Default layout: `sidePanel` or `tab` |
 | `wpThemeJsonEditor.showExperimentalByDefault` | `false` | Show experimental/undocumented properties on open |
+| `wpThemeJsonEditor.includePatterns` | `["**/theme.json", "**/styles/**/*.json"]` | Glob patterns for files the editor can open. A file is editable if its path matches any pattern. |
 | `wpThemeJsonEditor.schemaVersion` | `auto` | Schema version: `auto`, `6.6`, `6.7`, or `trunk` |
+
+### Editing theme JSON in other locations
+
+By default the editor opens `theme.json` and style variations under `styles/`. To open theme JSON kept elsewhere, add patterns to `wpThemeJsonEditor.includePatterns`:
+
+```jsonc
+"wpThemeJsonEditor.includePatterns": [
+  "**/theme.json",
+  "**/styles/**/*.json",
+  "**/src/theme-json/**/*.json"
+]
+```
+
+Partial files don't need to be a complete `theme.json` — any JSON object is accepted, and validation only flags fields that are present.
+
+> **Note:** Until you set `includePatterns`, the Explorer right-click menu appears only for `theme.json` and files under `styles/`. Once you've defined your own patterns, the menu appears on every `.json` file; choosing one that doesn't match your patterns shows a warning instead of opening. The Command Palette (**WP Theme JSON: Open…**) and the `Cmd+Shift+T` / `Ctrl+Shift+T` shortcut always honor your patterns.
 
 ## Development
 

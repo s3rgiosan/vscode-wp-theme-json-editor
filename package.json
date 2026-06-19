@@ -2,7 +2,7 @@
   "name": "vscode-wp-theme-json-editor",
   "displayName": "WP Theme JSON Editor",
   "description": "A form-driven visual editor for WordPress theme.json files",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "publisher": "s3rgiosan",
   "license": "GPL-3.0-only",
   "icon": "assets/icon.png",
@@ -57,7 +57,7 @@
     "menus": {
       "explorer/context": [
         {
-          "when": "resourceFilename == 'theme.json' || (resourceExtname == '.json' && resourcePath =~ /[\\\\/]styles[\\\\/]/)",
+          "when": "resourceFilename == 'theme.json' || (resourceExtname == '.json' && resourcePath =~ /[\\\\/]styles[\\\\/]/) || (wpThemeJsonEditor.hasCustomPatterns && resourceExtname == '.json')",
           "command": "wpThemeJsonEditor.open",
           "group": "navigation@100"
         }
@@ -80,6 +80,17 @@
           "default": false,
           "description": "Show experimental and undocumented properties by default."
         },
+        "wpThemeJsonEditor.includePatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "**/theme.json",
+            "**/styles/**/*.json"
+          ],
+          "markdownDescription": "Glob patterns for files the editor can open. A file is editable if its path matches any pattern. Defaults cover `theme.json` and style variations under `styles/`; add patterns to cover partial theme JSON (e.g. `**/src/theme-json/**/*.json`). Note: the Explorer right-click menu uses a fixed rule and only appears for `theme.json` and `styles/**`; for other locations use the Command Palette or keyboard shortcut."
+        },
         "wpThemeJsonEditor.schemaVersion": {
           "type": "string",
           "enum": [
@@ -98,7 +109,7 @@
         "command": "wpThemeJsonEditor.open",
         "key": "ctrl+shift+t",
         "mac": "cmd+shift+t",
-        "when": "resourceFilename == 'theme.json' || (resourceExtname == '.json' && resourcePath =~ /[\\\\/]styles[\\\\/]/)"
+        "when": "wpThemeJsonEditor.activeFileEditable"
       },
       {
         "command": "wpThemeJsonEditor.save",
@@ -111,6 +122,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "dependencies": {
+    "minimatch": "^10.2.5"
+  },
   "scripts": {
     "dev:ext": "tsc -watch -p ./",
     "dev:webview": "npm run dev -w @s3rgiosan/theme-json-editor-ui",

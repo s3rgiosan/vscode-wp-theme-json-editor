@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-06-19
+
+### Added
+
+- `wpThemeJsonEditor.includePatterns` setting — a glob allowlist (matched against the file path) for the files the editor can open. Lets you edit theme JSON kept outside the defaults, such as partial files compiled into `theme.json` at build time. Defaults cover `theme.json` and `*.json` variations under `styles/`; a file is editable when its path matches any pattern ([#14](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/issues/14)).
+
+### Changed
+
+- File discovery is now glob-based (via `minimatch`) and driven by `includePatterns`. The Command Palette and `Cmd/Ctrl+Shift+T` honor the configured patterns; the keybinding's `when`-clause tracks the active file through a context key rather than a hard-coded path rule.
+- Once you define your own `includePatterns`, the Explorer right-click menu widens from `theme.json`/`styles/**` to every `.json` file. The open command re-validates the chosen file against your patterns and shows a warning instead of opening a non-match. Without custom patterns the menu is unchanged.
+
 ## [1.3.0] - 2026-06-14
 
 ### Added

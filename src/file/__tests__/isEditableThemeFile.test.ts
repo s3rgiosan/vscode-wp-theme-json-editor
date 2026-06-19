@@ -46,4 +46,39 @@ describe("isEditableThemeFile", () => {
   it("rejects a file named theme.json.bak", () => {
     expect(isEditableThemeFile("/themes/my-theme/theme.json.bak")).toBe(false);
   });
+
+  describe("custom include patterns", () => {
+    const patterns = ["**/theme.json", "**/src/theme-json/**/*.json"];
+
+    it("matches a partial JSON under a configured src directory", () => {
+      expect(
+        isEditableThemeFile("/themes/my-theme/src/theme-json/colors.json", patterns),
+      ).toBe(true);
+      expect(
+        isEditableThemeFile(
+          "/themes/my-theme/src/theme-json/settings/typography.json",
+          patterns,
+        ),
+      ).toBe(true);
+    });
+
+    it("still matches theme.json with custom patterns", () => {
+      expect(isEditableThemeFile("/themes/my-theme/theme.json", patterns)).toBe(true);
+    });
+
+    it("rejects styles/ when the custom patterns omit it", () => {
+      expect(
+        isEditableThemeFile("/themes/my-theme/styles/dark.json", patterns),
+      ).toBe(false);
+    });
+
+    it("matches Windows paths against custom patterns", () => {
+      expect(
+        isEditableThemeFile(
+          "C:\\themes\\my-theme\\src\\theme-json\\colors.json",
+          patterns,
+        ),
+      ).toBe(true);
+    });
+  });
 });
