@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-22T12:14:45.939Z",
+  "generatedAt": "2026-06-29T11:10:46.951Z",
   "wpVersion": "6.7",
   "experimental": [
     "__experimentalBorder",
@@ -112,9 +112,11 @@
     "styles.textColumns",
     "styles.textDecoration",
     "styles.textIndent",
+    "styles.textShadow",
     "styles.textTransform",
     "styles.top",
     "styles.typography.textIndent",
+    "styles.typography.textShadow",
     "styles.width",
     "styles.writingMode"
   ]
