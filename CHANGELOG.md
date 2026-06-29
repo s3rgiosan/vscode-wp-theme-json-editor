@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.1] - 2026-06-29
+
+### Added
+
+- Core-scan definitions refreshed: `styles.textShadow` and `styles.typography.textShadow` are now recognized as undocumented theme.json properties and editable in the visual editor ([#19](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/19)).
+
 ## [1.4.0] - 2026-06-19
 
 ### Added
