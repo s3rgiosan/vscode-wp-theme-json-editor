@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Extension failed to activate (`command 'wpThemeJsonEditor.open' not found`) because the `minimatch` runtime dependency was excluded from the packaged VSIX — `.vscodeignore` ignores `node_modules` and the extension host was shipped unbundled. The extension host is now bundled with esbuild, inlining runtime dependencies so packaging no longer relies on `node_modules` being present.
+
 ## [1.4.1] - 2026-06-29
 
 ### Added
