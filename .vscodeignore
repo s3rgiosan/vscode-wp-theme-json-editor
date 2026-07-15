@@ -27,3 +27,4 @@ PLAN.md
 icon.svg
 vitest.config.ts
 tsconfig.json
+esbuild.mjs

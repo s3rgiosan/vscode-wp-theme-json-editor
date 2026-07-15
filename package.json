@@ -126,16 +126,18 @@
     "minimatch": "^10.2.5"
   },
   "scripts": {
-    "dev:ext": "tsc -watch -p ./",
+    "dev:ext": "node esbuild.mjs --watch",
     "dev:webview": "npm run dev -w @s3rgiosan/theme-json-editor-ui",
     "dev": "concurrently \"npm:dev:ext\" \"npm:dev:webview\"",
-    "build:ext": "tsc -p ./",
+    "build:ext": "node esbuild.mjs --production",
     "build:webview": "npm run build -w @s3rgiosan/theme-json-editor-ui",
     "build": "npm run build:ext && npm run build:webview",
+    "check-types": "tsc --noEmit",
     "lint": "eslint src/ && tsc --noEmit",
     "lint:fix": "eslint src/ --fix",
     "test": "vitest run && npm run test -w @s3rgiosan/theme-json-editor-ui",
     "test:watch": "vitest",
+    "vscode:prepublish": "npm run build",
     "package": "npx @vscode/vsce package"
   },
   "devDependencies": {
@@ -143,6 +145,7 @@
     "@types/node": "^20.11.0",
     "@types/vscode": "^1.85.0",
     "concurrently": "^8.2.2",
+    "esbuild": "^0.24.0",
     "eslint": "^9.39.4",
     "typescript": "^5.3.3",
     "typescript-eslint": "^8.57.1",
