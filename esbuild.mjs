@@ -1,7 +1,14 @@
 import esbuild from 'esbuild';
+import { rmSync } from 'node:fs';
 
 const production = process.argv.includes( '--production' );
 const watch = process.argv.includes( '--watch' );
+
+// Remove any stale output before building. esbuild only writes out/extension.js,
+// so leftover files from a previous unbundled (tsc) build — including the old
+// out/file/isEditableThemeFile.js that still requires minimatch — would otherwise
+// linger and get packed into the VSIX.
+rmSync( 'out', { recursive: true, force: true } );
 
 /**
  * Bundle the extension host entry point into a single self-contained file.

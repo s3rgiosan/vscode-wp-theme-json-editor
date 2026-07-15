@@ -7,9 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-07-16
+
+### Added
+
+- Core-scan definitions refreshed: `settings.mobile`, `settings.tablet`, `settings.viewport`, `settings.viewport.mobile`, and `settings.viewport.tablet` are now recognized as undocumented theme.json properties and editable in the visual editor ([#22](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/22)).
+
+### Changed
+
+- The "Experimental" and "Undocumented" badge tooltips now explain each category distinctly — experimental means a prefixed `__experimental` core API; undocumented means a property valid in WordPress core but not yet in the published theme.json schema.
+
 ### Fixed
 
-- Extension failed to activate (`command 'wpThemeJsonEditor.open' not found`) because the `minimatch` runtime dependency was excluded from the packaged VSIX — `.vscodeignore` ignores `node_modules` and the extension host was shipped unbundled. The extension host is now bundled with esbuild, inlining runtime dependencies so packaging no longer relies on `node_modules` being present.
+- Extension failed to activate (`command 'wpThemeJsonEditor.open' not found`) because the `minimatch` runtime dependency was excluded from the packaged VSIX — `.vscodeignore` ignores `node_modules` and the extension host was shipped unbundled. The extension host is now bundled with esbuild, inlining runtime dependencies so packaging no longer relies on `node_modules` being present (props [@mzilley](https://github.com/mzilley), [#21](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/21)).
+- Undocumented properties that are also parents of deeper properties are now typed as objects rather than plain strings, so the editor renders them as nested sections. `settings.viewport` now shows editable `mobile`/`tablet` breakpoint fields instead of a single text input.
 
 ## [1.4.1] - 2026-06-29
 
@@ -131,7 +142,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extension settings: `defaultLayout`, `showExperimentalByDefault`, `schemaVersion`.
 - CI/CD: GitHub Actions for CI, release, and weekly core-scan refresh.
 
-[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.2.0...HEAD
+[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.5.0...HEAD
+[1.5.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.4.1...1.5.0
 [1.2.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.1.2...1.2.0
 [1.1.2]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.1.1...1.1.2
 [1.1.1]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.1.0...1.1.1

@@ -51,6 +51,92 @@ describe("SchemaMerger", () => {
     expect(prop["x-wpthemejsoneditor-undocumented"]).toBe(true);
   });
 
+  it("types an undocumented path with descendants as an object", () => {
+    const schema = { properties: {} };
+    const snapshot = {
+      generatedAt: "",
+      wpVersion: "6.7",
+      experimental: [],
+      undocumented: [
+        "settings.viewport",
+        "settings.viewport.mobile",
+        "settings.viewport.tablet",
+      ],
+    };
+
+    const merged = merger.merge(schema, snapshot);
+    const settingsProps = (
+      (
+        (merged["properties"] as Record<string, unknown>)[
+          "settings"
+        ] as Record<string, unknown>
+      )["properties"] as Record<string, unknown>
+    );
+    const viewport = settingsProps["viewport"] as Record<string, unknown>;
+
+    expect(viewport["type"]).toBe("object");
+    expect(viewport["x-wpthemejsoneditor-undocumented"]).toBe(true);
+
+    const viewportProps = viewport["properties"] as Record<string, unknown>;
+    const mobile = viewportProps["mobile"] as Record<string, unknown>;
+    const tablet = viewportProps["tablet"] as Record<string, unknown>;
+
+    expect(mobile).toBeDefined();
+    expect(mobile["type"]).toBe("string");
+    expect(mobile["x-wpthemejsoneditor-undocumented"]).toBe(true);
+    expect(tablet).toBeDefined();
+    expect(tablet["type"]).toBe("string");
+  });
+
+  it("keeps an undocumented leaf without descendants as a string", () => {
+    const schema = { properties: {} };
+    const snapshot = {
+      generatedAt: "",
+      wpVersion: "6.7",
+      experimental: [],
+      undocumented: ["settings.mobile", "settings.tablet"],
+    };
+
+    const merged = merger.merge(schema, snapshot);
+    const settingsProps = (
+      (
+        (merged["properties"] as Record<string, unknown>)[
+          "settings"
+        ] as Record<string, unknown>
+      )["properties"] as Record<string, unknown>
+    );
+    const mobile = settingsProps["mobile"] as Record<string, unknown>;
+
+    expect(mobile["type"]).toBe("string");
+    expect(mobile["x-wpthemejsoneditor-undocumented"]).toBe(true);
+  });
+
+  it("types a parent as an object regardless of injection order", () => {
+    const schema = { properties: {} };
+    const snapshot = {
+      generatedAt: "",
+      wpVersion: "6.7",
+      experimental: [],
+      // Child listed before the parent leaf.
+      undocumented: ["settings.viewport.mobile", "settings.viewport"],
+    };
+
+    const merged = merger.merge(schema, snapshot);
+    const settingsProps = (
+      (
+        (merged["properties"] as Record<string, unknown>)[
+          "settings"
+        ] as Record<string, unknown>
+      )["properties"] as Record<string, unknown>
+    );
+    const viewport = settingsProps["viewport"] as Record<string, unknown>;
+
+    expect(viewport["type"]).toBe("object");
+    expect(viewport["x-wpthemejsoneditor-undocumented"]).toBe(true);
+    const viewportProps = viewport["properties"] as Record<string, unknown>;
+    expect(viewportProps["mobile"]).toBeDefined();
+  });
+
   it("does not mutate the input schema", () => {
     const schema = { properties: { a: { type: "string" } } };
     const snapshot = {

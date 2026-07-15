@@ -2,7 +2,7 @@
   "name": "vscode-wp-theme-json-editor",
   "displayName": "WP Theme JSON Editor",
   "description": "A form-driven visual editor for WordPress theme.json files",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "publisher": "s3rgiosan",
   "license": "GPL-3.0-only",
   "icon": "assets/icon.png",
@@ -122,9 +122,6 @@
   "workspaces": [
     "packages/*"
   ],
-  "dependencies": {
-    "minimatch": "^10.2.5"
-  },
   "scripts": {
     "dev:ext": "node esbuild.mjs --watch",
     "dev:webview": "npm run dev -w @s3rgiosan/theme-json-editor-ui",
@@ -133,7 +130,7 @@
     "build:webview": "npm run build -w @s3rgiosan/theme-json-editor-ui",
     "build": "npm run build:ext && npm run build:webview",
     "check-types": "tsc --noEmit",
-    "lint": "eslint src/ && tsc --noEmit",
+    "lint": "eslint src/ && npm run check-types",
     "lint:fix": "eslint src/ --fix",
     "test": "vitest run && npm run test -w @s3rgiosan/theme-json-editor-ui",
     "test:watch": "vitest",
@@ -147,6 +144,7 @@
     "concurrently": "^8.2.2",
     "esbuild": "^0.24.0",
     "eslint": "^9.39.4",
+    "minimatch": "^10.2.5",
     "typescript": "^5.3.3",
     "typescript-eslint": "^8.57.1",
     "vitest": "^4.1.0"
