@@ -2,6 +2,10 @@ import { create } from "zustand";
 import { minifyCss, prettifyCss } from "../utils/css";
 import { getNestedValue, setNestedValue, removeNestedValue, pruneEmptyObjects } from "../utils/nested";
 import { validateThemeJson, type ValidationError } from "../utils/validate";
+import {
+  VARIATION_SECTION,
+  hasVariationSection,
+} from "../utils/variationSection";
 import type { HostAdapter } from "../host/HostAdapter";
 
 /**
@@ -73,11 +77,14 @@ export const useEditorStore = create<EditorStore>((set) => ({
 
   setInitialData: (data, filePath) => {
     const prettified = prettifyCssFields(data);
+    // A style variation opens on its own metadata; anything else on Settings.
+    const isVariation = hasVariationSection(filePath, prettified);
     set({
       themeJson: prettified,
       savedThemeJson: structuredClone(prettified),
       isDirty: false,
       filePath,
+      activeSection: isVariation ? VARIATION_SECTION : "settings",
     });
   },
 

@@ -9,6 +9,10 @@ import { CollapsibleChildren } from "./CollapsibleChildren";
 import { BlockMapField } from "./fields/BlockMapField";
 import { ArrayField } from "./fields/ArrayField";
 import { renderField, resolveSchemaNode, type SchemaNode } from "./fieldRenderer";
+import {
+  VARIATION_SECTION,
+  buildVariationSchemaNode,
+} from "../utils/variationSection";
 
 interface SectionPanelProps {
   /** Active section key like "settings" or "settings.color" */
@@ -34,10 +38,15 @@ export function SectionPanel({
   const showExperimental = useEditorStore((s) => s.showExperimental);
   const setField = useEditorStore((s) => s.setField);
 
+  // The Variation section groups root-level keys, so it has no schema node
+  // of its own and its fields are written at the document root.
+  const isVariationSection = depth === 0 && section === VARIATION_SECTION;
+
   const sectionParts = section ? section.split(".") : [];
-  const resolvedPath = path ?? sectionParts;
-  const resolvedSchema =
-    schemaNode ?? resolveSchemaNode(schema as SchemaNode, resolvedPath);
+  const resolvedPath = isVariationSection ? [] : (path ?? sectionParts);
+  const resolvedSchema = isVariationSection
+    ? buildVariationSchemaNode(schema as SchemaNode)
+    : (schemaNode ?? resolveSchemaNode(schema as SchemaNode, resolvedPath));
 
   // Stable callbacks passed to renderField to avoid circular imports.
   // useCallback ensures memo'd children don't re-render when SectionPanel does.

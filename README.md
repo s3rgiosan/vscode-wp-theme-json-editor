@@ -21,6 +21,7 @@ A Visual Studio Code extension that provides a form-driven visual editor for Wor
 - **Spacing units** — Toggleable chip selector for CSS units supported by the WordPress block editor (px, em, rem, %, vw, vh, and viewport variants).
 - **Block-level overrides** — Accordion-based block editor with search. Core blocks render the full per-block schema; custom blocks get a JSON editor.
 - **Style variations** — Free-form variation editor for `styles.variations` with the full styles schema per variation.
+- **Variation metadata** — Style variation files (`styles/*.json`, or any document declaring `title`/`slug`/`description`/`blockTypes`) open on a Variation section for those root keys. `blockTypes` is a block picker — pick the core blocks the variation registers on, or type a custom block name.
 - **Custom variables** — Nested accordion editor for `settings.custom` with inline rename, live CSS custom property preview (`--wp--custom--...`) for leaf values, and add/remove for groups and values.
 - **Elements editor** — Collapsible accordion for `styles.elements` (button, link, headings, caption, cite) with "configured" indicator.
 - **Validation** — Required fields marked with `*`, inline error messages, and full JSON Schema validation via ajv (500ms debounce).

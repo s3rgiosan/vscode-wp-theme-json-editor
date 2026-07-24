@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Variation section for the root-level keys a style variation declares — `title`, `slug`, `description`, and `blockTypes`. It appears for files under `styles/` and for any document that already declares one of those keys, and such files now open on it instead of Settings.
+- `blockTypes` renders as a block picker: selected blocks show as removable chips, core blocks are searchable, and custom block names can be typed in for third-party blocks.
+
 ## [1.5.0] - 2026-07-16
 
 ### Added

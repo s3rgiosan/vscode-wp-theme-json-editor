@@ -2,6 +2,11 @@ import { useMemo, useCallback } from "react";
 import { useEditorStore } from "../store/editorStore";
 import { formatLabel } from "../utils/formatLabel";
 import { searchSchema, type SearchResult } from "../utils/searchSchema";
+import {
+  VARIATION_KEYS,
+  VARIATION_SECTION,
+  hasVariationSection,
+} from "../utils/variationSection";
 
 interface SectionDef {
   readonly key: string;
@@ -9,6 +14,7 @@ interface SectionDef {
 }
 
 const TOP_SECTIONS: SectionDef[] = [
+  { key: VARIATION_SECTION, label: "Variation" },
   { key: "settings", label: "Settings" },
   { key: "styles", label: "Styles" },
   { key: "customTemplates", label: "Custom Templates" },
@@ -30,6 +36,10 @@ export function Sidebar() {
   const showExperimental = useEditorStore((s) => s.showExperimental);
   const searchQuery = useEditorStore((s) => s.searchQuery);
   const setSearchQuery = useEditorStore((s) => s.setSearchQuery);
+  // Derived as a boolean so edits to themeJson don't re-render the sidebar.
+  const showVariation = useEditorStore((s) =>
+    hasVariationSection(s.filePath, s.themeJson),
+  );
 
   const schemaProps =
     typeof schema === "object" && schema !== null
@@ -41,6 +51,11 @@ export function Sidebar() {
   const availableSections = useMemo(
     () =>
       TOP_SECTIONS.filter(({ key }) => {
+        // The Variation section is synthetic — it groups root-level keys that
+        // have no schema node of their own.
+        if (key === VARIATION_SECTION) {
+          return showVariation;
+        }
         if (!schemaProps) {
           return false;
         }
@@ -57,7 +72,7 @@ export function Sidebar() {
         }
         return true;
       }),
-    [schemaProps, showExperimental],
+    [schemaProps, showExperimental, showVariation],
   );
 
   // Global search results
@@ -73,7 +88,13 @@ export function Sidebar() {
       // Navigate to the nearest section that contains this property.
       // For paths like "settings.color.custom", navigate to "settings.color".
       const parts = result.path.split(".");
-      if (parts.length <= 2) {
+      const isVariationKey =
+        parts.length === 1 &&
+        (VARIATION_KEYS as readonly string[]).includes(parts[0] ?? "");
+      if (isVariationKey) {
+        // Root variation keys live in the synthetic Variation section.
+        setActiveSection(VARIATION_SECTION);
+      } else if (parts.length <= 2) {
         setActiveSection(result.path);
       } else {
         // Navigate to the parent section so the property is visible

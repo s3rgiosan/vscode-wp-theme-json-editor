@@ -47,6 +47,7 @@ webview/src/                   # Webview UI (React 18 + Tailwind CSS)
 │   ├── formatLabel.ts         # camelCase → human-readable labels + singularize
 │   ├── nested.ts              # Immutable nested get/set helpers
 │   ├── searchSchema.ts        # Recursive schema property search
+│   ├── variationSection.ts    # Variation section gating + synthetic schema node
 │   └── validate.ts            # ajv JSON Schema validation (cached compile)
 └── components/
     ├── SectionPanel.tsx       # Schema-driven form renderer
@@ -67,6 +68,7 @@ webview/src/                   # Webview UI (React 18 + Tailwind CSS)
     └── fields/
         ├── ArrayField.tsx     # Sortable items with drag-and-drop
         ├── BlockMapField.tsx  # Block accordion + core/custom detection
+        ├── BlockTypesField.tsx # blockTypes chips + core/custom block picker
         ├── ColorField.tsx     # Color picker + text input
         ├── CssField.tsx       # CodeMirror 6 with CSS/JSON highlighting + lint
         ├── CustomVariablesField.tsx  # Nested accordion editor with rename

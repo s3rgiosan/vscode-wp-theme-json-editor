@@ -1,5 +1,13 @@
 import { describe, it, expect } from "vitest";
-import { inferType, getBooleanObjectSchema, type SchemaNode } from "./fieldRenderer";
+import { isValidElement, type ReactElement, type ReactNode } from "react";
+import {
+  inferType,
+  getBooleanObjectSchema,
+  renderField,
+  type SchemaNode,
+} from "./fieldRenderer";
+import { BlockTypesField } from "./fields/BlockTypesField";
+import { ConnectedArrayField } from "./ConnectedFields";
 
 describe("inferType", () => {
   it("returns node.type when present", () => {
@@ -92,5 +100,81 @@ describe("getBooleanObjectSchema", () => {
 
   it("returns undefined for empty oneOf", () => {
     expect(getBooleanObjectSchema({ oneOf: [] })).toBeUndefined();
+  });
+});
+
+describe("renderField — blockTypes", () => {
+  const arrayNode: SchemaNode = { type: "array", items: { type: "string" } };
+
+  function render(node: SchemaNode) {
+    return renderField({
+      key: "blockTypes",
+      node,
+      fieldPath: ["blockTypes"],
+      isExperimental: false,
+      isUndocumented: false,
+      depth: 0,
+      renderSection: () => null,
+      renderCollapsible: () => null,
+    });
+  }
+
+  /** Depth-first search for an element rendered by the given component. */
+  function findComponent(tree: ReactNode, component: unknown): ReactElement | undefined {
+    if (Array.isArray(tree)) {
+      for (const child of tree) {
+        const found = findComponent(child, component);
+        if (found) {
+          return found;
+        }
+      }
+      return undefined;
+    }
+    if (!isValidElement(tree)) {
+      return undefined;
+    }
+    if (tree.type === component) {
+      return tree;
+    }
+    const { children } = tree.props as { children?: ReactNode };
+    return children ? findComponent(children, component) : undefined;
+  }
+
+  it("routes a marked node to the block types picker", () => {
+    const element = render({
+      ...arrayNode,
+      "x-wpthemejsoneditor-block-types": true,
+      "x-wpthemejsoneditor-block-names": ["core/group"],
+    });
+    expect(findComponent(element, BlockTypesField)).toBeDefined();
+  });
+
+  it("passes the block names through to the picker", () => {
+    const element = render({
+      ...arrayNode,
+      "x-wpthemejsoneditor-block-types": true,
+      "x-wpthemejsoneditor-block-names": ["core/group", "core/column"],
+    });
+    const picker = findComponent(element, BlockTypesField);
+    expect(picker?.props).toMatchObject({
+      path: ["blockTypes"],
+      blockNames: ["core/group", "core/column"],
+    });
+  });
+
+  it("falls back to an empty block list when the marker carries none", () => {
+    const element = render({
+      ...arrayNode,
+      "x-wpthemejsoneditor-block-types": true,
+    });
+    expect(findComponent(element, BlockTypesField)?.props).toMatchObject({
+      blockNames: [],
+    });
+  });
+
+  it("still routes an unmarked string array to the array field", () => {
+    const element = render(arrayNode);
+    expect(findComponent(element, ConnectedArrayField)).toBeDefined();
+    expect(findComponent(element, BlockTypesField)).toBeUndefined();
   });
 });
