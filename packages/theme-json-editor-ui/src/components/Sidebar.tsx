@@ -5,6 +5,7 @@ import { searchSchema, type SearchResult } from "../utils/searchSchema";
 import {
   VARIATION_KEYS,
   VARIATION_SECTION,
+  VARIATION_FILES_SECTION,
   hasVariationSection,
 } from "../utils/variationSection";
 
@@ -20,6 +21,7 @@ const TOP_SECTIONS: SectionDef[] = [
   { key: "customTemplates", label: "Custom Templates" },
   { key: "templateParts", label: "Template Parts" },
   { key: "patterns", label: "Patterns" },
+  { key: VARIATION_FILES_SECTION, label: "Variations" },
 ];
 
 /** Sections that are too large to render flat — show sub-sections instead. */
@@ -36,9 +38,15 @@ export function Sidebar() {
   const showExperimental = useEditorStore((s) => s.showExperimental);
   const searchQuery = useEditorStore((s) => s.searchQuery);
   const setSearchQuery = useEditorStore((s) => s.setSearchQuery);
-  // Derived as a boolean so edits to themeJson don't re-render the sidebar.
+  // Derived as booleans so edits to themeJson don't re-render the sidebar.
   const showVariation = useEditorStore((s) =>
     hasVariationSection(s.filePath, s.themeJson),
+  );
+  // Sibling variation files are listed from the theme.json that owns them,
+  // not from another variation.
+  const showVariationFiles = useEditorStore(
+    (s) =>
+      s.variations.length > 0 && !hasVariationSection(s.filePath, s.themeJson),
   );
 
   const schemaProps =
@@ -56,6 +64,9 @@ export function Sidebar() {
         if (key === VARIATION_SECTION) {
           return showVariation;
         }
+        if (key === VARIATION_FILES_SECTION) {
+          return showVariationFiles;
+        }
         if (!schemaProps) {
           return false;
         }
@@ -72,7 +83,7 @@ export function Sidebar() {
         }
         return true;
       }),
-    [schemaProps, showExperimental, showVariation],
+    [schemaProps, showExperimental, showVariation, showVariationFiles],
   );
 
   // Global search results

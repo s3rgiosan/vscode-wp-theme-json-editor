@@ -6,7 +6,7 @@ import {
   VARIATION_SECTION,
   hasVariationSection,
 } from "../utils/variationSection";
-import type { HostAdapter } from "../host/HostAdapter";
+import type { HostAdapter, VariationSummary } from "../host/HostAdapter";
 
 /**
  * State shape for the theme.json editor.
@@ -34,6 +34,8 @@ export interface EditorState {
   validationErrors: ValidationError[];
   /** Current global search query (empty string = no search). */
   searchQuery: string;
+  /** Style variations the host found in the theme's `styles/` directory. */
+  variations: VariationSummary[];
 }
 
 /**
@@ -54,6 +56,7 @@ export interface EditorActions {
   setConflictData: (data: Record<string, unknown>) => void;
   dismissConflict: () => void;
   setSearchQuery: (query: string) => void;
+  setVariations: (variations: VariationSummary[]) => void;
 }
 
 type EditorStore = EditorState & EditorActions;
@@ -74,6 +77,7 @@ export const useEditorStore = create<EditorStore>((set) => ({
   conflictData: null,
   validationErrors: [],
   searchQuery: "",
+  variations: [],
 
   setInitialData: (data, filePath) => {
     const prettified = prettifyCssFields(data);
@@ -172,6 +176,9 @@ export const useEditorStore = create<EditorStore>((set) => ({
 
   setSearchQuery: (query) =>
     set({ searchQuery: query }),
+
+  setVariations: (variations) =>
+    set({ variations }),
 }));
 
 /**

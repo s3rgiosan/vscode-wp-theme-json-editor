@@ -10,8 +10,10 @@ import { CollapsibleChildren } from "./CollapsibleChildren";
 import { BlockMapField } from "./fields/BlockMapField";
 import { ArrayField } from "./fields/ArrayField";
 import { renderField, resolveSchemaNode, type SchemaNode } from "./fieldRenderer";
+import { VariationsPanel } from "./VariationsPanel";
 import {
   VARIATION_SECTION,
+  VARIATION_FILES_SECTION,
   buildVariationSchemaNode,
 } from "../utils/variationSection";
 
@@ -43,6 +45,11 @@ export function SectionPanel({
   // of its own and its fields are written at the document root.
   const isVariationSection = depth === 0 && section === VARIATION_SECTION;
 
+  // Sibling variation files come from the host, not from the schema, so this
+  // section renders its own panel.
+  const isVariationFilesSection =
+    depth === 0 && section === VARIATION_FILES_SECTION;
+
   const sectionParts = section ? section.split(".") : [];
   const resolvedPath = isVariationSection ? [] : (path ?? sectionParts);
   const resolvedSchema = isVariationSection
@@ -61,6 +68,15 @@ export function SectionPanel({
       <CollapsibleChildren schemaNode={p.schemaNode} path={p.path} />,
     [],
   );
+
+  if (isVariationFilesSection) {
+    return (
+      <div>
+        <Breadcrumbs path={VARIATION_FILES_SECTION} />
+        <VariationsPanel />
+      </div>
+    );
+  }
 
   if (!resolvedSchema || typeof resolvedSchema !== "object") {
     return (

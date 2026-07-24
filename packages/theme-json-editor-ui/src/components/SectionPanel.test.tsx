@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { SectionPanel } from "./SectionPanel";
 import { useEditorStore } from "../store/editorStore";
+import { HostProvider } from "../host/HostContext";
 
 const schema = {
   type: "object",
@@ -114,5 +115,53 @@ describe("SectionPanel — variation hints", () => {
     fireEvent.click(screen.getByRole("button", { name: "+ Add block" }));
     fireEvent.click(screen.getByRole("button", { name: "core/group" }));
     expect(hintList()).toHaveTextContent(/Block style variation/i);
+  });
+});
+
+describe("SectionPanel — variations section", () => {
+  const host = {
+    start: () => () => undefined,
+    save: () => undefined,
+    reportDirty: () => undefined,
+  };
+
+  function renderVariations() {
+    useEditorStore.setState({
+      schema,
+      themeJson: { version: 3 },
+      filePath: "theme.json",
+      variations: [
+        {
+          path: "styles/primary.json",
+          title: "Primary",
+          slug: "primary",
+          blockTypes: ["core/group"],
+        },
+      ],
+    });
+    render(
+      <HostProvider host={host}>
+        <SectionPanel section="variations" />
+      </HostProvider>,
+    );
+  }
+
+  it("renders the section heading", () => {
+    renderVariations();
+    expect(
+      screen.getByRole("heading", { name: "Variations" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders the variation list", () => {
+    renderVariations();
+    expect(
+      screen.getByRole("list", { name: "Style variations" }),
+    ).toBeInTheDocument();
+  });
+
+  it("does not fall back to the missing-schema message", () => {
+    renderVariations();
+    expect(screen.queryByText(/No schema available/i)).not.toBeInTheDocument();
   });
 });

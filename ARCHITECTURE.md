@@ -27,7 +27,9 @@ src/                           # Extension host (Node.js)
 ├── scanner/
 │   └── CoreScanner.ts         # GitHub API scanner for WP core properties
 ├── file/
-│   └── ThemeJsonManager.ts    # File read/write/watch with write guard
+│   ├── ThemeJsonManager.ts    # File read/write/watch with write guard
+│   ├── VariationScanner.ts    # Recursive styles/ scan via workspace.fs
+│   └── variationSummary.ts    # Theme-root resolution + variation parsing
 └── shared/
     └── messages.ts            # Typed discriminated union message protocol
 
@@ -66,6 +68,7 @@ webview/src/                   # Webview UI (React 18 + Tailwind CSS)
     ├── Description.tsx        # Schema description formatter (lists, code)
     ├── ValidationErrors.tsx   # Inline ajv error display
     ├── VariationHints.tsx     # Advisory notes atop the Variation section
+    ├── VariationsPanel.tsx    # Sibling styles/*.json list, opens on click
     ├── ExperimentalBadge.tsx  # Experimental/undocumented marker
     └── fields/
         ├── ArrayField.tsx     # Sortable items with drag-and-drop

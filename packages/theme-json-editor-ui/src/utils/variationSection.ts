@@ -11,6 +11,12 @@ import type { SchemaNode } from "../components/fieldRenderer";
 /** Sidebar/section key for the synthetic Variation section. */
 export const VARIATION_SECTION = "variation";
 
+/**
+ * Sidebar/section key for the list of sibling variation files. Distinct from
+ * {@link VARIATION_SECTION}, which edits the open file's own metadata.
+ */
+export const VARIATION_FILES_SECTION = "variations";
+
 /** Root keys shown in the Variation section, in display order. */
 export const VARIATION_KEYS = [
   "title",

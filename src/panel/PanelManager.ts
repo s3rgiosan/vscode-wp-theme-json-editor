@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { ThemeJsonManager } from "../file/ThemeJsonManager.js";
+import { scanVariations } from "../file/VariationScanner.js";
 import { SchemaCoordinator } from "../schema/SchemaCoordinator.js";
 import { WebviewHtmlRenderer } from "./WebviewHtmlRenderer.js";
 import type {
@@ -17,6 +18,8 @@ export class PanelManager {
 
   private readonly panel: vscode.WebviewPanel;
   private readonly fileManager: ThemeJsonManager;
+  private readonly extensionUri: vscode.Uri;
+  private readonly globalState: vscode.Memento;
   private readonly schemaCoordinator: SchemaCoordinator;
   private readonly htmlRenderer: WebviewHtmlRenderer;
   private readonly disposables: vscode.Disposable[] = [];
@@ -31,6 +34,8 @@ export class PanelManager {
   ) {
     this.panel = panel;
     this.fileManager = new ThemeJsonManager(fileUri);
+    this.extensionUri = extensionUri;
+    this.globalState = globalState;
     this.schemaCoordinator = new SchemaCoordinator(globalState, extensionUri);
     this.htmlRenderer = new WebviewHtmlRenderer(extensionUri);
 
@@ -145,6 +150,33 @@ export class PanelManager {
     });
 
     await this.loadAndSendSchema(data);
+    await this.sendVariations();
+  }
+
+  /** Scan the theme's `styles/` directory and send the summaries. */
+  private async sendVariations(): Promise<void> {
+    const variations = await scanVariations(this.fileManager.fileUri);
+    this.postMessage({ type: "VARIATIONS", variations });
+  }
+
+  /**
+   * Open another variation in its own panel. The path arrives
+   * workspace-relative, as sent in the VARIATIONS message.
+   */
+  private openVariation(relativePath: string): void {
+    const folder = vscode.workspace.getWorkspaceFolder(
+      this.fileManager.fileUri,
+    );
+    const targetUri = folder
+      ? vscode.Uri.joinPath(folder.uri, relativePath)
+      : vscode.Uri.file(relativePath);
+
+    PanelManager.openOrReveal(
+      targetUri,
+      this.extensionUri,
+      this.panel.viewColumn ?? vscode.ViewColumn.Active,
+      this.globalState,
+    );
   }
 
   private async loadAndSendSchema(
@@ -196,6 +228,14 @@ export class PanelManager {
       }
       case "DIRTY_STATE": {
         this.isDirty = msg.isDirty;
+        break;
+      }
+      case "REQUEST_VARIATIONS": {
+        await this.sendVariations();
+        break;
+      }
+      case "OPEN_VARIATION": {
+        this.openVariation(msg.path);
         break;
       }
     }

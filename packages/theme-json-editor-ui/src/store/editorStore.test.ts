@@ -40,3 +40,28 @@ describe("setInitialData — landing section", () => {
     expect(activeSection()).toBe("settings");
   });
 });
+
+describe("setVariations", () => {
+  it("stores the summaries the host sends", () => {
+    useEditorStore.getState().setVariations([
+      { path: "styles/primary.json", title: "Primary", slug: "primary", blockTypes: ["core/group"] },
+    ]);
+    expect(useEditorStore.getState().variations).toHaveLength(1);
+  });
+
+  it("starts empty", () => {
+    useEditorStore.setState({ variations: [] });
+    expect(useEditorStore.getState().variations).toEqual([]);
+  });
+
+  it("replaces a previous list", () => {
+    const { setVariations } = useEditorStore.getState();
+    setVariations([
+      { path: "styles/a.json", title: "A", slug: "a", blockTypes: [] },
+    ]);
+    setVariations([
+      { path: "styles/b.json", title: "B", slug: "b", blockTypes: [] },
+    ]);
+    expect(useEditorStore.getState().variations.map((v) => v.slug)).toEqual(["b"]);
+  });
+});

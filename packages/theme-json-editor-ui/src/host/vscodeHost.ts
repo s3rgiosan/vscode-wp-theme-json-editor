@@ -1,5 +1,9 @@
 import { vscodeApi } from "../vscode";
-import type { CoreScanSnapshot, HostAdapter } from "./HostAdapter";
+import type {
+  CoreScanSnapshot,
+  HostAdapter,
+  VariationSummary,
+} from "./HostAdapter";
 
 /**
  * Subset of the VS Code → webview message protocol the editor cares
@@ -19,6 +23,7 @@ type HostToWebviewMessage =
       schemaVersion: string;
     }
   | { type: "SETTINGS"; showExperimentalByDefault: boolean }
+  | { type: "VARIATIONS"; variations: VariationSummary[] }
   | { type: "TRIGGER_SAVE" };
 
 /**
@@ -51,6 +56,9 @@ export const vscodeHost: HostAdapter = {
             showExperimental: msg.showExperimentalByDefault,
           });
           break;
+        case "VARIATIONS":
+          events.onVariations?.(msg.variations);
+          break;
         case "TRIGGER_SAVE":
           events.onTriggerSave?.();
           break;
@@ -71,5 +79,13 @@ export const vscodeHost: HostAdapter = {
 
   reportDirty(isDirty) {
     vscodeApi.postMessage({ type: "DIRTY_STATE", isDirty });
+  },
+
+  requestVariations() {
+    vscodeApi.postMessage({ type: "REQUEST_VARIATIONS" });
+  },
+
+  openVariation(path) {
+    vscodeApi.postMessage({ type: "OPEN_VARIATION", path });
   },
 };

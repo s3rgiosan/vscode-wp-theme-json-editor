@@ -21,6 +21,7 @@ const schema = {
     },
     settings: { type: "object", properties: { color: { type: "object" } } },
     styles: { type: "object", properties: { color: { type: "object" } } },
+    patterns: { type: "array", items: { type: "string" } },
   },
 };
 
@@ -111,5 +112,45 @@ describe("Sidebar — search navigation", () => {
     search("color");
     clickResult();
     expect(activeSection()).toBe("settings.color");
+  });
+});
+
+describe("Sidebar — Variations section", () => {
+  const variations = [
+    { path: "styles/primary.json", title: "Primary", slug: "primary", blockTypes: ["core/group"] },
+  ];
+  const variationsItem = () =>
+    screen.queryByRole("button", { name: "Variations" });
+
+  it("lists Variations on theme.json when the theme has some", () => {
+    useEditorStore.setState({ variations });
+    renderSidebar("theme.json", { version: 3 });
+    expect(variationsItem()).toBeInTheDocument();
+  });
+
+  it("omits Variations when the theme has none", () => {
+    useEditorStore.setState({ variations: [] });
+    renderSidebar("theme.json", { version: 3 });
+    expect(variationsItem()).not.toBeInTheDocument();
+  });
+
+  it("omits Variations while editing a variation file", () => {
+    useEditorStore.setState({ variations });
+    renderSidebar("styles/primary.json");
+    expect(variationsItem()).not.toBeInTheDocument();
+  });
+
+  it("lists Variations after Patterns", () => {
+    useEditorStore.setState({ variations });
+    renderSidebar("theme.json", { version: 3 });
+    const labels = screen.getAllByRole("button").map((b) => b.textContent);
+    expect(labels.indexOf("Variations")).toBeGreaterThan(labels.indexOf("Patterns"));
+  });
+
+  it("activates the section when clicked", () => {
+    useEditorStore.setState({ variations });
+    renderSidebar("theme.json", { version: 3 });
+    fireEvent.click(variationsItem() as HTMLElement);
+    expect(activeSection()).toBe("variations");
   });
 });
