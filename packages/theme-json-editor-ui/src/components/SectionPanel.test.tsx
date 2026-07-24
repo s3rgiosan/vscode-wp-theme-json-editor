@@ -86,3 +86,33 @@ describe("SectionPanel — variation section", () => {
     ).not.toBeInTheDocument();
   });
 });
+
+describe("SectionPanel — variation hints", () => {
+  const hintList = () => screen.getByRole("list", { name: "Variation hints" });
+
+  it("describes a block style variation", () => {
+    renderVariation({
+      blockTypes: ["core/group"],
+      styles: { color: { text: "pink" } },
+    });
+    expect(hintList()).toHaveTextContent(/Block style variation/i);
+  });
+
+  it("describes a global style variation", () => {
+    renderVariation({ styles: { color: { text: "white" } } });
+    expect(hintList()).toHaveTextContent(/whole site/i);
+  });
+
+  it("warns when the slug does not match the file name", () => {
+    renderVariation({ slug: "brand" });
+    expect(hintList()).toHaveTextContent(/does not match the file name/i);
+  });
+
+  it("updates as the document changes", () => {
+    renderVariation({ styles: { color: { text: "pink" } } });
+    expect(hintList()).toHaveTextContent(/whole site/i);
+    fireEvent.click(screen.getByRole("button", { name: "+ Add block" }));
+    fireEvent.click(screen.getByRole("button", { name: "core/group" }));
+    expect(hintList()).toHaveTextContent(/Block style variation/i);
+  });
+});

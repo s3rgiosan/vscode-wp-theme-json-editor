@@ -4,6 +4,7 @@ import { formatLabel } from "../utils/formatLabel";
 import { getNestedValue } from "../utils/nested";
 import { Breadcrumbs } from "./Breadcrumbs";
 import { ValidationErrors } from "./ValidationErrors";
+import { VariationHints } from "./VariationHints";
 import { SectionOverview } from "./SectionOverview";
 import { CollapsibleChildren } from "./CollapsibleChildren";
 import { BlockMapField } from "./fields/BlockMapField";
@@ -209,6 +210,7 @@ export function SectionPanel({
       }
     >
       {depth === 0 && <Breadcrumbs path={section ?? resolvedPath.join(".")} />}
+      {isVariationSection && <VariationHints />}
       {entries.map(([key, propSchema]) => {
         const node = propSchema as SchemaNode;
         const isExperimental =

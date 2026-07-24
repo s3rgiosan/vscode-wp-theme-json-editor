@@ -48,6 +48,7 @@ webview/src/                   # Webview UI (React 18 + Tailwind CSS)
 │   ├── nested.ts              # Immutable nested get/set helpers
 │   ├── searchSchema.ts        # Recursive schema property search
 │   ├── variationSection.ts    # Variation section gating + synthetic schema node
+│   ├── variationHints.ts      # Mode/slug/empty-styles advisories for a variation
 │   └── validate.ts            # ajv JSON Schema validation (cached compile)
 └── components/
     ├── SectionPanel.tsx       # Schema-driven form renderer
@@ -64,6 +65,7 @@ webview/src/                   # Webview UI (React 18 + Tailwind CSS)
     ├── ConflictBanner.tsx     # External change warning + reload
     ├── Description.tsx        # Schema description formatter (lists, code)
     ├── ValidationErrors.tsx   # Inline ajv error display
+    ├── VariationHints.tsx     # Advisory notes atop the Variation section
     ├── ExperimentalBadge.tsx  # Experimental/undocumented marker
     └── fields/
         ├── ArrayField.tsx     # Sortable items with drag-and-drop
