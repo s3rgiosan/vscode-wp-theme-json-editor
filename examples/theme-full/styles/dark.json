@@ -1,0 +1,23 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.7/theme.json",
+	"version": 3,
+	"title": "Dark",
+	"slug": "dark",
+	"description": "Whole-site dark palette. No blockTypes, so WordPress treats it as a global style variation.",
+	"settings": {
+		"color": {
+			"palette": [
+				{ "slug": "base", "color": "#111111", "name": "Base" },
+				{ "slug": "contrast", "color": "#f7f5f3", "name": "Contrast" },
+				{ "slug": "accent", "color": "#ff6b6b", "name": "Accent" },
+				{ "slug": "muted", "color": "#2a2a2a", "name": "Muted" }
+			]
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "var(--wp--preset--color--base)",
+			"text": "var(--wp--preset--color--contrast)"
+		}
+	}
+}

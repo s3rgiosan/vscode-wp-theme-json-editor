@@ -44,6 +44,15 @@ Install "WP Theme JSON Editor" from the VS Code Marketplace, then:
 2. Right-click the file in the Explorer → **Open in WP Theme JSON Editor**.
 3. Or press `Cmd+Shift+T` (Mac) / `Ctrl+Shift+T` (Windows/Linux) while the file is active.
 
+### Trying it locally
+
+The `examples/` folder holds sample themes covering every editor surface —
+a minimal `theme.json`, a full one, and a `styles/` directory with block style
+variations, a global variation, a nested variation, slug/file-name drift, and a
+deliberately malformed file. Press <kbd>F5</kbd> to launch the Extension
+Development Host with that folder as its workspace. See
+[`examples/README.md`](examples/README.md) for what each file exercises.
+
 ### From Source
 
 ```bash

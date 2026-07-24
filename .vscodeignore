@@ -16,6 +16,7 @@ packages/*/eslint.config.mjs
 node_modules/**
 scripts/**
 docs/**
+examples/**
 *.vsix
 .gitignore
 assets/demo.mp4
