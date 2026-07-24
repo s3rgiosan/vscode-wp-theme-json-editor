@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Variation section for the root-level keys a style variation declares — `title`, `slug`, `description`, and `blockTypes`. It appears for files under `styles/` and for any document that already declares one of those keys, and such files now open on it instead of Settings.
 - `blockTypes` renders as a block picker: selected blocks show as removable chips, core blocks are searchable, and custom block names can be typed in for third-party blocks.
+- `WP Theme JSON: New Block Style Variation` command — prompts for a title and the blocks to register on, writes `styles/<slug>.json` with the theme's own `$schema` and `version`, and opens it in the editor. Leaving the block list empty scaffolds a global style variation.
 - Variations section, listed on a theme's `theme.json`, showing every `styles/*.json` file in the theme with its title, slug and target blocks (or "global" when it declares none). Selecting an entry opens that file in its own editor; a Refresh control re-scans the directory.
 - Hints at the top of the Variation section state how WordPress will read the file — a block style variation registering on N blocks, or a global variation applying site-wide — and warn when the slug drifts from the file name or when a block style variation defines no styles.
 

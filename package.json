@@ -52,6 +52,11 @@
         "command": "wpThemeJsonEditor.save",
         "title": "Save",
         "category": "WP Theme JSON"
+      },
+      {
+        "command": "wpThemeJsonEditor.newBlockStyleVariation",
+        "title": "New Block Style Variation",
+        "category": "WP Theme JSON"
       }
     ],
     "menus": {

@@ -26,10 +26,13 @@ src/                           # Extension host (Node.js)
 │   └── SchemaCoordinator.ts   # Orchestrates the full schema pipeline
 ├── scanner/
 │   └── CoreScanner.ts         # GitHub API scanner for WP core properties
+├── commands/
+│   └── newBlockStyleVariation.ts # Scaffold styles/<slug>.json and open it
 ├── file/
 │   ├── ThemeJsonManager.ts    # File read/write/watch with write guard
 │   ├── VariationScanner.ts    # Recursive styles/ scan via workspace.fs
-│   └── variationSummary.ts    # Theme-root resolution + variation parsing
+│   ├── variationSummary.ts    # Theme-root resolution + variation parsing
+│   └── variationScaffold.ts   # Slug/blockTypes parsing + document template
 └── shared/
     └── messages.ts            # Typed discriminated union message protocol
 

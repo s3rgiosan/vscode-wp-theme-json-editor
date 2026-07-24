@@ -1,6 +1,7 @@
 /**
  * Extension entry point.
- * Registers commands for opening theme.json files in the visual editor.
+ * Registers commands for opening theme.json files in the visual editor and
+ * scaffolding new style variations.
  * @module extension
  */
 import * as vscode from "vscode";
@@ -9,6 +10,7 @@ import {
   DEFAULT_INCLUDE_PATTERNS,
   isEditableThemeFile,
 } from "./file/isEditableThemeFile.js";
+import { newBlockStyleVariation } from "./commands/newBlockStyleVariation.js";
 
 /** Warning shown when no file matching `includePatterns` is available. */
 const NO_EDITABLE_FILE_MESSAGE =
@@ -17,7 +19,8 @@ const NO_EDITABLE_FILE_MESSAGE =
 
 /**
  * Called when the extension is activated.
- * Registers the open, openSidePanel, and openTab commands.
+ * Registers the open, openSidePanel, openTab, save, and
+ * newBlockStyleVariation commands.
  */
 export function activate(context: vscode.ExtensionContext): void {
   const open = vscode.commands.registerCommand(
@@ -81,6 +84,13 @@ export function activate(context: vscode.ExtensionContext): void {
     },
   );
 
+  const newVariation = vscode.commands.registerCommand(
+    "wpThemeJsonEditor.newBlockStyleVariation",
+    () => {
+      void newBlockStyleVariation(context.extensionUri, context.globalState);
+    },
+  );
+
   // `activeFileEditable` drives the keybinding `when`-clause: it tracks whether
   // the active editor's file matches the configured include patterns.
   const syncActiveFileContext = (): void => {
@@ -115,6 +125,7 @@ export function activate(context: vscode.ExtensionContext): void {
     openSidePanel,
     openTab,
     save,
+    newVariation,
     vscode.window.onDidChangeActiveTextEditor(syncActiveFileContext),
     vscode.workspace.onDidChangeConfiguration((event) => {
       if (event.affectsConfiguration("wpThemeJsonEditor.includePatterns")) {
