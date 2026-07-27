@@ -2,8 +2,31 @@ import { describe, it, expect } from "vitest";
 import {
   VARIATION_KEYS,
   hasVariationSection,
+  isVariationFile,
   buildVariationSchemaNode,
 } from "./variationSection";
+
+describe("isVariationFile", () => {
+  it("is true for a file inside a styles directory", () => {
+    expect(isVariationFile("wp-content/themes/acme/styles/primary.json")).toBe(
+      true,
+    );
+  });
+
+  it("is true for a Windows-separated styles path", () => {
+    expect(isVariationFile("themes\\acme\\styles\\primary.json")).toBe(true);
+  });
+
+  it("is false for a theme.json that declares variation keys", () => {
+    // The theme file owns the styles/ directory beside it, so it keeps
+    // listing its sibling variations even with a root `title`.
+    expect(isVariationFile("wp-content/themes/acme/theme.json")).toBe(false);
+  });
+
+  it("is false for a file merely named styles.json", () => {
+    expect(isVariationFile("styles.json")).toBe(false);
+  });
+});
 
 describe("hasVariationSection", () => {
   it("is true for a file directly inside a styles directory", () => {

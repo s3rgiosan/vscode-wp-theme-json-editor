@@ -41,12 +41,25 @@ export function hasVariationSection(
   filePath: string,
   themeJson: Record<string, unknown>,
 ): boolean {
-  const segments = filePath.replace(/\\/g, "/").split("/");
-  // The last segment is the file itself, so only the parents can be `styles`.
-  if (segments.slice(0, -1).includes("styles")) {
+  if (isVariationFile(filePath)) {
     return true;
   }
   return VARIATION_KEYS.some((key) => themeJson[key] !== undefined);
+}
+
+/**
+ * Whether the open file is itself a variation file, by location alone.
+ *
+ * Path-only, unlike {@link hasVariationSection}: a `theme.json` that declares
+ * a root `title` still owns the `styles/` directory beside it, so it must keep
+ * listing its sibling variations.
+ *
+ * @param filePath Path of the open file, with either separator style.
+ */
+export function isVariationFile(filePath: string): boolean {
+  const segments = filePath.replace(/\\/g, "/").split("/");
+  // The last segment is the file itself, so only the parents can be `styles`.
+  return segments.slice(0, -1).includes("styles");
 }
 
 /**

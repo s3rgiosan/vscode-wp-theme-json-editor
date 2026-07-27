@@ -7,6 +7,7 @@ import {
   VARIATION_SECTION,
   VARIATION_FILES_SECTION,
   hasVariationSection,
+  isVariationFile,
 } from "../utils/variationSection";
 
 interface SectionDef {
@@ -43,10 +44,11 @@ export function Sidebar() {
     hasVariationSection(s.filePath, s.themeJson),
   );
   // Sibling variation files are listed from the theme.json that owns them,
-  // not from another variation.
+  // not from another variation. Gated on location alone: a theme.json that
+  // declares a root `title` gets a Variation section of its own but still
+  // owns the styles/ directory beside it.
   const showVariationFiles = useEditorStore(
-    (s) =>
-      s.variations.length > 0 && !hasVariationSection(s.filePath, s.themeJson),
+    (s) => s.variations.length > 0 && !isVariationFile(s.filePath),
   );
 
   const schemaProps =

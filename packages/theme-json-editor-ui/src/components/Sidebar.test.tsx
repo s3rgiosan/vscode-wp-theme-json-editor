@@ -140,6 +140,12 @@ describe("Sidebar — Variations section", () => {
     expect(variationsItem()).not.toBeInTheDocument();
   });
 
+  it("lists Variations on a theme.json that declares a root title", () => {
+    useEditorStore.setState({ variations });
+    renderSidebar("theme.json", { version: 3, title: "Acme" });
+    expect(variationsItem()).toBeInTheDocument();
+  });
+
   it("lists Variations after Patterns", () => {
     useEditorStore.setState({ variations });
     renderSidebar("theme.json", { version: 3 });
