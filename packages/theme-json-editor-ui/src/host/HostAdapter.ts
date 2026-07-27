@@ -14,6 +14,19 @@ export interface CoreScanSnapshot {
   readonly undocumented: readonly string[];
 }
 
+/**
+ * One style variation the host found alongside the open document — a
+ * `styles/*.json` file in the same theme.
+ */
+export interface VariationSummary {
+  /** Path the host uses to identify the file, e.g. workspace-relative. */
+  readonly path: string;
+  readonly title: string;
+  readonly slug: string;
+  /** Blocks it registers on; empty for a global style variation. */
+  readonly blockTypes: readonly string[];
+}
+
 export interface HostEvents {
   onInit?: (data: Record<string, unknown>, filePath: string) => void;
   onExternalChange?: (data: Record<string, unknown>) => void;
@@ -25,6 +38,7 @@ export interface HostEvents {
     schemaVersion: string,
   ) => void;
   onSettings?: (settings: { showExperimental: boolean }) => void;
+  onVariations?: (variations: VariationSummary[]) => void;
   onTriggerSave?: () => void;
 }
 
@@ -56,6 +70,15 @@ export interface HostAdapter {
 
   /** Persist the given theme.json document. */
   save(data: Record<string, unknown>): void;
+
+  /**
+   * Optional: ask the host to re-scan for style variations. Hosts that
+   * don't expose sibling files simply omit it.
+   */
+  requestVariations?(): void;
+
+  /** Optional: open another variation, identified by its summary path. */
+  openVariation?(path: string): void;
 
   /** Report dirty-state changes so the host can detect external conflicts. */
   reportDirty(isDirty: boolean): void;

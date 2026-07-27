@@ -1,0 +1,13 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.7/theme.json",
+	"version": 3,
+	"title": "Primary (partial source)",
+	"slug": "primary",
+	"blockTypes": ["core/group"],
+	"styles": {
+		"color": {
+			"background": "#111111",
+			"text": "#ffffff"
+		}
+	}
+}

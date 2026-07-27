@@ -21,6 +21,9 @@ A Visual Studio Code extension that provides a form-driven visual editor for Wor
 - **Spacing units** — Toggleable chip selector for CSS units supported by the WordPress block editor (px, em, rem, %, vw, vh, and viewport variants).
 - **Block-level overrides** — Accordion-based block editor with search. Core blocks render the full per-block schema; custom blocks get a JSON editor.
 - **Style variations** — Free-form variation editor for `styles.variations` with the full styles schema per variation.
+- **Variation scaffolding** — The `New Block Style Variation` command creates a `styles/<slug>.json` partial from a title and a comma-separated block list, reusing the theme's own `$schema` and `version`. An empty block list scaffolds a global variation.
+- **Variations overview** — Open a theme's `theme.json` and the Variations section lists every `styles/*.json` file in that theme, with the blocks each one registers on. Click any entry to open it.
+- **Variation metadata** — Style variation files (`styles/*.json`, or any document declaring `title`/`slug`/`description`/`blockTypes`) open on a Variation section for those root keys. `blockTypes` is a block picker — pick the core blocks the variation registers on, or type a custom block name.
 - **Custom variables** — Nested accordion editor for `settings.custom` with inline rename, live CSS custom property preview (`--wp--custom--...`) for leaf values, and add/remove for groups and values.
 - **Elements editor** — Collapsible accordion for `styles.elements` (button, link, headings, caption, cite) with "configured" indicator.
 - **Validation** — Required fields marked with `*`, inline error messages, and full JSON Schema validation via ajv (500ms debounce).
@@ -40,6 +43,15 @@ Install "WP Theme JSON Editor" from the VS Code Marketplace, then:
 1. Open a project containing a `theme.json` file, or a style variation under the theme's `styles/` folder (e.g. `styles/dark.json`).
 2. Right-click the file in the Explorer → **Open in WP Theme JSON Editor**.
 3. Or press `Cmd+Shift+T` (Mac) / `Ctrl+Shift+T` (Windows/Linux) while the file is active.
+
+### Trying it locally
+
+The `examples/` folder holds sample themes covering every editor surface —
+a minimal `theme.json`, a full one, and a `styles/` directory with block style
+variations, a global variation, a nested variation, slug/file-name drift, and a
+deliberately malformed file. Press <kbd>F5</kbd> to launch the Extension
+Development Host with that folder as its workspace. See
+[`examples/README.md`](examples/README.md) for what each file exercises.
 
 ### From Source
 
@@ -64,6 +76,7 @@ npm run build
 | `WP Theme JSON: Open in WP Theme JSON Editor` | Opens the editor using your default layout preference |
 | `WP Theme JSON: Open in WP Theme JSON Editor (Side Panel)` | Opens as a side panel |
 | `WP Theme JSON: Open in WP Theme JSON Editor (Tab)` | Opens as a full editor tab |
+| `WP Theme JSON: New Block Style Variation` | Scaffolds `styles/<slug>.json` from a title and a list of blocks, then opens it |
 
 ## Settings
 

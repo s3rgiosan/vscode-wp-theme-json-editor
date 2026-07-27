@@ -1,0 +1,16 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.7/theme.json",
+	"version": 3,
+	"title": "Blue Section",
+	"slug": "blue-section",
+	"blockTypes": ["core/group"],
+	"styles": {
+		"color": {
+			"background": "#0b3d91",
+			"text": "#ffffff"
+		},
+		"elements": {
+			"h2": { "color": { "text": "#9ec5ff" } }
+		}
+	}
+}

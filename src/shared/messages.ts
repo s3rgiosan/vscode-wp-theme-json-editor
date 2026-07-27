@@ -46,6 +46,17 @@ export interface SettingsMessage {
   readonly showExperimentalByDefault: boolean;
 }
 
+/** Style variations found in the theme's `styles/` directory. */
+export interface VariationsMessage {
+  readonly type: "VARIATIONS";
+  readonly variations: readonly {
+    readonly path: string;
+    readonly title: string;
+    readonly slug: string;
+    readonly blockTypes: readonly string[];
+  }[];
+}
+
 /** Sent by the host when the user triggers save via keybinding (e.g. Cmd+S). */
 export interface TriggerSaveMessage {
   readonly type: "TRIGGER_SAVE";
@@ -58,6 +69,7 @@ export type HostToWebviewMessage =
   | FileSavedMessage
   | SchemaReadyMessage
   | SettingsMessage
+  | VariationsMessage
   | TriggerSaveMessage;
 
 // --- Webview → Host messages ---
@@ -80,7 +92,21 @@ export interface DirtyStateMessage {
   readonly isDirty: boolean;
 }
 
+/** Asks the host to re-scan the theme's `styles/` directory. */
+export interface RequestVariationsMessage {
+  readonly type: "REQUEST_VARIATIONS";
+}
+
+/** Asks the host to open another variation file in the editor. */
+export interface OpenVariationMessage {
+  readonly type: "OPEN_VARIATION";
+  /** Workspace-relative path, as sent in {@link VariationsMessage}. */
+  readonly path: string;
+}
+
 export type WebviewToHostMessage =
   | SaveRequestMessage
   | WebviewReadyMessage
-  | DirtyStateMessage;
+  | DirtyStateMessage
+  | RequestVariationsMessage
+  | OpenVariationMessage;

@@ -219,3 +219,96 @@ describe("SchemaResolver", () => {
     expect(blocks["properties"]).toBeDefined();
   });
 });
+
+describe("SchemaResolver — root blockTypes", () => {
+  const schemaWithBlocks = {
+    definitions: {
+      settingsProps: {
+        type: "object",
+        allOf: [
+          {
+            type: "object",
+            properties: { blocks: { $ref: "#/definitions/blocksMap" } },
+          },
+        ],
+      },
+      blocksMap: {
+        type: "object",
+        properties: {
+          "core/column": { type: "object" },
+          "core/group": { type: "object" },
+        },
+      },
+    },
+    properties: {
+      blockTypes: {
+        type: "array",
+        description: "List of block types that can use this variation.",
+        items: { type: "string" },
+      },
+      settings: { $ref: "#/definitions/settingsProps" },
+    },
+  };
+
+  function resolveRoot(schema: Record<string, unknown>) {
+    const resolver = new SchemaResolver(schema);
+    const resolved = resolver.resolve(schema) as Record<string, unknown>;
+    return resolved["properties"] as Record<string, unknown>;
+  }
+
+  it("marks the root blockTypes node as a block-type picker", () => {
+    const blockTypes = resolveRoot(schemaWithBlocks)["blockTypes"] as Record<
+      string,
+      unknown
+    >;
+    expect(blockTypes["x-wpthemejsoneditor-block-types"]).toBe(true);
+  });
+
+  it("attaches the core block names from settings.blocks", () => {
+    const blockTypes = resolveRoot(schemaWithBlocks)["blockTypes"] as Record<
+      string,
+      unknown
+    >;
+    expect(blockTypes["x-wpthemejsoneditor-block-names"]).toEqual([
+      "core/column",
+      "core/group",
+    ]);
+  });
+
+  it("preserves the node's own type and description", () => {
+    const blockTypes = resolveRoot(schemaWithBlocks)["blockTypes"] as Record<
+      string,
+      unknown
+    >;
+    expect(blockTypes["type"]).toBe("array");
+    expect(blockTypes["description"]).toBe(
+      "List of block types that can use this variation.",
+    );
+  });
+
+  it("attaches an empty name list when the schema has no settings.blocks", () => {
+    const blockTypes = resolveRoot({
+      properties: {
+        blockTypes: { type: "array", items: { type: "string" } },
+      },
+    })["blockTypes"] as Record<string, unknown>;
+    expect(blockTypes["x-wpthemejsoneditor-block-types"]).toBe(true);
+    expect(blockTypes["x-wpthemejsoneditor-block-names"]).toEqual([]);
+  });
+
+  it("leaves a blockTypes key below the root unmarked", () => {
+    const props = resolveRoot({
+      properties: {
+        styles: {
+          type: "object",
+          properties: { blockTypes: { type: "array", items: { type: "string" } } },
+        },
+      },
+    });
+    const styles = props["styles"] as Record<string, unknown>;
+    const nested = (styles["properties"] as Record<string, unknown>)[
+      "blockTypes"
+    ] as Record<string, unknown>;
+    expect(nested["x-wpthemejsoneditor-block-types"]).toBeUndefined();
+  });
+});

@@ -21,10 +21,13 @@ type SchemaNode = Record<string, unknown>;
 const BLOCK_MAP_KEYS = new Set(["blocks", "variations"]);
 
 export class SchemaResolver {
+  private readonly rootSchema: SchemaNode;
   private readonly definitions: Record<string, SchemaNode>;
   private readonly resolving = new Set<string>();
+  private coreBlockNames?: string[];
 
   constructor(rootSchema: SchemaNode) {
+    this.rootSchema = rootSchema;
     this.definitions =
       typeof rootSchema["definitions"] === "object" &&
       rootSchema["definitions"] !== null
@@ -113,6 +116,8 @@ export class SchemaResolver {
               props[propKey] = this.createBlockMapStub(
                 propValue as SchemaNode,
               );
+            } else if (propKey === "blockTypes" && path.length === 0) {
+              props[propKey] = this.markBlockTypes(propValue as SchemaNode);
             } else {
               props[propKey] = this.resolveNode(
                 propValue as SchemaNode,
@@ -249,6 +254,87 @@ export class SchemaResolver {
     }
 
     return stub;
+  }
+
+  /**
+   * Tag the root `blockTypes` array with the metadata the UI needs to render
+   * a block picker instead of a plain string list. The node itself (type,
+   * description, items) is resolved and preserved as-is.
+   */
+  private markBlockTypes(node: SchemaNode): SchemaNode {
+    const resolved = this.resolveNode(node, ["blockTypes"]);
+    return {
+      ...resolved,
+      "x-wpthemejsoneditor-block-types": true,
+      "x-wpthemejsoneditor-block-names": this.getCoreBlockNames(),
+    };
+  }
+
+  /**
+   * Core block names, taken from the `settings.blocks` map — the same list
+   * {@link createBlockMapStub} exposes for the per-block editors. Computed
+   * once per resolver instance; an empty list is a valid result.
+   */
+  private getCoreBlockNames(): string[] {
+    if (this.coreBlockNames) {
+      return this.coreBlockNames;
+    }
+
+    const rootProperties = this.rootSchema["properties"];
+    const settings =
+      typeof rootProperties === "object" && rootProperties !== null
+        ? (rootProperties as Record<string, unknown>)["settings"]
+        : undefined;
+
+    let names: string[] = [];
+    if (typeof settings === "object" && settings !== null) {
+      const blocks = this.shallowProperties(settings as SchemaNode)["blocks"];
+      if (blocks) {
+        const blockProps = this.peekDefinition(blocks)["properties"];
+        if (typeof blockProps === "object" && blockProps !== null) {
+          names = Object.keys(blockProps as Record<string, unknown>);
+        }
+      }
+    }
+
+    this.coreBlockNames = names;
+    return names;
+  }
+
+  /**
+   * Collect a node's property keys across `$ref` and `allOf` branches without
+   * expanding the tree below them.
+   */
+  private shallowProperties(
+    node: SchemaNode,
+    seen = new Set<SchemaNode>(),
+  ): Record<string, SchemaNode> {
+    const peeked = this.peekDefinition(node);
+    if (seen.has(peeked)) {
+      return {};
+    }
+    seen.add(peeked);
+
+    const collected: Record<string, SchemaNode> = {};
+
+    const own = peeked["properties"];
+    if (typeof own === "object" && own !== null) {
+      Object.assign(collected, own);
+    }
+
+    const allOf = peeked["allOf"];
+    if (Array.isArray(allOf)) {
+      for (const entry of allOf) {
+        if (typeof entry === "object" && entry !== null) {
+          Object.assign(
+            collected,
+            this.shallowProperties(entry as SchemaNode, seen),
+          );
+        }
+      }
+    }
+
+    return collected;
   }
 
   /**

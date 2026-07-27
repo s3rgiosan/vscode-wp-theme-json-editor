@@ -1,0 +1,12 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.7/theme.json",
+	"version": 3,
+	"title": "Soft Contrast",
+	"blockTypes": ["core/media-text"],
+	"styles": {
+		"color": {
+			"background": "var(--wp--preset--color--muted)",
+			"text": "var(--wp--preset--color--contrast)"
+		}
+	}
+}

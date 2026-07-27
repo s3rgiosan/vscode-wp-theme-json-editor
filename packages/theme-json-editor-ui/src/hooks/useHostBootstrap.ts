@@ -33,6 +33,8 @@ export function useHostBootstrap(): void {
       },
       onSettings: ({ showExperimental }) =>
         useEditorStore.getState().setShowExperimental(showExperimental),
+      onVariations: (variations) =>
+        useEditorStore.getState().setVariations(variations),
       onTriggerSave: () => performSave(host),
     });
 

@@ -26,8 +26,13 @@ src/                           # Extension host (Node.js)
 │   └── SchemaCoordinator.ts   # Orchestrates the full schema pipeline
 ├── scanner/
 │   └── CoreScanner.ts         # GitHub API scanner for WP core properties
+├── commands/
+│   └── newBlockStyleVariation.ts # Scaffold styles/<slug>.json and open it
 ├── file/
-│   └── ThemeJsonManager.ts    # File read/write/watch with write guard
+│   ├── ThemeJsonManager.ts    # File read/write/watch with write guard
+│   ├── VariationScanner.ts    # Recursive styles/ scan via workspace.fs
+│   ├── variationSummary.ts    # Theme-root resolution + variation parsing
+│   └── variationScaffold.ts   # Slug/blockTypes parsing + document template
 └── shared/
     └── messages.ts            # Typed discriminated union message protocol
 
@@ -47,6 +52,8 @@ webview/src/                   # Webview UI (React 18 + Tailwind CSS)
 │   ├── formatLabel.ts         # camelCase → human-readable labels + singularize
 │   ├── nested.ts              # Immutable nested get/set helpers
 │   ├── searchSchema.ts        # Recursive schema property search
+│   ├── variationSection.ts    # Variation section gating + synthetic schema node
+│   ├── variationHints.ts      # Mode/slug/empty-styles advisories for a variation
 │   └── validate.ts            # ajv JSON Schema validation (cached compile)
 └── components/
     ├── SectionPanel.tsx       # Schema-driven form renderer
@@ -63,10 +70,13 @@ webview/src/                   # Webview UI (React 18 + Tailwind CSS)
     ├── ConflictBanner.tsx     # External change warning + reload
     ├── Description.tsx        # Schema description formatter (lists, code)
     ├── ValidationErrors.tsx   # Inline ajv error display
+    ├── VariationHints.tsx     # Advisory notes atop the Variation section
+    ├── VariationsPanel.tsx    # Sibling styles/*.json list, opens on click
     ├── ExperimentalBadge.tsx  # Experimental/undocumented marker
     └── fields/
         ├── ArrayField.tsx     # Sortable items with drag-and-drop
         ├── BlockMapField.tsx  # Block accordion + core/custom detection
+        ├── BlockTypesField.tsx # blockTypes chips + core/custom block picker
         ├── ColorField.tsx     # Color picker + text input
         ├── CssField.tsx       # CodeMirror 6 with CSS/JSON highlighting + lint
         ├── CustomVariablesField.tsx  # Nested accordion editor with rename

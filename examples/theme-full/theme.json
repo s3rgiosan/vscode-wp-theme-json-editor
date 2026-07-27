@@ -1,0 +1,162 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.7/theme.json",
+	"version": 3,
+	"title": "Example Full",
+	"settings": {
+		"appearanceTools": true,
+		"useRootPaddingAwareAlignments": true,
+		"color": {
+			"custom": true,
+			"customDuotone": true,
+			"defaultPalette": false,
+			"palette": [
+				{ "slug": "base", "color": "#ffffff", "name": "Base" },
+				{ "slug": "contrast", "color": "#111111", "name": "Contrast" },
+				{ "slug": "accent", "color": "#d92e2e", "name": "Accent" },
+				{ "slug": "muted", "color": "#f2f0ee", "name": "Muted" }
+			],
+			"gradients": [
+				{
+					"slug": "accent-to-muted",
+					"name": "Accent to Muted",
+					"gradient": "linear-gradient(135deg, #d92e2e 0%, #f2f0ee 100%)"
+				}
+			],
+			"duotone": [
+				{
+					"slug": "contrast-accent",
+					"name": "Contrast and Accent",
+					"colors": ["#111111", "#d92e2e"]
+				}
+			]
+		},
+		"typography": {
+			"fluid": true,
+			"customFontSize": true,
+			"fontFamilies": [
+				{
+					"slug": "system-font",
+					"name": "System Font",
+					"fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+				},
+				{
+					"slug": "serif",
+					"name": "Serif",
+					"fontFamily": "Georgia, 'Times New Roman', serif"
+				}
+			],
+			"fontSizes": [
+				{ "slug": "small", "name": "Small", "size": "0.875rem" },
+				{ "slug": "medium", "name": "Medium", "size": "1rem" },
+				{
+					"slug": "large",
+					"name": "Large",
+					"size": "1.75rem",
+					"fluid": { "min": "1.5rem", "max": "2.25rem" }
+				},
+				{ "slug": "x-large", "name": "Extra Large", "size": "3rem" }
+			]
+		},
+		"spacing": {
+			"units": ["px", "em", "rem", "%", "vw", "vh"],
+			"spacingSizes": [
+				{ "slug": "30", "name": "1", "size": "clamp(1rem, 2vw, 1.5rem)" },
+				{ "slug": "40", "name": "2", "size": "clamp(1.5rem, 4vw, 3rem)" },
+				{ "slug": "50", "name": "3", "size": "clamp(3rem, 8vw, 6rem)" }
+			]
+		},
+		"layout": {
+			"contentSize": "40rem",
+			"wideSize": "72rem"
+		},
+		"custom": {
+			"siteOuterPadding": "clamp(1rem, 4vw, 3rem)",
+			"lineHeight": {
+				"tight": "1.15",
+				"body": "1.6"
+			},
+			"border": {
+				"hairline": "1px solid #e5e1dd"
+			}
+		},
+		"blocks": {
+			"core/button": {
+				"border": { "radius": true },
+				"color": { "custom": false }
+			},
+			"core/heading": {
+				"typography": { "customFontSize": false }
+			}
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "var(--wp--preset--color--base)",
+			"text": "var(--wp--preset--color--contrast)"
+		},
+		"typography": {
+			"fontFamily": "var(--wp--preset--font-family--system-font)",
+			"fontSize": "var(--wp--preset--font-size--medium)",
+			"lineHeight": "var(--wp--custom--line-height--body)"
+		},
+		"spacing": {
+			"blockGap": "var(--wp--preset--spacing--30)",
+			"padding": {
+				"top": "0",
+				"bottom": "0",
+				"left": "var(--wp--custom--site-outer-padding)",
+				"right": "var(--wp--custom--site-outer-padding)"
+			}
+		},
+		"css": "a:focus-visible { outline: 2px solid var(--wp--preset--color--accent); outline-offset: 2px; }",
+		"elements": {
+			"h2": {
+				"color": { "text": "var(--wp--preset--color--accent)" },
+				"typography": {
+					"fontSize": "var(--wp--preset--font-size--x-large)",
+					"lineHeight": "var(--wp--custom--line-height--tight)"
+				}
+			},
+			"link": {
+				"color": { "text": "var(--wp--preset--color--accent)" },
+				":hover": {
+					"typography": { "textDecoration": "none" }
+				}
+			},
+			"button": {
+				"color": {
+					"background": "var(--wp--preset--color--accent)",
+					"text": "var(--wp--preset--color--base)"
+				},
+				"border": { "radius": "0" }
+			}
+		},
+		"blocks": {
+			"core/paragraph": {
+				"typography": { "lineHeight": "var(--wp--custom--line-height--body)" }
+			},
+			"core/quote": {
+				"typography": { "fontFamily": "var(--wp--preset--font-family--serif)" },
+				"border": { "left": { "width": "2px", "style": "solid", "color": "#d92e2e" } }
+			}
+		},
+		"variations": {
+			"outlined": {
+				"color": { "background": "transparent" },
+				"border": { "width": "1px", "style": "solid", "color": "#111111" }
+			}
+		}
+	},
+	"customTemplates": [
+		{
+			"name": "page-wide",
+			"title": "Wide Page",
+			"postTypes": ["page"]
+		}
+	],
+	"templateParts": [
+		{ "name": "header", "title": "Header", "area": "header" },
+		{ "name": "footer", "title": "Footer", "area": "footer" }
+	],
+	"patterns": ["three-columns-of-services", "hero-with-heading-and-button"]
+}

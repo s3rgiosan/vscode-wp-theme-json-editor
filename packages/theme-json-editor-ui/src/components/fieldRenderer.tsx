@@ -3,6 +3,7 @@ import { formatLabel } from "../utils/formatLabel";
 import { Description } from "./Description";
 import { ExperimentalBadge } from "./ExperimentalBadge";
 import { BlockMapField } from "./fields/BlockMapField";
+import { BlockTypesField } from "./fields/BlockTypesField";
 import {
   ConnectedToggleField,
   ConnectedToggleObjectField,
@@ -107,7 +108,7 @@ export function resolveSchemaNode(
  * Render the appropriate connected field component for a schema node.
  * Each returned component subscribes to its own store slice internally.
  *
- * Priority: array -> block map -> object -> boolean -> enum -> color -> css -> number -> string.
+ * Priority: block types -> array -> block map -> object -> boolean -> enum -> color -> css -> number -> string.
  */
 export function renderField({
   key,
@@ -130,6 +131,24 @@ export function renderField({
   const description =
     typeof node.description === "string" ? node.description : undefined;
   const effectiveType = inferType(node);
+
+  // Block types picker — checked before the array branch, since the node
+  // it marks is itself an array of block names.
+  if (node["x-wpthemejsoneditor-block-types"] === true) {
+    const blockTypeNames = Array.isArray(node["x-wpthemejsoneditor-block-names"])
+      ? (node["x-wpthemejsoneditor-block-names"] as string[])
+      : [];
+    return (
+      <fieldset className="mt-2">
+        <legend className="font-medium mb-1">{label}</legend>
+        <BlockTypesField
+          path={fieldPath}
+          blockNames={blockTypeNames}
+          description={description}
+        />
+      </fieldset>
+    );
+  }
 
   // Priority 1: array
   if (effectiveType === "array") {
