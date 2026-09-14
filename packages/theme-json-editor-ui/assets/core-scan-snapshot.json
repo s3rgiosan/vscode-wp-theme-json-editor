@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-07T12:06:06.645Z",
+  "generatedAt": "2026-09-14T12:22:03.560Z",
   "wpVersion": "6.7",
   "experimental": [
     "__experimentalBorder",
@@ -34,6 +34,7 @@
     "settings.defaultPalette",
     "settings.defaultPresets",
     "settings.defaultSpacingSizes",
+    "settings.defaultTextShadowPresets",
     "settings.dimensionSizes",
     "settings.dimensions.dimensionSizes",
     "settings.dimensions.height",
@@ -75,8 +76,13 @@
     "settings.textColumns",
     "settings.textDecoration",
     "settings.textIndent",
+    "settings.textShadow",
+    "settings.textShadowPresets",
     "settings.textTransform",
+    "settings.typography.defaultTextShadowPresets",
     "settings.typography.textIndent",
+    "settings.typography.textShadow",
+    "settings.typography.textShadowPresets",
     "settings.units",
     "settings.viewport",
     "settings.viewport.mobile",
