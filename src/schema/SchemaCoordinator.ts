@@ -1,12 +1,9 @@
 import * as vscode from "vscode";
 import { SchemaLoader } from "./SchemaLoader.js";
-
-interface CoreScanSnapshot {
-  readonly generatedAt: string;
-  readonly wpVersion: string;
-  readonly experimental: string[];
-  readonly properties: string[];
-}
+import {
+  loadCoreScanSnapshot,
+  type CoreScanSnapshot,
+} from "./coreScanSnapshot.js";
 
 export interface RawSchemaBundle {
   readonly schema: Record<string, unknown>;
@@ -30,30 +27,7 @@ export class SchemaCoordinator {
 
   async getSchema(version: string): Promise<RawSchemaBundle> {
     const schema = await this.loader.load(version);
-    const snapshot = await this.loadCoreScanSnapshot();
+    const snapshot = await loadCoreScanSnapshot(this.extensionUri);
     return { schema, snapshot };
-  }
-
-  private async loadCoreScanSnapshot(): Promise<CoreScanSnapshot> {
-    try {
-      const snapshotUri = vscode.Uri.joinPath(
-        this.extensionUri,
-        "packages",
-        "theme-json-editor-ui",
-        "assets",
-        "core-scan-snapshot.json",
-      );
-      const raw = await vscode.workspace.fs.readFile(snapshotUri);
-      const text = new TextDecoder("utf-8").decode(raw);
-      return JSON.parse(text) as CoreScanSnapshot;
-    } catch (err) {
-      console.error("SchemaCoordinator: failed to load core-scan snapshot", err);
-      return {
-        generatedAt: "",
-        wpVersion: "",
-        experimental: [],
-        properties: [],
-      };
-    }
   }
 }
