@@ -5,6 +5,16 @@ All notable changes to the WP Theme JSON Editor extension will be documented in 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 2026-09-28
+
+### Changed
+
+- Core-scan definitions now compare the WordPress core and Gutenberg trunk against the theme.json schema of the latest WordPress release, currently 7.1. Undocumented properties are `settings.background.backgroundClip`, `settings.position.fixed`, `settings.typography.textShadow`, `settings.typography.textShadowPresets`, `settings.typography.defaultTextShadowPresets`, `styles.background.backgroundClip`, and `styles.background.gradient` ([#35](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/35)).
+
+### Fixed
+
+- The editor no longer offers top-level copies of nested properties, such as `settings.fontSizes`, `settings.palette`, or `styles.padding`, as undocumented properties. The core scanner read nested keys a second time at the parent level ([#35](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/35)).
+
 ## [1.6.0] - 2026-07-27
 
 ### Added
@@ -150,7 +160,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extension settings: `defaultLayout`, `showExperimentalByDefault`, `schemaVersion`.
 - CI/CD: GitHub Actions for CI, release, and weekly core-scan refresh.
 
-[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.6.0...HEAD
+[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.6.1...HEAD
+[1.6.1]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.6.0...1.6.1
 [1.6.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.5.0...1.6.0
 [1.5.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.4.1...1.5.0
 [1.4.1]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.4.0...1.4.1
