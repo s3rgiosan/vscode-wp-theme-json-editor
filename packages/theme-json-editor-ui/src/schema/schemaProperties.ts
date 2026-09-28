@@ -1,7 +1,7 @@
 /**
  * Extracts all property paths from a resolved WordPress theme.json schema.
- * Used to populate the "known properties" set for the core scanner,
- * so that documented properties are not flagged as undocumented.
+ * Used by the schema merger to tell which core-supported properties the
+ * loaded schema already documents.
  */
 
 type SchemaNode = Record<string, unknown>;

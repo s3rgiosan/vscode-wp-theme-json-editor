@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { extractSchemaPropertyPaths } from "../schemaProperties.js";
+import { extractSchemaPropertyPaths } from "../schemaProperties";
 
 describe("extractSchemaPropertyPaths", () => {
   it("extracts leaf and intermediate paths", () => {

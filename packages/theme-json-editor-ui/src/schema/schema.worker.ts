@@ -13,7 +13,7 @@ interface MergeRequest {
     readonly generatedAt: string;
     readonly wpVersion: string;
     readonly experimental: readonly string[];
-    readonly undocumented: readonly string[];
+    readonly properties: readonly string[];
   };
 }
 

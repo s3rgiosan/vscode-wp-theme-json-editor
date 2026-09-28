@@ -20,7 +20,7 @@ describe("SchemaMerger", () => {
       generatedAt: "2025-01-01",
       wpVersion: "6.7",
       experimental: ["settings.color.experimentalProp"],
-      undocumented: [],
+      properties: [],
     };
 
     const merged = merger.merge(schema, snapshot);
@@ -40,7 +40,7 @@ describe("SchemaMerger", () => {
       generatedAt: "",
       wpVersion: "6.7",
       experimental: [],
-      undocumented: ["myProp"],
+      properties: ["myProp"],
     };
 
     const merged = merger.merge(schema, snapshot);
@@ -51,13 +51,57 @@ describe("SchemaMerger", () => {
     expect(prop["x-wpthemejsoneditor-undocumented"]).toBe(true);
   });
 
+  it("leaves properties the schema already documents unflagged", () => {
+    const schema = {
+      properties: {
+        settings: {
+          type: "object",
+          properties: {
+            dimensions: {
+              type: "object",
+              properties: {
+                width: { type: "boolean" },
+              },
+            },
+          },
+        },
+      },
+    };
+    const snapshot = {
+      generatedAt: "",
+      wpVersion: "6.7",
+      experimental: [],
+      properties: [
+        "settings.dimensions",
+        "settings.dimensions.width",
+        "settings.dimensions.height",
+      ],
+    };
+
+    const merged = merger.merge(schema, snapshot);
+    const settingsProps = (
+      (merged["properties"] as Record<string, unknown>)[
+        "settings"
+      ] as Record<string, unknown>
+    )["properties"] as Record<string, unknown>;
+    const dimensions = settingsProps["dimensions"] as Record<string, unknown>;
+    const dimensionsProps = dimensions["properties"] as Record<string, unknown>;
+    const width = dimensionsProps["width"] as Record<string, unknown>;
+    const height = dimensionsProps["height"] as Record<string, unknown>;
+
+    expect(dimensions["x-wpthemejsoneditor-undocumented"]).toBeUndefined();
+    expect(width["type"]).toBe("boolean");
+    expect(width["x-wpthemejsoneditor-undocumented"]).toBeUndefined();
+    expect(height["x-wpthemejsoneditor-undocumented"]).toBe(true);
+  });
+
   it("types an undocumented path with descendants as an object", () => {
     const schema = { properties: {} };
     const snapshot = {
       generatedAt: "",
       wpVersion: "6.7",
       experimental: [],
-      undocumented: [
+      properties: [
         "settings.viewport",
         "settings.viewport.mobile",
         "settings.viewport.tablet",
@@ -94,7 +138,7 @@ describe("SchemaMerger", () => {
       generatedAt: "",
       wpVersion: "6.7",
       experimental: [],
-      undocumented: ["settings.mobile", "settings.tablet"],
+      properties: ["settings.mobile", "settings.tablet"],
     };
 
     const merged = merger.merge(schema, snapshot);
@@ -118,7 +162,7 @@ describe("SchemaMerger", () => {
       wpVersion: "6.7",
       experimental: [],
       // Child listed before the parent leaf.
-      undocumented: ["settings.viewport.mobile", "settings.viewport"],
+      properties: ["settings.viewport.mobile", "settings.viewport"],
     };
 
     const merged = merger.merge(schema, snapshot);
@@ -143,7 +187,7 @@ describe("SchemaMerger", () => {
       generatedAt: "",
       wpVersion: "6.7",
       experimental: ["b"],
-      undocumented: [],
+      properties: [],
     };
 
     const original = JSON.stringify(schema);

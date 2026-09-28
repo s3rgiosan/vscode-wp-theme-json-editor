@@ -11,7 +11,8 @@ export interface CoreScanSnapshot {
   readonly generatedAt: string;
   readonly wpVersion: string;
   readonly experimental: readonly string[];
-  readonly undocumented: readonly string[];
+  /** Every theme.json property path WordPress core supports. */
+  readonly properties: readonly string[];
 }
 
 /**

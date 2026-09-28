@@ -1,12 +1,14 @@
 /**
  * Scans WordPress core and Gutenberg source via the GitHub API to find
- * experimental and undocumented theme.json properties.
+ * every supported theme.json property and experimental block support keys.
  *
  * Strategy:
  * 1. Parse the VALID_SETTINGS and VALID_STYLES class constants from the PHP
  *    source — these are the authoritative lists of allowed theme.json properties.
  * 2. Scan for __experimental* identifiers used as block support keys.
- * 3. Compare against the official JSON schema to find what is missing.
+ *
+ * The editor compares the supported properties against the schema it loads
+ * and flags those the schema does not document.
  *
  * This module is used by the `scripts/scan-core.ts` CLI script
  * and by the `wpThemeJsonEditor.refreshCoreScan` command.
@@ -60,17 +62,14 @@ export interface CoreScanResult {
   readonly generatedAt: string;
   readonly wpVersion: string;
   readonly experimental: string[];
-  readonly undocumented: string[];
+  readonly properties: string[];
 }
 
 /**
- * Scan WP core and Gutenberg source for experimental and undocumented
+ * Scan WP core and Gutenberg source for supported and experimental
  * theme.json properties.
  */
-export async function scanCore(
-  schemaProperties: Set<string>,
-  wpVersion: string,
-): Promise<CoreScanResult> {
+export async function scanCore(wpVersion: string): Promise<CoreScanResult> {
   const allProperties = new Set<string>();
   const experimentalSet = new Set<string>();
 
@@ -92,19 +91,11 @@ export async function scanCore(
     }
   }
 
-  // Properties found in core but not in the official schema
-  const undocumented: string[] = [];
-  for (const prop of allProperties) {
-    if (!schemaProperties.has(prop) && !experimentalSet.has(prop)) {
-      undocumented.push(prop);
-    }
-  }
-
   return {
     generatedAt: new Date().toISOString(),
     wpVersion,
     experimental: [...experimentalSet].sort(),
-    undocumented: undocumented.sort(),
+    properties: [...allProperties].sort(),
   };
 }
 
@@ -249,6 +240,9 @@ function parseNestedArray(
         }
         const nestedBody = body.slice(innerStart, pos - 1);
         parseNestedArray(nestedBody, path, allProperties);
+
+        // Resume after the nested array so its keys are not read again at this level.
+        keyPattern.lastIndex = pos;
       }
     }
   }

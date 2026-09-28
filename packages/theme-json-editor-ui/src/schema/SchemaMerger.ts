@@ -1,14 +1,16 @@
+import { extractSchemaPropertyPaths } from "./schemaProperties";
+
 interface CoreScanSnapshot {
   readonly generatedAt: string;
   readonly wpVersion: string;
   readonly experimental: readonly string[];
-  readonly undocumented: readonly string[];
+  readonly properties: readonly string[];
 }
 
 /**
  * Merges the official WP theme.json schema with the core-scan snapshot.
- * Injects experimental/undocumented properties with custom flags so the
- * UI can badge or hide them.
+ * Injects experimental properties, and core-supported properties the loaded
+ * schema does not document, with custom flags so the UI can badge or hide them.
  */
 export class SchemaMerger {
   /**
@@ -20,9 +22,13 @@ export class SchemaMerger {
     snapshot: CoreScanSnapshot,
   ): Record<string, unknown> {
     const merged = structuredClone(schema);
+    const documented = extractSchemaPropertyPaths(schema);
+    const undocumented = snapshot.properties.filter(
+      (prop) => !documented.has(prop),
+    );
     const parentPaths = this.collectParentPaths([
       ...snapshot.experimental,
-      ...snapshot.undocumented,
+      ...undocumented,
     ]);
 
     for (const prop of snapshot.experimental) {
@@ -31,7 +37,7 @@ export class SchemaMerger {
       });
     }
 
-    for (const prop of snapshot.undocumented) {
+    for (const prop of undocumented) {
       this.injectProperty(merged, prop, parentPaths, {
         "x-wpthemejsoneditor-undocumented": true,
       });
