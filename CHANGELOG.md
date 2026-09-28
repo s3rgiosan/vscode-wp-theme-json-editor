@@ -5,11 +5,12 @@ All notable changes to the WP Theme JSON Editor extension will be documented in 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.6.1] - 2026-09-28
+## [1.7.0] - 2026-09-28
 
 ### Changed
 
-- Core-scan definitions now compare the WordPress core and Gutenberg trunk against the theme.json schema of the latest WordPress release, currently 7.1. Undocumented properties are `settings.background.backgroundClip`, `settings.position.fixed`, `settings.typography.textShadow`, `settings.typography.textShadowPresets`, `settings.typography.defaultTextShadowPresets`, `styles.background.backgroundClip`, and `styles.background.gradient` ([#35](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/35)).
+- The "Undocumented" badge now depends on the schema version a theme loads. The core-scan snapshot lists every theme.json property the WordPress core and Gutenberg trunk support, and the editor flags only those the loaded schema does not document. A theme on the 6.7 schema keeps properties added in later releases, such as `settings.dimensions.width`, with the badge; a theme on the 7.1 schema shows them as documented ([#35](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/35)).
+- The core-scan snapshot records the latest WordPress release as its version, currently 7.1 ([#35](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/35)).
 
 ### Fixed
 
@@ -160,8 +161,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extension settings: `defaultLayout`, `showExperimentalByDefault`, `schemaVersion`.
 - CI/CD: GitHub Actions for CI, release, and weekly core-scan refresh.
 
-[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.6.1...HEAD
-[1.6.1]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.6.0...1.6.1
+[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.0...HEAD
+[1.7.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.6.0...1.7.0
 [1.6.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.5.0...1.6.0
 [1.5.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.4.1...1.5.0
 [1.4.1]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.4.0...1.4.1
