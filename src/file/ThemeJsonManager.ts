@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { parseSchemaVersion } from "./schemaVersion.js";
 
 /**
  * Handles reading, writing, and watching a theme.json file.
@@ -70,18 +71,14 @@ export class ThemeJsonManager {
 
   /**
    * Extract the schema version from the `$schema` field.
-   * Returns the version string (e.g. "6.7") or undefined if not found.
+   * Returns the version string (e.g. "6.7" or "trunk") or undefined if not found.
    */
   extractSchemaVersion(data: Record<string, unknown>): string | undefined {
     const schemaUrl = data["$schema"];
     if (typeof schemaUrl !== "string") {
       return undefined;
     }
-    const match = /\/wp\/([^/]+)\/theme\.json/.exec(schemaUrl);
-    if (match && match[1]) {
-      return match[1];
-    }
-    return undefined;
+    return parseSchemaVersion(schemaUrl);
   }
 
   /**
