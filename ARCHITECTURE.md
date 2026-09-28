@@ -5,7 +5,7 @@
 1. **Handshake** — The webview sends `WEBVIEW_READY` when mounted. The host responds with `INIT_DATA`, `SETTINGS`, and `SCHEMA_READY`, ensuring the message listener is set up before any data is sent.
 2. **Schema loading** — The extension fetches the official WP schema from `schemas.wp.org` (cached with ETags in `globalState`). Falls back to a bundled copy offline.
 3. **Schema resolution** — `$ref` and `allOf` are resolved inline. Per-block sub-trees are stubbed with metadata (block names, shared per-block schema) to keep the resolved schema at ~1.2MB instead of 40MB+.
-4. **Core-scan merging** — A committed snapshot (`core-scan-snapshot.json`) flags experimental and undocumented properties with `x-wpthemejsoneditor-*` markers.
+4. **Core-scan merging** — A committed snapshot (`core-scan-snapshot.json`) lists every theme.json property WordPress core supports, plus experimental block support keys. Supported properties the loaded schema does not document, and experimental properties, are flagged with `x-wpthemejsoneditor-*` markers.
 5. **Webview rendering** — A React + Tailwind UI walks the resolved schema and renders the appropriate field component for each property type (priority: array → block map → object → boolean → enum → color → CSS → number → string). Each field subscribes to its own slice of the store for efficient re-renders.
 6. **CSS handling** — CSS fields are prettified on load (minified → formatted) and minified on save (formatted → compact). Prettification is idempotent — `prettify(prettify(x)) === prettify(x)`.
 7. **File I/O** — All reads and writes go through `ThemeJsonManager` using `vscode.workspace.fs`. The file is watched for external changes with a 500ms write guard to prevent self-notification.

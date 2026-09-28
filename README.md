@@ -134,7 +134,7 @@ npx tsx scripts/scan-core.ts
 
 - **CI** — Runs on every push and pull request. Type-checks both projects, runs all tests, and builds.
 - **Release** — Triggered by pushing a version tag. Runs CI checks, packages the extension, publishes to the VS Code Marketplace and Open VSX Registry, and creates a GitHub Release with the `.vsix` attached.
-- **Definitions refresh** — Runs weekly (Monday 06:00 UTC) and on manual dispatch. Scans the trunk of both WordPress core and the [Gutenberg plugin](https://github.com/WordPress/gutenberg) via the GitHub API for experimental and undocumented theme.json properties, compares them against the theme.json schema of the latest WordPress release, and opens a PR if the snapshot changes.
+- **Definitions refresh** — Runs weekly (Monday 06:00 UTC) and on manual dispatch. Scans the trunk of both WordPress core and the [Gutenberg plugin](https://github.com/WordPress/gutenberg) via the GitHub API for supported and experimental theme.json properties, records the latest WordPress release as the snapshot version, and opens a PR if the snapshot changes.
 
 ### Releasing
 

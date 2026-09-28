@@ -5,7 +5,7 @@ interface CoreScanSnapshot {
   readonly generatedAt: string;
   readonly wpVersion: string;
   readonly experimental: string[];
-  readonly undocumented: string[];
+  readonly properties: string[];
 }
 
 export interface RawSchemaBundle {
@@ -52,7 +52,7 @@ export class SchemaCoordinator {
         generatedAt: "",
         wpVersion: "",
         experimental: [],
-        undocumented: [],
+        properties: [],
       };
     }
   }
