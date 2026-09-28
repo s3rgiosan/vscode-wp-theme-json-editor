@@ -68,3 +68,11 @@ jobs:
           files: |
             *.vsix
             theme-json-editor-ui-*.tgz
+
+      - name: Notify WP plugin
+        run: |
+          gh api repos/s3rgiosan/wp-theme-json-editor/dispatches \
+            -f event_type=theme-json-editor-ui-release \
+            -f "client_payload[version]=${GITHUB_REF_NAME}"
+        env:
+          GH_TOKEN: ${{ secrets.PLUGIN_DISPATCH_TOKEN }}
