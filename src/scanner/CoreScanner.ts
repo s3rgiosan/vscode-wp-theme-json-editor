@@ -249,6 +249,9 @@ function parseNestedArray(
         }
         const nestedBody = body.slice(innerStart, pos - 1);
         parseNestedArray(nestedBody, path, allProperties);
+
+        // Resume after the nested array so its keys are not read again at this level.
+        keyPattern.lastIndex = pos;
       }
     }
   }

@@ -113,6 +113,28 @@ describe("extractProperties", () => {
     expect(props.has("settings.border.width")).toBe(true);
   });
 
+  it("does not add nested keys to the parent level", () => {
+    const php = `
+      const VALID_SETTINGS = array(
+        'background' => array(
+          'backgroundClip'  => null,
+          'backgroundImage' => null,
+        ),
+        'custom' => null,
+      );
+    `;
+
+    const props = new Set<string>();
+    const experimental = new Set<string>();
+    extractProperties(php, props, experimental);
+
+    expect(props.has("settings.background.backgroundClip")).toBe(true);
+    expect(props.has("settings.background.backgroundImage")).toBe(true);
+    expect(props.has("settings.custom")).toBe(true);
+    expect(props.has("settings.backgroundClip")).toBe(false);
+    expect(props.has("settings.backgroundImage")).toBe(false);
+  });
+
   it("handles both VALID_SETTINGS and VALID_STYLES in same content", () => {
     const php = `
       const VALID_SETTINGS = array(
