@@ -44,10 +44,12 @@ jobs:
       - name: Pack shared UI package
         run: |
           set -euo pipefail
+          # The package ships with the extension's version.
+          npm version "${GITHUB_REF_NAME}" -w @s3rgiosan/theme-json-editor-ui \
+            --no-git-tag-version --allow-same-version
           # `npm pack` writes the default `<scope>-<name>-<version>.tgz`
           # filename. Rename it to track the extension's tag so plugins
-          # can pin against a stable URL (the package version is an
-          # internal detail).
+          # can pin against a stable URL.
           npm pack -w @s3rgiosan/theme-json-editor-ui --pack-destination=.
           mv s3rgiosan-theme-json-editor-ui-*.tgz "theme-json-editor-ui-${GITHUB_REF_NAME}.tgz"
 
