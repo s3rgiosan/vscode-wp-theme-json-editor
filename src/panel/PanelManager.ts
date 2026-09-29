@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { ThemeJsonManager } from "../file/ThemeJsonManager.js";
 import { scanVariations } from "../file/VariationScanner.js";
 import { SchemaCoordinator } from "../schema/SchemaCoordinator.js";
+import { loadCoreScanSnapshot } from "../schema/coreScanSnapshot.js";
 import { WebviewHtmlRenderer } from "./WebviewHtmlRenderer.js";
 import type {
   HostToWebviewMessage,
@@ -186,7 +187,8 @@ export class PanelManager {
     const configVersion = config.get<string>("schemaVersion", "auto");
     const version = configVersion !== "auto"
       ? configVersion
-      : this.fileManager.extractSchemaVersion(data) ?? "6.7";
+      : this.fileManager.extractSchemaVersion(data) ??
+        (await this.getDefaultSchemaVersion());
 
     try {
       const { schema, snapshot } = await this.schemaCoordinator.getSchema(
@@ -270,5 +272,14 @@ export class PanelManager {
     for (const d of this.disposables) {
       d.dispose();
     }
+  }
+
+  /**
+   * Schema version for documents without a `$schema`: the latest WordPress
+   * release recorded in the core-scan snapshot, or trunk when it has none.
+   */
+  private async getDefaultSchemaVersion(): Promise<string> {
+    const { wpVersion } = await loadCoreScanSnapshot(this.extensionUri);
+    return wpVersion || "trunk";
   }
 }

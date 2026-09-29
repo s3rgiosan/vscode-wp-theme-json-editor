@@ -6,6 +6,7 @@
  */
 import * as vscode from "vscode";
 import { PanelManager } from "../panel/PanelManager.js";
+import { loadCoreScanSnapshot } from "../schema/coreScanSnapshot.js";
 import { getThemeRootPath } from "../file/variationSummary.js";
 import {
   buildVariationDocument,
@@ -13,8 +14,8 @@ import {
   toVariationSlug,
 } from "../file/variationScaffold.js";
 
-/** Fallback when the theme's own theme.json cannot be read. */
-const DEFAULT_SCHEMA_URI = "https://schemas.wp.org/wp/6.7/theme.json";
+/** Schema used when the core-scan snapshot records no WordPress version. */
+const TRUNK_SCHEMA_URI = "https://schemas.wp.org/trunk/theme.json";
 const DEFAULT_VERSION = 3;
 
 /**
@@ -67,7 +68,10 @@ export async function newBlockStyleVariation(
     return;
   }
 
-  const { schemaUri, version } = await readThemeDefaults(themeRootUri);
+  const { schemaUri, version } = await readThemeDefaults(
+    themeRootUri,
+    extensionUri,
+  );
   const document = buildVariationDocument({
     title: title.trim(),
     slug,
@@ -138,10 +142,17 @@ async function resolveThemeRoot(): Promise<vscode.Uri | undefined> {
   return picked?.uri.with({ path: getThemeRootPath(picked.uri.path) });
 }
 
-/** `$schema` and `version` from the theme's own theme.json, when readable. */
+/**
+ * `$schema` and `version` from the theme's own theme.json, when readable.
+ * A missing `$schema` falls back to the schema of the latest WordPress
+ * release recorded in the core-scan snapshot.
+ */
 async function readThemeDefaults(
   themeRootUri: vscode.Uri,
+  extensionUri: vscode.Uri,
 ): Promise<{ schemaUri: string; version: number }> {
+  const defaultSchemaUri = await getDefaultSchemaUri(extensionUri);
+
   try {
     const raw = await vscode.workspace.fs.readFile(
       vscode.Uri.joinPath(themeRootUri, "theme.json"),
@@ -149,7 +160,7 @@ async function readThemeDefaults(
     const parsed: unknown = JSON.parse(new TextDecoder("utf-8").decode(raw));
     if (typeof parsed === "object" && parsed !== null) {
       const data = parsed as Record<string, unknown>;
-      const schemaUri = typeof data["$schema"] === "string" ? data["$schema"] : DEFAULT_SCHEMA_URI;
+      const schemaUri = typeof data["$schema"] === "string" ? data["$schema"] : defaultSchemaUri;
       const version = typeof data["version"] === "number" ? data["version"] : DEFAULT_VERSION;
       return { schemaUri, version };
     }
@@ -158,7 +169,17 @@ async function readThemeDefaults(
     // is unusual but not a reason to refuse to scaffold.
   }
 
-  return { schemaUri: DEFAULT_SCHEMA_URI, version: DEFAULT_VERSION };
+  return { schemaUri: defaultSchemaUri, version: DEFAULT_VERSION };
+}
+
+/** Schema URI of the latest WordPress release in the core-scan snapshot. */
+async function getDefaultSchemaUri(extensionUri: vscode.Uri): Promise<string> {
+  const { wpVersion } = await loadCoreScanSnapshot(extensionUri);
+  if (!wpVersion) {
+    return TRUNK_SCHEMA_URI;
+  }
+
+  return `https://schemas.wp.org/wp/${wpVersion}/theme.json`;
 }
 
 /** Whether a file already exists at the given URI. */

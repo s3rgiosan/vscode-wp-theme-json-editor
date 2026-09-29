@@ -5,6 +5,17 @@ All notable changes to the WP Theme JSON Editor extension will be documented in 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.1] - 2026-09-29
+
+### Changed
+
+- Documents without a `$schema` load the schema of the latest WordPress release recorded in the core-scan snapshot, currently 7.1. `WP Theme JSON: New Block Style Variation` uses the same schema for new variation files when the theme's `theme.json` has no `$schema` ([#37](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/37)).
+
+### Fixed
+
+- The `trunk` value of `wpThemeJsonEditor.schemaVersion` loads the trunk schema from `https://schemas.wp.org/trunk/theme.json` ([#37](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/37)).
+- Documents with `"$schema": "https://schemas.wp.org/trunk/theme.json"` load the trunk schema ([#37](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/37)).
+
 ## [1.7.0] - 2026-09-28
 
 ### Changed
@@ -161,7 +172,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extension settings: `defaultLayout`, `showExperimentalByDefault`, `schemaVersion`.
 - CI/CD: GitHub Actions for CI, release, and weekly core-scan refresh.
 
-[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.0...HEAD
+[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.1...HEAD
+[1.7.1]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.0...1.7.1
 [1.7.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.6.0...1.7.0
 [1.6.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.5.0...1.6.0
 [1.5.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.4.1...1.5.0

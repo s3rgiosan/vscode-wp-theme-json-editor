@@ -23,7 +23,8 @@ src/                           # Extension host (Node.js)
 │   ├── SchemaLoader.ts        # Fetch + ETag cache + bundled fallback
 │   ├── SchemaResolver.ts      # Resolve $ref, allOf; stub per-block trees
 │   ├── SchemaMerger.ts        # Inject experimental/undocumented flags
-│   └── SchemaCoordinator.ts   # Orchestrates the full schema pipeline
+│   ├── SchemaCoordinator.ts   # Orchestrates the full schema pipeline
+│   └── coreScanSnapshot.ts    # Read the bundled core-scan snapshot
 ├── scanner/
 │   └── CoreScanner.ts         # GitHub API scanner for WP core properties
 ├── commands/

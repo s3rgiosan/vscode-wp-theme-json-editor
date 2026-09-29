@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 
 const SCHEMA_BASE_URL = "https://schemas.wp.org/wp";
+const TRUNK_SCHEMA_URL = "https://schemas.wp.org/trunk/theme.json";
 const CACHE_KEY_PREFIX = "wpThemeJsonEditor.schemaCache";
 const ETAG_KEY_PREFIX = "wpThemeJsonEditor.schemaEtag";
 const FALLBACK_PATH = "packages/theme-json-editor-ui/assets/theme.json.fallback";
@@ -28,7 +29,9 @@ export class SchemaLoader {
    * Tries network first (with etag caching), then globalState cache, then bundled fallback.
    */
   async load(version: string): Promise<Record<string, unknown>> {
-    const url = `${SCHEMA_BASE_URL}/${version}/theme.json`;
+    const url = version === "trunk"
+      ? TRUNK_SCHEMA_URL
+      : `${SCHEMA_BASE_URL}/${version}/theme.json`;
     const cacheKey = `${CACHE_KEY_PREFIX}.${version}`;
     const etagKey = `${ETAG_KEY_PREFIX}.${version}`;
 
