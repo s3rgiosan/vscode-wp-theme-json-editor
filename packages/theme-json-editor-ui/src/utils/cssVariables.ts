@@ -272,7 +272,10 @@ export function buildPresetCssVarName(path: string[], slug: string): string | nu
       : undefined);
 
   if (!presetType) return null;
-  return `--wp--preset--${presetType}--${toWpKebabCase(slug)}`;
+  // WordPress declares the duotone property with the slug as written in
+  // theme.json. Other preset types use the kebab-case slug.
+  const cssSlug = presetType === "duotone" ? slug : toWpKebabCase(slug);
+  return `--wp--preset--${presetType}--${cssSlug}`;
 }
 
 /*
