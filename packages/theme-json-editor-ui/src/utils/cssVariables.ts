@@ -165,7 +165,7 @@ function extractBlockPresets(
       const slug = entry.slug;
       if (typeof slug !== "string" || slug === "") continue;
 
-      const name = `--wp--preset--${config.presetType}--${slug}`;
+      const name = `--wp--preset--${config.presetType}--${camelToKebab(slug)}`;
       if (seen.has(name)) continue;
       seen.add(name);
 
@@ -197,7 +197,7 @@ function extractPresetArray(
     if (typeof slug !== "string" || slug === "") continue;
 
     out.push({
-      name: `--wp--preset--${presetType}--${slug}`,
+      name: `--wp--preset--${presetType}--${camelToKebab(slug)}`,
       value: getValue(entry),
       category,
     });
@@ -272,12 +272,47 @@ export function buildPresetCssVarName(path: string[], slug: string): string | nu
       : undefined);
 
   if (!presetType) return null;
-  return `--wp--preset--${presetType}--${slug}`;
+  return `--wp--preset--${presetType}--${camelToKebab(slug)}`;
 }
 
-/** Convert a camelCase string to kebab-case. */
+/*
+ * Port of WordPress's `_wp_to_kebab_case()`, which core runs on preset slugs
+ * and `settings.custom` keys when it generates the CSS custom properties.
+ * Like lodash's `kebabCase`, it splits words at case changes, digits and
+ * separators: `h1` → `h-1`, `2xl` → `2-xl`, `primary_dark` → `primary-dark`.
+ */
+const RS_LOWER_RANGE = "a-z\\xdf-\\xf6\\xf8-\\xff";
+const RS_UPPER_RANGE = "A-Z\\xc0-\\xd6\\xd8-\\xde";
+const RS_BREAK_RANGE =
+  "\\x00-\\x2f\\x3a-\\x40\\x5b-\\x60\\x7b-\\xbf" + // non-word characters
+  "\\u2000-\\u206f" + // punctuation
+  " \\t\\x0b\\f\\xa0\\ufeff\\n\\r\\u2028\\u2029\\u1680\\u180e\\u2000-\\u200a\\u202f\\u205f\\u3000"; // spaces
+const RS_BREAK = `[${RS_BREAK_RANGE}]`;
+const RS_LOWER = `[${RS_LOWER_RANGE}]`;
+const RS_UPPER = `[${RS_UPPER_RANGE}]`;
+const RS_MISC = `[^${RS_BREAK_RANGE}\\d${RS_LOWER_RANGE}${RS_UPPER_RANGE}]`;
+const RS_MISC_LOWER = `(?:${RS_LOWER}|${RS_MISC})`;
+const RS_MISC_UPPER = `(?:${RS_UPPER}|${RS_MISC})`;
+const RS_ORD_LOWER = "\\d*(?:1st|2nd|3rd|(?![123])\\dth)(?=\\b|[A-Z_])";
+const RS_ORD_UPPER = "\\d*(?:1ST|2ND|3RD|(?![123])\\dTH)(?=\\b|[a-z_])";
+const WP_WORDS = new RegExp(
+  [
+    `${RS_UPPER}?${RS_LOWER}+(?=${RS_BREAK}|${RS_UPPER}|$)`,
+    `${RS_MISC_UPPER}+(?=${RS_BREAK}|${RS_UPPER}${RS_MISC_LOWER}|$)`,
+    `${RS_UPPER}?${RS_MISC_LOWER}+`,
+    `${RS_UPPER}+`,
+    RS_ORD_UPPER,
+    RS_ORD_LOWER,
+    "\\d+",
+  ].join("|"),
+  "gu",
+);
+
+/** Convert a theme.json key or slug to kebab-case the way WordPress does. */
 export function camelToKebab(str: string): string {
-  return str.replace(/([A-Z])/g, "-$1").toLowerCase();
+  const words = str.replace(/'/g, "").match(WP_WORDS) ?? [];
+  // PHP's strtolower() only folds ASCII letters.
+  return words.join("-").replace(/[A-Z]/g, (c) => c.toLowerCase());
 }
 
 /**
