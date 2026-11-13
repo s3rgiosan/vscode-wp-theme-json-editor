@@ -165,7 +165,7 @@ function extractBlockPresets(
       const slug = entry.slug;
       if (typeof slug !== "string" || slug === "") continue;
 
-      const name = `--wp--preset--${config.presetType}--${camelToKebab(slug)}`;
+      const name = `--wp--preset--${config.presetType}--${toWpKebabCase(slug)}`;
       if (seen.has(name)) continue;
       seen.add(name);
 
@@ -197,7 +197,7 @@ function extractPresetArray(
     if (typeof slug !== "string" || slug === "") continue;
 
     out.push({
-      name: `--wp--preset--${presetType}--${camelToKebab(slug)}`,
+      name: `--wp--preset--${presetType}--${toWpKebabCase(slug)}`,
       value: getValue(entry),
       category,
     });
@@ -214,7 +214,7 @@ function walkCustom(
   out: CssVariable[],
 ): void {
   for (const [key, val] of Object.entries(obj)) {
-    const kebab = camelToKebab(key);
+    const kebab = toWpKebabCase(key);
     const newSegments = [...segments, kebab];
 
     if (typeof val === "object" && val !== null && !Array.isArray(val)) {
@@ -272,7 +272,7 @@ export function buildPresetCssVarName(path: string[], slug: string): string | nu
       : undefined);
 
   if (!presetType) return null;
-  return `--wp--preset--${presetType}--${camelToKebab(slug)}`;
+  return `--wp--preset--${presetType}--${toWpKebabCase(slug)}`;
 }
 
 /*
@@ -309,7 +309,7 @@ const WP_WORDS = new RegExp(
 );
 
 /** Convert a theme.json key or slug to kebab-case the way WordPress does. */
-export function camelToKebab(str: string): string {
+export function toWpKebabCase(str: string): string {
   const words = str.replace(/'/g, "").match(WP_WORDS) ?? [];
   // PHP's strtolower() only folds ASCII letters.
   return words.join("-").replace(/[A-Z]/g, (c) => c.toLowerCase());
@@ -320,6 +320,6 @@ export function camelToKebab(str: string): string {
  * `["lineHeight", "small"]` → `--wp--custom--line-height--small`
  */
 export function buildCssVarName(segments: string[]): string {
-  const kebab = segments.map(camelToKebab);
+  const kebab = segments.map(toWpKebabCase);
   return `--wp--custom--${kebab.join("--")}`;
 }
