@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { extractCssVariables, camelToKebab, buildCssVarName, buildPresetCssVarName } from "./cssVariables";
+import { extractCssVariables, toWpKebabCase, buildCssVarName, buildPresetCssVarName } from "./cssVariables";
 
 describe("extractCssVariables", () => {
   it("returns empty array for empty themeJson", () => {
@@ -139,29 +139,29 @@ describe("extractCssVariables", () => {
   });
 });
 
-describe("camelToKebab", () => {
+describe("toWpKebabCase", () => {
   it("converts camelCase to kebab-case", () => {
-    expect(camelToKebab("lineHeight")).toBe("line-height");
-    expect(camelToKebab("fontSize")).toBe("font-size");
-    expect(camelToKebab("siteContentWidth")).toBe("site-content-width");
+    expect(toWpKebabCase("lineHeight")).toBe("line-height");
+    expect(toWpKebabCase("fontSize")).toBe("font-size");
+    expect(toWpKebabCase("siteContentWidth")).toBe("site-content-width");
   });
 
   it("handles already lowercase strings", () => {
-    expect(camelToKebab("color")).toBe("color");
+    expect(toWpKebabCase("color")).toBe("color");
   });
 
   it("handles single uppercase letters", () => {
-    expect(camelToKebab("A")).toBe("a");
+    expect(toWpKebabCase("A")).toBe("a");
   });
 
   it("splits digits and separators the way WordPress does", () => {
     // Expected values are the output of WordPress's _wp_to_kebab_case().
-    expect(camelToKebab("h1")).toBe("h-1");
-    expect(camelToKebab("2xl")).toBe("2-xl");
-    expect(camelToKebab("xxLarge")).toBe("xx-large");
-    expect(camelToKebab("primary_dark")).toBe("primary-dark");
-    expect(camelToKebab("x-large")).toBe("x-large");
-    expect(camelToKebab("20")).toBe("20");
+    expect(toWpKebabCase("h1")).toBe("h-1");
+    expect(toWpKebabCase("2xl")).toBe("2-xl");
+    expect(toWpKebabCase("xxLarge")).toBe("xx-large");
+    expect(toWpKebabCase("primary_dark")).toBe("primary-dark");
+    expect(toWpKebabCase("x-large")).toBe("x-large");
+    expect(toWpKebabCase("20")).toBe("20");
   });
 });
 

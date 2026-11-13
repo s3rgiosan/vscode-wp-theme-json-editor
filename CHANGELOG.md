@@ -5,6 +5,12 @@ All notable changes to the WP Theme JSON Editor extension will be documented in 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.2] - 2026-11-13
+
+### Fixed
+
+- CSS variable names in autocomplete and in the preset preview match the names WordPress generates. Preset slugs and `settings.custom` keys go through the same kebab-case conversion as core's `_wp_to_kebab_case()`, so `settings.custom.fontSize.h1` shows as `--wp--custom--font-size--h-1` and a font size slug `2xl` shows as `--wp--preset--font-size--2-xl` (props [@OpenDeernet](https://github.com/OpenDeernet), [#45](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/45)).
+
 ## [1.7.1] - 2026-09-29
 
 ### Changed
@@ -172,7 +178,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extension settings: `defaultLayout`, `showExperimentalByDefault`, `schemaVersion`.
 - CI/CD: GitHub Actions for CI, release, and weekly core-scan refresh.
 
-[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.1...HEAD
+[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.2...HEAD
+[1.7.2]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.1...1.7.2
 [1.7.1]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.0...1.7.1
 [1.7.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.6.0...1.7.0
 [1.6.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.5.0...1.6.0
