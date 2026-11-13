@@ -5,7 +5,17 @@ All notable changes to the WP Theme JSON Editor extension will be documented in 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.3] - 2026-11-13
+
+### Fixed
+
+- The preset preview shows duotone variable names with the slug as written in theme.json, such as `--wp--preset--duotone--blueOrange`. WordPress declares the duotone custom property with the slug unchanged, so a camelCase slug no longer shows a kebab-case name that the front end never declares ([#47](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/47)).
+
 ## [1.7.2] - 2026-11-13
+
+### Changed
+
+- Core-scan definitions refreshed. The snapshot lists no new theme.json properties ([#41](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/41), [#44](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/44)).
 
 ### Fixed
 
@@ -178,7 +188,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extension settings: `defaultLayout`, `showExperimentalByDefault`, `schemaVersion`.
 - CI/CD: GitHub Actions for CI, release, and weekly core-scan refresh.
 
-[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.2...HEAD
+[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.3...HEAD
+[1.7.3]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.2...1.7.3
 [1.7.2]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.1...1.7.2
 [1.7.1]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.0...1.7.1
 [1.7.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.6.0...1.7.0

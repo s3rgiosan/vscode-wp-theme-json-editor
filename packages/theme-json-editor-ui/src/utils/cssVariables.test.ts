@@ -245,6 +245,12 @@ describe("buildPresetCssVarName", () => {
       "--wp--preset--font-size--2-xl",
     );
   });
+
+  it("keeps the duotone slug as written, like WordPress", () => {
+    expect(buildPresetCssVarName(["settings", "color", "duotone"], "blueOrange")).toBe(
+      "--wp--preset--duotone--blueOrange",
+    );
+  });
 });
 
 describe("extractCssVariables naming", () => {
