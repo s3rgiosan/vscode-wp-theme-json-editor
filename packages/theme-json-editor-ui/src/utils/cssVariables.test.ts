@@ -151,7 +151,17 @@ describe("camelToKebab", () => {
   });
 
   it("handles single uppercase letters", () => {
-    expect(camelToKebab("A")).toBe("-a");
+    expect(camelToKebab("A")).toBe("a");
+  });
+
+  it("splits digits and separators the way WordPress does", () => {
+    // Expected values are the output of WordPress's _wp_to_kebab_case().
+    expect(camelToKebab("h1")).toBe("h-1");
+    expect(camelToKebab("2xl")).toBe("2-xl");
+    expect(camelToKebab("xxLarge")).toBe("xx-large");
+    expect(camelToKebab("primary_dark")).toBe("primary-dark");
+    expect(camelToKebab("x-large")).toBe("x-large");
+    expect(camelToKebab("20")).toBe("20");
   });
 });
 
@@ -228,5 +238,31 @@ describe("buildPresetCssVarName", () => {
 
   it("returns null for empty slug", () => {
     expect(buildPresetCssVarName(["settings", "color", "palette"], "")).toBeNull();
+  });
+
+  it("kebab-cases the slug like WordPress", () => {
+    expect(buildPresetCssVarName(["settings", "typography", "fontSizes"], "2xl")).toBe(
+      "--wp--preset--font-size--2-xl",
+    );
+  });
+});
+
+describe("extractCssVariables naming", () => {
+  it("matches the custom property names WordPress generates", () => {
+    const names = extractCssVariables({
+      settings: {
+        typography: { fontSizes: [{ slug: "3xl", size: "3rem" }] },
+        custom: { fontSize: { h1: "2.5rem" } },
+        blocks: {
+          "core/button": { color: { palette: [{ slug: "brandBlue", color: "#00f" }] } },
+        },
+      },
+    }).map((v) => v.name);
+
+    expect(names).toEqual([
+      "--wp--preset--font-size--3-xl",
+      "--wp--custom--font-size--h-1",
+      "--wp--preset--color--brand-blue",
+    ]);
   });
 });
