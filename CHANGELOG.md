@@ -5,7 +5,7 @@ All notable changes to the WP Theme JSON Editor extension will be documented in 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.7.4] - 2026-11-16
 
 ### Changed
 
@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Autocomplete and the preset preview no longer show CSS variable names for duotone presets set on a single block (`settings.blocks.<block>.color.duotone`). WordPress declares duotone custom properties only for presets in the root `settings.color.duotone`, so those names never existed on the front end.
+- Autocomplete and the preset preview no longer show CSS variable names for duotone presets set on a single block (`settings.blocks.<block>.color.duotone`). WordPress declares duotone custom properties only for presets in the root `settings.color.duotone`, so those names never existed on the front end ([#49](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/49)).
 
 ## [1.7.3] - 2026-11-13
 
@@ -198,7 +198,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extension settings: `defaultLayout`, `showExperimentalByDefault`, `schemaVersion`.
 - CI/CD: GitHub Actions for CI, release, and weekly core-scan refresh.
 
-[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.3...HEAD
+[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.4...HEAD
+[1.7.4]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.3...1.7.4
 [1.7.3]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.2...1.7.3
 [1.7.2]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.1...1.7.2
 [1.7.1]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.0...1.7.1
