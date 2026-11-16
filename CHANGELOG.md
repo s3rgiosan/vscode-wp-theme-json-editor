@@ -5,6 +5,12 @@ All notable changes to the WP Theme JSON Editor extension will be documented in 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Core-scan definitions refreshed. The snapshot adds `styles.typography.textWrap`, which Gutenberg supports and WordPress core does not yet. Schemas that do not document it show it as an undocumented text field ([#48](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/48)).
+
 ## [1.7.3] - 2026-11-13
 
 ### Fixed
