@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Core-scan definitions refreshed. The snapshot adds `styles.typography.textWrap`, which Gutenberg supports and WordPress core does not yet. Schemas that do not document it show it as an undocumented text field ([#48](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/48)).
 
+### Fixed
+
+- Autocomplete and the preset preview no longer show CSS variable names for duotone presets set on a single block (`settings.blocks.<block>.color.duotone`). WordPress declares duotone custom properties only for presets in the root `settings.color.duotone`, so those names never existed on the front end.
+
 ## [1.7.3] - 2026-11-13
 
 ### Fixed

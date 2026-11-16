@@ -149,7 +149,8 @@ function extractBlockPresets(
   }> = [
     { path: ["color", "palette"], presetType: "color", category: "Color", getValue: (e) => typeof e.color === "string" ? e.color : undefined },
     { path: ["color", "gradients"], presetType: "gradient", category: "Gradient", getValue: (e) => typeof e.gradient === "string" ? e.gradient : undefined },
-    { path: ["color", "duotone"], presetType: "duotone", category: "Duotone", getValue: () => undefined },
+    // Duotone is absent: WordPress declares duotone properties only for
+    // presets in the root `settings.color.duotone`.
     { path: ["typography", "fontFamilies"], presetType: "font-family", category: "Font Family", getValue: (e) => typeof e.fontFamily === "string" ? e.fontFamily : undefined },
     { path: ["typography", "fontSizes"], presetType: "font-size", category: "Font Size", getValue: (e) => typeof e.size === "string" ? e.size : typeof e.size === "number" ? String(e.size) : undefined },
     { path: ["spacing", "spacingSizes"], presetType: "spacing", category: "Spacing", getValue: (e) => typeof e.size === "string" ? e.size : typeof e.size === "number" ? String(e.size) : undefined },
@@ -255,7 +256,8 @@ const PRESET_TYPE_MAP: Record<string, string> = {
 /**
  * Build a `--wp--preset--{type}--{slug}` variable name from the array path
  * and the item's slug. Returns `null` if the path doesn't correspond to a
- * known preset array.
+ * known preset array, or if it is a block-level duotone array, because
+ * WordPress declares no custom property for those presets.
  *
  * @param path The store path to the array, e.g. `["settings", "color", "palette"]`
  * @param slug The item's slug value
@@ -272,6 +274,7 @@ export function buildPresetCssVarName(path: string[], slug: string): string | nu
       : undefined);
 
   if (!presetType) return null;
+  if (presetType === "duotone" && path.includes("blocks")) return null;
   // WordPress declares the duotone property with the slug as written in
   // theme.json. Other preset types use the kebab-case slug.
   const cssSlug = presetType === "duotone" ? slug : toWpKebabCase(slug);

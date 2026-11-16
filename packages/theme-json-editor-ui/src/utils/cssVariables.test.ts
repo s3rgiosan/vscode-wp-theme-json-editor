@@ -251,6 +251,12 @@ describe("buildPresetCssVarName", () => {
       "--wp--preset--duotone--blueOrange",
     );
   });
+
+  it("returns null for block-level duotone presets", () => {
+    expect(
+      buildPresetCssVarName(["settings", "blocks", "core/image", "color", "duotone"], "blueOrange"),
+    ).toBeNull();
+  });
 });
 
 describe("extractCssVariables naming", () => {
@@ -270,5 +276,19 @@ describe("extractCssVariables naming", () => {
       "--wp--custom--font-size--h-1",
       "--wp--preset--color--brand-blue",
     ]);
+  });
+
+  it("omits block-level duotone presets", () => {
+    const names = extractCssVariables({
+      settings: {
+        blocks: {
+          "core/image": {
+            color: { duotone: [{ slug: "blueOrange", colors: ["#00f", "#f80"] }] },
+          },
+        },
+      },
+    }).map((v) => v.name);
+
+    expect(names).toEqual([]);
   });
 });
