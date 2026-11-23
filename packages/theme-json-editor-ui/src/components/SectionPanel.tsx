@@ -15,7 +15,9 @@ import {
   VARIATION_SECTION,
   VARIATION_FILES_SECTION,
   buildVariationSchemaNode,
+  isBlockStyleVariation,
 } from "../utils/variationSection";
+import { isFieldVisible } from "../utils/fieldVisibility";
 
 interface SectionPanelProps {
   /** Active section key like "settings" or "settings.color" */
@@ -39,6 +41,7 @@ export function SectionPanel({
   const schema = useEditorStore((s) => s.schema);
   const themeJson = useEditorStore((s) => s.themeJson);
   const showExperimental = useEditorStore((s) => s.showExperimental);
+  const isVariationPartial = isBlockStyleVariation(themeJson);
   const setField = useEditorStore((s) => s.setField);
 
   // The Variation section groups root-level keys, so it has no schema node
@@ -234,7 +237,11 @@ export function SectionPanel({
         const isUndocumented =
           node["x-wpthemejsoneditor-undocumented"] === true;
 
-        if ((isExperimental || isUndocumented) && !showExperimental) {
+        const isVisible = isFieldVisible(node, {
+          showExperimental,
+          isBlockStyleVariation: isVariationPartial,
+        });
+        if (!isVisible) {
           return null;
         }
 

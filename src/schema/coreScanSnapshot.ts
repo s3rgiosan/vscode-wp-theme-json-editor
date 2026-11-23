@@ -6,6 +6,8 @@ export interface CoreScanSnapshot {
   readonly wpVersion: string;
   readonly experimental: string[];
   readonly properties: string[];
+  /** JSON schema type of each leaf property path, where the scan found one. */
+  readonly types?: Record<string, string>;
 }
 
 /**
@@ -33,6 +35,7 @@ export async function loadCoreScanSnapshot(
       wpVersion: "",
       experimental: [],
       properties: [],
+      types: {},
     };
   }
 }

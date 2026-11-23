@@ -1,11 +1,16 @@
 import { extractSchemaPropertyPaths } from "./schemaProperties";
+import type { CoreScanSnapshot } from "../host/HostAdapter";
+import { BLOCK_STYLE_VARIATION_ONLY_FLAG } from "../utils/fieldVisibility";
 
-interface CoreScanSnapshot {
-  readonly generatedAt: string;
-  readonly wpVersion: string;
-  readonly experimental: readonly string[];
-  readonly properties: readonly string[];
-}
+/**
+ * `styles` keys that WordPress accepts only for blocks and block style
+ * variations. `WP_Theme_JSON_Gutenberg::sanitize()` removes them from the root
+ * and from elements. A block style variation partial keeps them at the root.
+ */
+const BLOCK_ONLY_STYLE_KEYS = ["transform"] as const;
+
+/** Type of an injected leaf when the snapshot has no type for its path. */
+const DEFAULT_LEAF_TYPE = "string";
 
 /**
  * Merges the official WP theme.json schema with the core-scan snapshot.
@@ -31,17 +36,21 @@ export class SchemaMerger {
       ...undocumented,
     ]);
 
+    const types = snapshot.types ?? {};
+
     for (const prop of snapshot.experimental) {
-      this.injectProperty(merged, prop, parentPaths, {
+      this.injectProperty(merged, prop, parentPaths, types, {
         "x-wpthemejsoneditor-experimental": true,
       });
     }
 
     for (const prop of undocumented) {
-      this.injectProperty(merged, prop, parentPaths, {
+      this.injectProperty(merged, prop, parentPaths, types, {
         "x-wpthemejsoneditor-undocumented": true,
       });
     }
+
+    this.scopeBlockOnlyStyles(merged);
 
     return merged;
   }
@@ -72,6 +81,7 @@ export class SchemaMerger {
     schema: Record<string, unknown>,
     dotPath: string,
     parentPaths: Set<string>,
+    types: Readonly<Record<string, string>>,
     flags: Record<string, boolean>,
   ): void {
     const parts = dotPath.split(".");
@@ -116,12 +126,71 @@ export class SchemaMerger {
         ...flags,
       };
     } else {
-      // Leaf property — create it with a permissive type
+      // Leaf property — use the type the scan recorded, else a permissive one.
       properties[propertyName] = {
-        type: "string",
+        type: types[dotPath] ?? DEFAULT_LEAF_TYPE,
         ...flags,
       };
     }
+  }
+
+  /**
+   * Give each block-only style property a field in the per-block and
+   * block style variation schemas, and flag the root copy so the UI shows it
+   * only in a block style variation partial.
+   */
+  private scopeBlockOnlyStyles(schema: Record<string, unknown>): void {
+    const styles = this.getChild(schema, "styles");
+    if (!styles) {
+      return;
+    }
+
+    const styleProperties = this.getOrCreateProperties(styles);
+    const scopedSchemas = ["blocks", "variations"]
+      .map((key) => this.getChild(styles, key))
+      .map((stub) => stub?.["x-wpthemejsoneditor-block-schema"])
+      .filter(
+        (node): node is Record<string, unknown> =>
+          typeof node === "object" && node !== null,
+      );
+
+    for (const key of BLOCK_ONLY_STYLE_KEYS) {
+      const rootNode = styleProperties[key];
+      if (typeof rootNode !== "object" || rootNode === null) {
+        continue;
+      }
+
+      for (const scopedSchema of scopedSchemas) {
+        const scopedProperties = this.getOrCreateProperties(scopedSchema);
+        if (!scopedProperties[key]) {
+          scopedProperties[key] = structuredClone(rootNode);
+        }
+      }
+
+      (rootNode as Record<string, unknown>)[BLOCK_STYLE_VARIATION_ONLY_FLAG] =
+        true;
+    }
+  }
+
+  /**
+   * Return the schema node of a direct child property, or undefined when the
+   * child is missing or is not an object.
+   */
+  private getChild(
+    node: Record<string, unknown>,
+    key: string,
+  ): Record<string, unknown> | undefined {
+    const properties = node["properties"];
+    if (typeof properties !== "object" || properties === null) {
+      return undefined;
+    }
+
+    const child = (properties as Record<string, unknown>)[key];
+    if (typeof child !== "object" || child === null) {
+      return undefined;
+    }
+
+    return child as Record<string, unknown>;
   }
 
   private getOrCreateProperties(

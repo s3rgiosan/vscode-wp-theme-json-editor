@@ -13,6 +13,8 @@ export interface CoreScanSnapshot {
   readonly experimental: readonly string[];
   /** Every theme.json property path WordPress core supports. */
   readonly properties: readonly string[];
+  /** JSON schema type of each leaf property path, where the scan found one. */
+  readonly types?: Readonly<Record<string, string>>;
 }
 
 /**

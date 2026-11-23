@@ -7,8 +7,10 @@ import {
   VARIATION_SECTION,
   VARIATION_FILES_SECTION,
   hasVariationSection,
+  isBlockStyleVariation,
   isVariationFile,
 } from "../utils/variationSection";
+import { isFieldVisible, type FieldVisibilityContext } from "../utils/fieldVisibility";
 
 interface SectionDef {
   readonly key: string;
@@ -49,6 +51,9 @@ export function Sidebar() {
   // owns the styles/ directory beside it.
   const showVariationFiles = useEditorStore(
     (s) => s.variations.length > 0 && !isVariationFile(s.filePath),
+  );
+  const isVariationPartial = useEditorStore((s) =>
+    isBlockStyleVariation(s.themeJson),
   );
 
   const schemaProps =
@@ -161,7 +166,10 @@ export function Sidebar() {
           schemaProps={schemaProps}
           activeSection={activeSection}
           setActiveSection={setActiveSection}
-          showExperimental={showExperimental}
+          visibility={{
+            showExperimental,
+            isBlockStyleVariation: isVariationPartial,
+          }}
         />
       )}
     </nav>
@@ -215,13 +223,13 @@ function SectionTree({
   schemaProps,
   activeSection,
   setActiveSection,
-  showExperimental,
+  visibility,
 }: {
   availableSections: SectionDef[];
   schemaProps: Record<string, unknown> | undefined;
   activeSection: string;
   setActiveSection: (section: string) => void;
-  showExperimental: boolean;
+  visibility: FieldVisibilityContext;
 }) {
   return (
     <ul className="py-2 flex-1 overflow-y-auto" role="tree">
@@ -237,7 +245,7 @@ function SectionTree({
           sectionSchema?.["properties"] !== undefined;
 
         const subSections = hasSubSections
-          ? getSubSections(sectionSchema, showExperimental)
+          ? getSubSections(sectionSchema, visibility)
           : [];
 
         return (
@@ -303,7 +311,7 @@ interface SubSectionDef {
 /** Extract sub-section entries from a section schema for the sidebar sub-nav. */
 function getSubSections(
   sectionSchema: Record<string, unknown> | undefined,
-  showExperimental: boolean,
+  visibility: FieldVisibilityContext,
 ): SubSectionDef[] {
   if (!sectionSchema) {
     return [];
@@ -321,17 +329,14 @@ function getSubSections(
       continue;
     }
     const node = value as Record<string, unknown>;
-    const isExp = node["x-wpthemejsoneditor-experimental"] === true;
-    const isUndoc = node["x-wpthemejsoneditor-undocumented"] === true;
-
-    if ((isExp || isUndoc) && !showExperimental) {
+    if (!isFieldVisible(node, visibility)) {
       continue;
     }
 
     result.push({
       key,
       label: formatLabel(key),
-      isExperimental: isExp,
+      isExperimental: node["x-wpthemejsoneditor-experimental"] === true,
     });
   }
 

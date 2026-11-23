@@ -6,6 +6,8 @@ import { ExperimentalBadge } from "./ExperimentalBadge";
 import { SectionPanel } from "./SectionPanel";
 import { ACCORDION_HEADER_CLASS } from "./styles";
 import type { SchemaNode } from "./fieldRenderer";
+import { isFieldVisible } from "../utils/fieldVisibility";
+import { isBlockStyleVariation } from "../utils/variationSection";
 
 interface CollapsibleChildrenProps {
   readonly schemaNode: SchemaNode;
@@ -22,19 +24,20 @@ export const CollapsibleChildren = memo(function CollapsibleChildren({
 }: CollapsibleChildrenProps) {
   const themeJson = useEditorStore((s) => s.themeJson);
   const showExperimental = useEditorStore((s) => s.showExperimental);
+  const isVariationPartial = isBlockStyleVariation(themeJson);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   const properties = schemaNode.properties;
 
   const visibleEntries = useMemo(() => {
     if (!properties) return [];
-    return Object.entries(properties).filter(([, propSchema]) => {
-      const node = propSchema as SchemaNode;
-      const isExp = node["x-wpthemejsoneditor-experimental"] === true;
-      const isUndoc = node["x-wpthemejsoneditor-undocumented"] === true;
-      return !((isExp || isUndoc) && !showExperimental);
-    });
-  }, [properties, showExperimental]);
+    return Object.entries(properties).filter(([, propSchema]) =>
+      isFieldVisible(propSchema as SchemaNode, {
+        showExperimental,
+        isBlockStyleVariation: isVariationPartial,
+      }),
+    );
+  }, [properties, showExperimental, isVariationPartial]);
 
   if (!properties) {
     return null;

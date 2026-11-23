@@ -37,6 +37,7 @@ export interface SchemaReadyMessage {
     readonly wpVersion: string;
     readonly experimental: readonly string[];
     readonly properties: readonly string[];
+    readonly types?: Readonly<Record<string, string>>;
   };
   readonly schemaVersion: string;
 }

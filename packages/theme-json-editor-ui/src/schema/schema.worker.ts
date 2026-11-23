@@ -6,15 +6,11 @@
 
 import { SchemaResolver } from "./SchemaResolver";
 import { SchemaMerger } from "./SchemaMerger";
+import type { CoreScanSnapshot } from "../host/HostAdapter";
 
 interface MergeRequest {
   readonly schema: Record<string, unknown>;
-  readonly snapshot: {
-    readonly generatedAt: string;
-    readonly wpVersion: string;
-    readonly experimental: readonly string[];
-    readonly properties: readonly string[];
-  };
+  readonly snapshot: CoreScanSnapshot;
 }
 
 self.onmessage = (event: MessageEvent<MergeRequest>) => {

@@ -5,6 +5,8 @@ import { Description } from "./Description";
 import { ExperimentalBadge } from "./ExperimentalBadge";
 import { Breadcrumbs } from "./Breadcrumbs";
 import type { SchemaNode } from "./fieldRenderer";
+import { isFieldVisible } from "../utils/fieldVisibility";
+import { isBlockStyleVariation } from "../utils/variationSection";
 
 interface SectionOverviewProps {
   readonly sectionKey: string;
@@ -22,6 +24,9 @@ export const SectionOverview = memo(function SectionOverview({
   showExperimental,
 }: SectionOverviewProps) {
   const setActiveSection = useEditorStore((s) => s.setActiveSection);
+  const isVariationPartial = useEditorStore((s) =>
+    isBlockStyleVariation(s.themeJson),
+  );
   const properties = schema.properties;
   if (!properties) {
     return null;
@@ -47,7 +52,11 @@ export const SectionOverview = memo(function SectionOverview({
           const isUndocumented =
             node["x-wpthemejsoneditor-undocumented"] === true;
 
-          if ((isExperimental || isUndocumented) && !showExperimental) {
+          const isVisible = isFieldVisible(node, {
+            showExperimental,
+            isBlockStyleVariation: isVariationPartial,
+          });
+          if (!isVisible) {
             return null;
           }
 

@@ -3,8 +3,24 @@ import {
   VARIATION_KEYS,
   hasVariationSection,
   isVariationFile,
+  isBlockStyleVariation,
   buildVariationSchemaNode,
 } from "./variationSection";
+
+describe("isBlockStyleVariation", () => {
+  it("is true when blockTypes lists at least one block", () => {
+    expect(isBlockStyleVariation({ blockTypes: ["core/group"] })).toBe(true);
+  });
+
+  it("is false when blockTypes is empty", () => {
+    expect(isBlockStyleVariation({ blockTypes: [] })).toBe(false);
+  });
+
+  it("is false when blockTypes is missing or not an array", () => {
+    expect(isBlockStyleVariation({ version: 3 })).toBe(false);
+    expect(isBlockStyleVariation({ blockTypes: "core/group" })).toBe(false);
+  });
+});
 
 describe("isVariationFile", () => {
   it("is true for a file inside a styles directory", () => {

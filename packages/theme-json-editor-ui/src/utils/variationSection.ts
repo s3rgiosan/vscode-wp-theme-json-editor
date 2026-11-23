@@ -63,6 +63,20 @@ export function isVariationFile(filePath: string): boolean {
 }
 
 /**
+ * Whether the document is a block style variation partial: it declares a
+ * non-empty `blockTypes` list. WordPress then scopes the root `styles` to the
+ * listed blocks and accepts block-only style properties there.
+ *
+ * @param themeJson Parsed document.
+ */
+export function isBlockStyleVariation(
+  themeJson: Record<string, unknown>,
+): boolean {
+  const blockTypes = themeJson["blockTypes"];
+  return Array.isArray(blockTypes) && blockTypes.length > 0;
+}
+
+/**
  * Build a synthetic schema node for the Variation section.
  *
  * The variation keys are siblings of `settings`/`styles` at the schema root,
