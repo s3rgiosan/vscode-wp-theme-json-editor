@@ -5,6 +5,17 @@ All notable changes to the WP Theme JSON Editor extension will be documented in 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Core-scan definitions refreshed. The snapshot adds `settings.transform.rotate` and `styles.transform.rotate`, which Gutenberg supports and WordPress core does not yet.
+
+### Fixed
+
+- Undocumented properties get the field that matches their type. The core-scan snapshot now records each property's type from Gutenberg's theme.json schema, so boolean settings such as `settings.transform.rotate` and `settings.typography.textShadow` show a toggle, not a text field.
+- `styles.transform` shows for each block and for block style variations, where Gutenberg applies it. At the root of `styles`, it shows only in a block style variation partial (a file with `blockTypes`), because Gutenberg removes it from the root of a regular theme.json.
+
 ## [1.7.4] - 2026-11-16
 
 ### Changed
