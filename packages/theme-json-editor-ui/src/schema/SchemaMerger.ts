@@ -13,6 +13,15 @@ const BLOCK_ONLY_STYLE_KEYS = ["transform"] as const;
 const DEFAULT_LEAF_TYPE = "string";
 
 /**
+ * Types that get a typed field. A leaf of any other type, or of more than one
+ * type, gets a JSON field, because the snapshot does not record the shape of
+ * its items or properties.
+ */
+const SCALAR_TYPES = new Set(["boolean", "integer", "number", "string"]);
+
+type SnapshotTypes = NonNullable<CoreScanSnapshot["types"]>;
+
+/**
  * Merges the official WP theme.json schema with the core-scan snapshot.
  * Injects experimental properties, and core-supported properties the loaded
  * schema does not document, with custom flags so the UI can badge or hide them.
@@ -81,7 +90,7 @@ export class SchemaMerger {
     schema: Record<string, unknown>,
     dotPath: string,
     parentPaths: Set<string>,
-    types: Readonly<Record<string, string>>,
+    types: SnapshotTypes,
     flags: Record<string, boolean>,
   ): void {
     const parts = dotPath.split(".");
@@ -126,12 +135,31 @@ export class SchemaMerger {
         ...flags,
       };
     } else {
-      // Leaf property — use the type the scan recorded, else a permissive one.
       properties[propertyName] = {
-        type: types[dotPath] ?? DEFAULT_LEAF_TYPE,
+        ...this.createLeafSchema(types[dotPath]),
         ...flags,
       };
     }
+  }
+
+  /**
+   * Build the schema of an injected leaf from the type the scan recorded.
+   * A scalar type gets a typed field. An array, an object, or a mix of types
+   * gets an untyped node that the UI edits as JSON, so any value passes
+   * validation.
+   */
+  private createLeafSchema(
+    type: SnapshotTypes[string] | undefined,
+  ): Record<string, unknown> {
+    if (type === undefined) {
+      return { type: DEFAULT_LEAF_TYPE };
+    }
+
+    if (typeof type === "string" && SCALAR_TYPES.has(type)) {
+      return { type };
+    }
+
+    return { "x-wpthemejsoneditor-json": true };
   }
 
   /**

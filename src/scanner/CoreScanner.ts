@@ -73,8 +73,11 @@ export interface CoreScanResult {
   readonly experimental: string[];
   readonly properties: string[];
   /** JSON schema type of each leaf property path, where the schema has one. */
-  readonly types: Record<string, string>;
+  readonly types: Record<string, PropertyType>;
 }
+
+/** A JSON schema type name, or the list of types a property accepts. */
+export type PropertyType = string | string[];
 
 type SchemaNode = Record<string, unknown>;
 
@@ -106,7 +109,7 @@ export async function scanCore(wpVersion: string): Promise<CoreScanResult> {
 
   const properties = [...allProperties].sort();
 
-  let types: Record<string, string> = {};
+  let types: Record<string, PropertyType> = {};
   try {
     const content = await fetchFileContent(
       TYPE_SOURCE.repo,
@@ -288,8 +291,8 @@ function parseNestedArray(
 /**
  * Read the JSON schema type of each leaf path from a theme.json schema.
  * A leaf is a path that is not the parent of another path in the list.
- * Paths the schema does not document, or documents without a clear type,
- * are left out.
+ * A path that accepts more than one type gets the list of types. Paths the
+ * schema does not document, or documents without a type, are left out.
  *
  * @param schema Unresolved theme.json schema, with `$ref` and `allOf`.
  * @param paths  Dot-separated property paths, e.g. "settings.color.custom".
@@ -297,7 +300,7 @@ function parseNestedArray(
 export function extractPropertyTypes(
   schema: SchemaNode,
   paths: readonly string[],
-): Record<string, string> {
+): Record<string, PropertyType> {
   const definitions = isSchemaNode(schema["definitions"])
     ? (schema["definitions"] as Record<string, SchemaNode>)
     : {};
@@ -308,16 +311,19 @@ export function extractPropertyTypes(
     }),
   );
 
-  const types: Record<string, string> = {};
+  const types: Record<string, PropertyType> = {};
   for (const path of paths) {
     if (parents.has(path)) {
       continue;
     }
 
     const node = findSchemaNode(schema, path.split("."), definitions);
-    const type = node ? getNodeType(node, definitions) : undefined;
-    if (type) {
-      types[path] = type;
+    const nodeTypes = node ? getNodeTypes(node, definitions) : [];
+    const [firstType] = nodeTypes;
+    if (nodeTypes.length === 1 && firstType) {
+      types[path] = firstType;
+    } else if (nodeTypes.length > 1) {
+      types[path] = nodeTypes;
     }
   }
 
@@ -384,46 +390,69 @@ function collectProperties(
 }
 
 /**
- * Return the JSON schema type of a node: its own `type`, else the first
- * non-object type of a `oneOf`/`anyOf`/`allOf` option, else "object" when it
- * declares properties.
+ * Return the JSON schema types a node accepts: its own `type`, else the
+ * distinct types of its `oneOf`/`anyOf` options, else the first typed `allOf`
+ * entry, else "object" when it declares properties. An "object" option is
+ * dropped when the node also accepts another type, because there it is a
+ * reference object (`{ "ref": … }`), not the main form of the value.
  */
-function getNodeType(
+function getNodeTypes(
   node: SchemaNode,
   definitions: Record<string, SchemaNode>,
-  seen: Set<SchemaNode> = new Set(),
-): string | undefined {
+  stack: Set<SchemaNode> = new Set(),
+): string[] {
   const target = dereference(node, definitions);
-  if (seen.has(target)) {
-    return undefined;
+  if (stack.has(target)) {
+    return [];
   }
-  seen.add(target);
+  stack.add(target);
 
-  const ownType = target["type"];
-  if (typeof ownType === "string") {
-    return ownType;
-  }
-
-  for (const combiner of ["oneOf", "anyOf", "allOf"] as const) {
-    const options = target[combiner];
-    if (!Array.isArray(options)) {
-      continue;
+  try {
+    const ownType = target["type"];
+    if (typeof ownType === "string") {
+      return [ownType];
     }
-    for (const option of options) {
-      if (!isSchemaNode(option)) {
+    if (Array.isArray(ownType)) {
+      return ownType.filter((type): type is string => typeof type === "string");
+    }
+
+    for (const combiner of ["oneOf", "anyOf"] as const) {
+      const options = target[combiner];
+      if (!Array.isArray(options)) {
         continue;
       }
-      const optionType = getNodeType(option, definitions, seen);
-      if (optionType && optionType !== "object") {
-        return optionType;
+      const found = new Set<string>();
+      for (const option of options) {
+        if (isSchemaNode(option)) {
+          getNodeTypes(option, definitions, stack).forEach((type) =>
+            found.add(type),
+          );
+        }
+      }
+      const nonObject = [...found].filter((type) => type !== "object");
+      return nonObject.length > 0 ? nonObject : [...found];
+    }
+
+    const allOf = target["allOf"];
+    if (Array.isArray(allOf)) {
+      for (const entry of allOf) {
+        if (!isSchemaNode(entry)) {
+          continue;
+        }
+        const entryTypes = getNodeTypes(entry, definitions, stack);
+        if (entryTypes.length > 0) {
+          return entryTypes;
+        }
       }
     }
-  }
 
-  const hasProperties =
-    isSchemaNode(target["properties"]) ||
-    isSchemaNode(target["additionalProperties"]);
-  return hasProperties ? "object" : undefined;
+    const hasProperties =
+      isSchemaNode(target["properties"]) ||
+      isSchemaNode(target["additionalProperties"]);
+    return hasProperties ? ["object"] : [];
+  } finally {
+    stack.delete(target);
+  }
 }
 
 /** Follow a local `#/definitions/...` reference, or return the node itself. */

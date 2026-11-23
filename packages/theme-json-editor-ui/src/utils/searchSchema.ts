@@ -1,4 +1,5 @@
 import { formatLabel } from "./formatLabel";
+import { isFieldVisible, type FieldVisibilityContext } from "./fieldVisibility";
 
 /**
  * A single search result pointing to a property in the schema tree.
@@ -28,12 +29,14 @@ interface SchemaNode {
  * @param schema - The root schema object.
  * @param query - The search string (case-insensitive).
  * @param maxResults - Maximum number of results to return.
+ * @param visibility - When given, hidden properties and their children are skipped.
  * @returns An array of matching SearchResult objects.
  */
 export function searchSchema(
   schema: Record<string, unknown>,
   query: string,
   maxResults: number = 50,
+  visibility?: FieldVisibilityContext,
 ): SearchResult[] {
   if (!query.trim()) {
     return [];
@@ -45,7 +48,7 @@ export function searchSchema(
 
   if (root.properties) {
     for (const [key, node] of Object.entries(root.properties)) {
-      walkSchema(key, node, [key], [formatLabel(key)], lowerQuery, results, maxResults);
+      walkSchema(key, node, [key], [formatLabel(key)], lowerQuery, results, maxResults, visibility);
       if (results.length >= maxResults) {
         break;
       }
@@ -63,8 +66,13 @@ function walkSchema(
   query: string,
   results: SearchResult[],
   maxResults: number,
+  visibility: FieldVisibilityContext | undefined,
 ): void {
   if (results.length >= maxResults) {
+    return;
+  }
+
+  if (visibility && !isFieldVisible(node, visibility)) {
     return;
   }
 
@@ -102,6 +110,7 @@ function walkSchema(
         query,
         results,
         maxResults,
+        visibility,
       );
       if (results.length >= maxResults) {
         break;

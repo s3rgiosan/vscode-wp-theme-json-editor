@@ -7,7 +7,7 @@ export interface CoreScanSnapshot {
   readonly experimental: string[];
   readonly properties: string[];
   /** JSON schema type of each leaf property path, where the scan found one. */
-  readonly types?: Record<string, string>;
+  readonly types?: Record<string, string | string[]>;
 }
 
 /**

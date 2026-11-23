@@ -98,8 +98,11 @@ export function Sidebar() {
     if (!searchQuery.trim() || !schema) {
       return [];
     }
-    return searchSchema(schema as Record<string, unknown>, searchQuery, 30);
-  }, [schema, searchQuery]);
+    return searchSchema(schema as Record<string, unknown>, searchQuery, 30, {
+      showExperimental,
+      isBlockStyleVariation: isVariationPartial,
+    });
+  }, [schema, searchQuery, showExperimental, isVariationPartial]);
 
   const handleSearchResultClick = useCallback(
     (result: SearchResult) => {

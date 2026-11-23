@@ -108,7 +108,7 @@ export function resolveSchemaNode(
  * Render the appropriate connected field component for a schema node.
  * Each returned component subscribes to its own store slice internally.
  *
- * Priority: block types -> array -> block map -> object -> boolean -> enum -> color -> css -> number -> string.
+ * Priority: block types -> JSON (injected, untyped) -> array -> block map -> object -> boolean -> enum -> color -> css -> number -> string.
  */
 export function renderField({
   key,
@@ -147,6 +147,18 @@ export function renderField({
           description={description}
         />
       </fieldset>
+    );
+  }
+
+  // Injected property whose shape the schema does not give: edit it as JSON.
+  if (node["x-wpthemejsoneditor-json"] === true) {
+    return (
+      <ConnectedCssField
+        fieldPath={fieldPath}
+        label={label}
+        description={description}
+        jsonMode
+      />
     );
   }
 

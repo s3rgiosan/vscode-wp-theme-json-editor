@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T21:51:03.737Z",
+  "generatedAt": "2026-11-23T23:38:57.652Z",
   "wpVersion": "7.1",
   "experimental": [
     "__experimentalBorder",
@@ -158,7 +158,10 @@
   ],
   "types": {
     "settings.appearanceTools": "boolean",
-    "settings.background.backgroundClip": "boolean",
+    "settings.background.backgroundClip": [
+      "boolean",
+      "array"
+    ],
     "settings.background.backgroundImage": "boolean",
     "settings.background.backgroundSize": "boolean",
     "settings.background.gradient": "boolean",
@@ -201,7 +204,10 @@
     "settings.position.sticky": "boolean",
     "settings.shadow.defaultPresets": "boolean",
     "settings.shadow.presets": "array",
-    "settings.spacing.blockGap": "boolean",
+    "settings.spacing.blockGap": [
+      "boolean",
+      "null"
+    ],
     "settings.spacing.customSpacingSize": "boolean",
     "settings.spacing.defaultSpacingSizes": "boolean",
     "settings.spacing.margin": "boolean",
@@ -224,7 +230,10 @@
     "settings.typography.textAlign": "boolean",
     "settings.typography.textColumns": "boolean",
     "settings.typography.textDecoration": "boolean",
-    "settings.typography.textIndent": "boolean",
+    "settings.typography.textIndent": [
+      "boolean",
+      "string"
+    ],
     "settings.typography.textShadow": "boolean",
     "settings.typography.textShadowPresets": "array",
     "settings.typography.textTransform": "boolean",

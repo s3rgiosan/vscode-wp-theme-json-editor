@@ -222,6 +222,42 @@ describe("SchemaMerger", () => {
     expect(label["type"]).toBe("string");
   });
 
+  it("injects array, object and mixed-type leaves as JSON fields", () => {
+    const schema = { properties: {} };
+    const snapshot = {
+      generatedAt: "",
+      wpVersion: "6.7",
+      experimental: [],
+      properties: [
+        "settings.typography",
+        "settings.typography.textShadowPresets",
+        "settings.typography.textIndent",
+        "settings.typography.fluidPresets",
+        "settings.typography.fontSize",
+      ],
+      types: {
+        "settings.typography.textShadowPresets": "array",
+        "settings.typography.textIndent": ["boolean", "string"],
+        "settings.typography.fluidPresets": "object",
+        "settings.typography.fontSize": "number",
+      },
+    };
+
+    const merged = merger.merge(schema, snapshot);
+    const typography = getNode(merged, ["settings", "typography"]);
+    const props = typography["properties"] as Record<
+      string,
+      Record<string, unknown>
+    >;
+
+    for (const key of ["textShadowPresets", "textIndent", "fluidPresets"]) {
+      expect(props[key]?.["x-wpthemejsoneditor-json"]).toBe(true);
+      expect(props[key]?.["type"]).toBeUndefined();
+      expect(props[key]?.["x-wpthemejsoneditor-undocumented"]).toBe(true);
+    }
+    expect(props["fontSize"]?.["type"]).toBe("number");
+  });
+
   describe("block-only styles", () => {
     const blockOnlySnapshot = {
       generatedAt: "",

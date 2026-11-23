@@ -13,8 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Undocumented properties get the field that matches their type. The core-scan snapshot now records each property's type from Gutenberg's theme.json schema, so boolean settings such as `settings.transform.rotate` and `settings.typography.textShadow` show a toggle, not a text field.
-- `styles.transform` shows for each block and for block style variations, where Gutenberg applies it. At the root of `styles`, it shows only in a block style variation partial (a file with `blockTypes`), because Gutenberg removes it from the root of a regular theme.json.
+- Undocumented properties get the field that matches their type. The core-scan snapshot now records each property's type from Gutenberg's theme.json schema, so boolean settings such as `settings.transform.rotate` and `settings.typography.textShadow` show a toggle, not a text field. Properties that take an array, an object, or more than one type, such as `settings.typography.textShadowPresets` and `settings.background.backgroundClip`, show a JSON field.
+- `styles.transform` is available for each block and for block style variations, where Gutenberg applies it. At the root of `styles`, it shows only in a block style variation partial (a file with `blockTypes`), because Gutenberg removes it from the root of a regular theme.json. Where the loaded schema does not document it, it shows only when experimental properties are shown.
+- Search no longer lists properties the editor hides: experimental and undocumented properties while they are hidden, and the root `styles.transform` outside a block style variation partial.
 
 ## [1.7.4] - 2026-11-16
 

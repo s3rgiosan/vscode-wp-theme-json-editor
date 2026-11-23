@@ -243,10 +243,80 @@ describe("extractPropertyTypes", () => {
     expect(types).toEqual({ "styles.transform.rotate": "string" });
   });
 
-  it("leaves out a oneOf whose options are all objects", () => {
+  it("records every non-object type of a mixed oneOf", () => {
+    const mixed = {
+      properties: {
+        settings: {
+          type: "object",
+          properties: {
+            background: {
+              type: "object",
+              properties: {
+                backgroundClip: {
+                  oneOf: [
+                    { type: "boolean" },
+                    { type: "array", items: { type: "string" } },
+                  ],
+                },
+              },
+            },
+            typography: {
+              type: "object",
+              properties: {
+                fluid: {
+                  oneOf: [
+                    { type: "boolean" },
+                    { type: "object", properties: {} },
+                  ],
+                },
+                lineHeight: { type: ["string", "null"] },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const types = extractPropertyTypes(mixed, [
+      "settings.background.backgroundClip",
+      "settings.typography.fluid",
+      "settings.typography.lineHeight",
+    ]);
+
+    expect(types).toEqual({
+      "settings.background.backgroundClip": ["boolean", "array"],
+      "settings.typography.fluid": "boolean",
+      "settings.typography.lineHeight": ["string", "null"],
+    });
+  });
+
+  it("reads a type from a definition that two options share", () => {
+    const shared = {
+      definitions: { size: { type: "string" } },
+      properties: {
+        styles: {
+          type: "object",
+          properties: {
+            gap: {
+              oneOf: [
+                { $ref: "#/definitions/size" },
+                { $ref: "#/definitions/size" },
+              ],
+            },
+          },
+        },
+      },
+    };
+
+    expect(extractPropertyTypes(shared, ["styles.gap"])).toEqual({
+      "styles.gap": "string",
+    });
+  });
+
+  it("types a oneOf whose options are all objects as an object", () => {
     const types = extractPropertyTypes(schema, ["styles.shadow"]);
 
-    expect(types).toEqual({});
+    expect(types).toEqual({ "styles.shadow": "object" });
   });
 
   it("leaves out paths the schema does not document", () => {
