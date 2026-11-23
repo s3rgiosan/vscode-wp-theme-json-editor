@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T15:22:15.657Z",
+  "generatedAt": "2026-11-23T17:47:54.473Z",
   "wpVersion": "7.1",
   "experimental": [
     "__experimentalBorder",
@@ -72,6 +72,8 @@
     "settings.spacing.spacingScale",
     "settings.spacing.spacingSizes",
     "settings.spacing.units",
+    "settings.transform",
+    "settings.transform.rotate",
     "settings.typography",
     "settings.typography.customFontSize",
     "settings.typography.defaultFontSizes",
@@ -136,6 +138,8 @@
     "styles.spacing.blockGap",
     "styles.spacing.margin",
     "styles.spacing.padding",
+    "styles.transform",
+    "styles.transform.rotate",
     "styles.typography",
     "styles.typography.fontFamily",
     "styles.typography.fontSize",
