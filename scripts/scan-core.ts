@@ -47,10 +47,17 @@ async function main(): Promise<void> {
 
   const result = await scanCore(wpVersion);
 
+  // An empty map means the schema fetch failed. Writing it would remove every
+  // recorded type from the committed snapshot.
+  const typeCount = Object.keys(result.types).length;
+  if (typeCount === 0) {
+    throw new Error("No property types were read; the snapshot was not written.");
+  }
+
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(result, null, 2));
   console.log(`Snapshot written to ${OUTPUT_PATH}`);
   console.log(
-    `Found ${result.properties.length} supported, ${result.experimental.length} experimental properties`,
+    `Found ${result.properties.length} supported, ${result.experimental.length} experimental properties, ${typeCount} property types`,
   );
 }
 

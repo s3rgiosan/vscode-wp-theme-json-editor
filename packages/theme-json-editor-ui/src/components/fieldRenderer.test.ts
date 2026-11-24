@@ -7,7 +7,7 @@ import {
   type SchemaNode,
 } from "./fieldRenderer";
 import { BlockTypesField } from "./fields/BlockTypesField";
-import { ConnectedArrayField } from "./ConnectedFields";
+import { ConnectedArrayField, ConnectedCssField } from "./ConnectedFields";
 
 describe("inferType", () => {
   it("returns node.type when present", () => {
@@ -176,5 +176,25 @@ describe("renderField — blockTypes", () => {
     const element = render(arrayNode);
     expect(findComponent(element, ConnectedArrayField)).toBeDefined();
     expect(findComponent(element, BlockTypesField)).toBeUndefined();
+  });
+});
+
+describe("renderField — JSON fields", () => {
+  it("routes an untyped injected node to the JSON field", () => {
+    const element = renderField({
+      key: "textShadowPresets",
+      node: { "x-wpthemejsoneditor-json": true },
+      fieldPath: ["settings", "typography", "textShadowPresets"],
+      isExperimental: false,
+      isUndocumented: true,
+      depth: 0,
+      renderSection: () => null,
+      renderCollapsible: () => null,
+    });
+
+    expect(isValidElement(element)).toBe(true);
+    const props = (element as ReactElement).props as { jsonMode?: boolean };
+    expect((element as ReactElement).type).toBe(ConnectedCssField);
+    expect(props.jsonMode).toBe(true);
   });
 });

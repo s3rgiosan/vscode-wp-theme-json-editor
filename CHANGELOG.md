@@ -5,6 +5,18 @@ All notable changes to the WP Theme JSON Editor extension will be documented in 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2026-11-24
+
+### Changed
+
+- Core-scan definitions refreshed. The snapshot adds `settings.transform.rotate` and `styles.transform.rotate`, which Gutenberg supports and WordPress core does not yet ([#51](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/51)).
+
+### Fixed
+
+- Undocumented properties get the field that matches their type. The core-scan snapshot now records each property's type from Gutenberg's theme.json schema, so boolean settings such as `settings.transform.rotate` and `settings.typography.textShadow` show a toggle, not a text field. Properties that take an array, an object, or more than one type, such as `settings.typography.textShadowPresets` and `settings.background.backgroundClip`, show a JSON field ([#51](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/51)).
+- `styles.transform` is available for each block and for block style variations, where Gutenberg applies it. At the root of `styles`, it shows only in a block style variation partial (a file with `blockTypes`), because Gutenberg removes it from the root of a regular theme.json. Where the loaded schema does not document it, it shows only when experimental properties are shown ([#51](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/51)).
+- Search no longer lists properties the editor hides: experimental and undocumented properties while they are hidden, and the root `styles.transform` outside a block style variation partial ([#51](https://github.com/s3rgiosan/vscode-wp-theme-json-editor/pull/51)).
+
 ## [1.7.4] - 2026-11-16
 
 ### Changed
@@ -198,7 +210,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extension settings: `defaultLayout`, `showExperimentalByDefault`, `schemaVersion`.
 - CI/CD: GitHub Actions for CI, release, and weekly core-scan refresh.
 
-[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.4...HEAD
+[Unreleased]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.8.0...HEAD
+[1.8.0]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.4...1.8.0
 [1.7.4]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.3...1.7.4
 [1.7.3]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.2...1.7.3
 [1.7.2]: https://github.com/s3rgiosan/vscode-wp-theme-json-editor/compare/1.7.1...1.7.2

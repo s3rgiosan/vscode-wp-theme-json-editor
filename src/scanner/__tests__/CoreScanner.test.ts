@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { extractProperties } from "../CoreScanner.js";
+import { extractProperties, extractPropertyTypes } from "../CoreScanner.js";
 
 describe("extractProperties", () => {
   it("extracts paths from VALID_SETTINGS constant", () => {
@@ -151,5 +151,180 @@ describe("extractProperties", () => {
 
     expect(props.has("settings.custom")).toBe(true);
     expect(props.has("styles.css")).toBe(true);
+  });
+});
+
+describe("extractPropertyTypes", () => {
+  const schema = {
+    definitions: {
+      settingsTransformProperties: {
+        type: "object",
+        properties: {
+          transform: {
+            type: "object",
+            properties: {
+              rotate: { type: "boolean", default: false },
+            },
+          },
+        },
+      },
+      settingsColorProperties: {
+        type: "object",
+        properties: {
+          color: {
+            type: "object",
+            properties: {
+              palette: { type: "array", items: { type: "object" } },
+            },
+          },
+        },
+      },
+      settingsProperties: {
+        allOf: [
+          { $ref: "#/definitions/settingsTransformProperties" },
+          { $ref: "#/definitions/settingsColorProperties" },
+        ],
+      },
+      refComplete: {
+        type: "object",
+        properties: { ref: { type: "string" } },
+      },
+      stylesProperties: {
+        type: "object",
+        properties: {
+          transform: {
+            type: "object",
+            properties: {
+              rotate: {
+                oneOf: [
+                  { $ref: "#/definitions/refComplete" },
+                  { type: "string" },
+                ],
+              },
+            },
+          },
+          shadow: {
+            oneOf: [{ $ref: "#/definitions/refComplete" }],
+          },
+        },
+      },
+    },
+    properties: {
+      settings: {
+        allOf: [
+          { $ref: "#/definitions/settingsProperties" },
+          { type: "object", properties: { transform: false } },
+        ],
+      },
+      styles: { $ref: "#/definitions/stylesProperties" },
+    },
+  };
+
+  it("reads leaf types through $ref and allOf", () => {
+    const types = extractPropertyTypes(schema, [
+      "settings.transform",
+      "settings.transform.rotate",
+      "settings.color",
+      "settings.color.palette",
+    ]);
+
+    expect(types).toEqual({
+      "settings.transform.rotate": "boolean",
+      "settings.color.palette": "array",
+    });
+  });
+
+  it("uses the first non-object type of a oneOf", () => {
+    const types = extractPropertyTypes(schema, [
+      "styles.transform",
+      "styles.transform.rotate",
+    ]);
+
+    expect(types).toEqual({ "styles.transform.rotate": "string" });
+  });
+
+  it("records every non-object type of a mixed oneOf", () => {
+    const mixed = {
+      properties: {
+        settings: {
+          type: "object",
+          properties: {
+            background: {
+              type: "object",
+              properties: {
+                backgroundClip: {
+                  oneOf: [
+                    { type: "boolean" },
+                    { type: "array", items: { type: "string" } },
+                  ],
+                },
+              },
+            },
+            typography: {
+              type: "object",
+              properties: {
+                fluid: {
+                  oneOf: [
+                    { type: "boolean" },
+                    { type: "object", properties: {} },
+                  ],
+                },
+                lineHeight: { type: ["string", "null"] },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const types = extractPropertyTypes(mixed, [
+      "settings.background.backgroundClip",
+      "settings.typography.fluid",
+      "settings.typography.lineHeight",
+    ]);
+
+    expect(types).toEqual({
+      "settings.background.backgroundClip": ["boolean", "array"],
+      "settings.typography.fluid": "boolean",
+      "settings.typography.lineHeight": ["string", "null"],
+    });
+  });
+
+  it("reads a type from a definition that two options share", () => {
+    const shared = {
+      definitions: { size: { type: "string" } },
+      properties: {
+        styles: {
+          type: "object",
+          properties: {
+            gap: {
+              oneOf: [
+                { $ref: "#/definitions/size" },
+                { $ref: "#/definitions/size" },
+              ],
+            },
+          },
+        },
+      },
+    };
+
+    expect(extractPropertyTypes(shared, ["styles.gap"])).toEqual({
+      "styles.gap": "string",
+    });
+  });
+
+  it("types a oneOf whose options are all objects as an object", () => {
+    const types = extractPropertyTypes(schema, ["styles.shadow"]);
+
+    expect(types).toEqual({ "styles.shadow": "object" });
+  });
+
+  it("leaves out paths the schema does not document", () => {
+    const types = extractPropertyTypes(schema, [
+      "settings.viewport",
+      "settings.viewport.mobile",
+    ]);
+
+    expect(types).toEqual({});
   });
 });

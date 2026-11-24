@@ -160,3 +160,47 @@ describe("Sidebar — Variations section", () => {
     expect(activeSection()).toBe("variations");
   });
 });
+
+describe("Sidebar — block style variation only styles", () => {
+  const stylesSchema = {
+    type: "object",
+    properties: {
+      styles: {
+        type: "object",
+        properties: {
+          color: { type: "object" },
+          transform: {
+            type: "object",
+            "x-wpthemejsoneditor-block-style-variation-only": true,
+          },
+        },
+      },
+    },
+  };
+
+  function renderStyles(themeJson: Record<string, unknown>) {
+    useEditorStore.setState({
+      schema: stylesSchema,
+      filePath: "styles/rotated.json",
+      themeJson,
+      activeSection: "styles",
+      searchQuery: "",
+      showExperimental: false,
+    });
+    render(<Sidebar />);
+  }
+
+  const transformItem = () =>
+    screen.queryByRole("button", { name: "Transform" });
+
+  it("hides the sub-section in a file without blockTypes", () => {
+    renderStyles({ version: 3 });
+    expect(screen.getByRole("button", { name: "Color" })).toBeInTheDocument();
+    expect(transformItem()).not.toBeInTheDocument();
+  });
+
+  it("lists the sub-section in a block style variation partial", () => {
+    renderStyles({ version: 3, blockTypes: ["core/image"] });
+    expect(transformItem()).toBeInTheDocument();
+  });
+});
